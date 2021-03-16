@@ -1,0 +1,353 @@
+@charset "utf-8";
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'MapoFlowerIsland';
+    
+    color: #fff;
+}
+img {
+    display: block;
+}
+ul,
+li {
+    list-style: none;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+p{margin:0; padding:0;}
+i{color:#fff;}
+@font-face {
+    font-family: 'MapoFlowerIsland';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff')
+        format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+#app{
+    background-color: #192537;
+}
+.width-30 {
+    width: 30px;
+}
+.width-40 {
+    width: 40px;
+}
+.width-50 {
+    width: 50px;
+}
+.width-60 {
+    width: 60px;
+}
+.width-80 {
+    width: 80px;
+}
+.width-100 {
+    width: 100px;
+}
+.width-130 {
+    width: 130px;
+}
+.width-150 {
+    width: 150px;
+}
+.width-200 {
+    width: 200px;
+}
+.width-210 {
+    width: 210px;
+}
+.width-230 {
+    width: 230px;
+}
+.width-250 {
+    width: 250px;
+}
+.width-300 {
+    width: 300px;
+}
+.width-350 {
+    width: 350px;
+}
+.width-400 {
+    width: 400px;
+}
+.width-450 {
+    width: 450px;
+}
+.width-500 {
+    width: 500px;
+}
+.width-550 {
+    width: 550px;
+}
+.width-600 {
+    width: 600px;
+}
+.width-650 {
+    width: 650px;
+}
+.width-700 {
+    width: 700px;
+}
+.width-750 {
+    width: 750px;
+}
+.width-800 {
+    width: 800px;
+}
+.width-850 {
+    width: 850px;
+}
+.width-900 {
+    width: 900px;
+}
+.width-950 {
+    width: 950px;
+}
+.width-1000 {
+    width: 1000px;
+}
+.width-1200 {
+    width: 1200px;
+}
+.fullWidth {
+    width: 100%;
+}
+.halfWidth {
+    width: 50%;
+}
+.halfHeight {
+    height: 50%;
+}
+.height-30 {
+    width: 30px;
+}
+.height-40 {
+    width: 40px;
+}
+.height-50 {
+    height: 50px;
+}
+.height-70 {
+    height: 70px;
+}
+.height-80 {
+    height: 80px;
+}
+.height-100 {
+    height: 100px;
+}
+.height-150 {
+    height: 150px;
+}
+.height-200 {
+    height: 200px;
+}
+.height-250 {
+    height: 250px;
+}
+.height-300 {
+    height: 300px;
+}
+.height-350 {
+    height: 350px;
+}
+.height-400 {
+    height: 400px;
+}
+.height-450 {
+    height: 450px;
+}
+.height-500 {
+    height: 500px;
+}
+.height-550 {
+    height: 550px;
+}
+.height-600 {
+    height: 600px;
+}
+.height-650 {
+    height: 650px;
+}
+.height-700 {
+    height: 700px;
+}
+.height-750 {
+    height: 750px;
+}
+.height-800 {
+    height: 800px;
+}
+.height-850 {
+    height: 850px;
+}
+.height-900 {
+    height: 900px;
+}
+.height-950 {
+    height: 950px;
+}
+.height-1000 {
+    height: 1000px;
+}
+.fullHeight {
+    height: 100%;
+}
+.width-120 {
+    width: 120px;
+}
+.height-70 {
+    height: 70px;
+}
+
+.font-6 {
+    font-size: 6px;
+}
+.font-7 {
+    font-size: 7px;
+}
+.font-8 {
+    font-size: 8px;
+}
+.font-9 {
+    font-size: 9px;
+}
+.font-10 {
+    font-size: 10px;
+}
+.font-11 {
+    font-size: 11px;
+}
+.font-12 {
+    font-size: 12px;
+}
+.font-13 {
+    font-size: 13px;
+}
+.font-14 {
+    font-size: 14px;
+}
+.font-15 {
+    font-size: 15px;
+}
+.font-16 {
+    font-size: 16px;
+}
+.font-17 {
+    font-size: 17px;
+}
+.font-18 {
+    font-size: 18px;
+}
+.font-19 {
+    font-size: 19px;
+}
+.font-20 {
+    font-size: 20px;
+}
+.font-21 {
+    font-size: 21px;
+}
+.font-22 {
+    font-size: 22px;
+}
+.font-23 {
+    font-size: 23px;
+}
+.font-24 {
+    font-size: 24px;
+}
+.font-25 {
+    font-size: 25px;
+}
+.font-26 {
+    font-size: 26px;
+}
+.font-27 {
+    font-size: 27px;
+}
+.font-28 {
+    font-size: 28px;
+}
+.font-29 {
+    font-size: 29px;
+}
+.font-30 {
+    font-size: 30px;
+}
+.font-31 {
+    font-size: 31px;
+}
+.font-32 {
+    font-size: 32px;
+}
+.font-33 {
+    font-size: 33px;
+}
+.font-34 {
+    font-size: 34px;
+}
+.font-35 {
+    font-size: 35px;
+}
+.font-36 {
+    font-size: 36px;
+}
+.font-37 {
+    font-size: 37px;
+}
+.font-38 {
+    font-size: 38px;
+}
+.font-39 {
+    font-size: 39px;
+}
+.font-40 {
+    font-size: 40px;
+}
+
+.centerText {
+    text-align: center;
+}
+.leftText {
+    text-align: left;
+}
+.rightText {
+    text-align: right;
+}
+.centerContent {
+    margin: 0 auto;
+}
+
+.text-fff {
+    color: #fff;
+}
+.text-bold {
+    font-weight: 900;
+}
+
+.inlineBox {
+    display: inline-box;
+}
+
+.shorthand {
+    display: -webkit-box;
+    word-wrap: break-word;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    -moz-line-clamp: 1;
+    -moz-box-orient: vertical;
+    -ms-line-clamp: 1;
+    -ms-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.v-application p {
+    margin: 0;
+    padding: 0;
+}

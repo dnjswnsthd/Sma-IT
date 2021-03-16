@@ -2,32 +2,10 @@
     <v-container>
         <v-row class="wrapBox">
             <div class="col-6">
-                <p class="introduceMessage" style="padding-top:20px;">방문을 진심으로<br />환영합니다.</p>
-                <div class="productBox">
-                    <div class="newProducts">
-                        <p>New 상품!</p>
-                        <v-row class="newRow">
-                            <v-item v-for="n in 3"
-                            :key="n"
-                            style="margin:0 16px;"
-                            >
-                                <div class="itemBox">
-                               
-                                </div>
-                            </v-item>
-                        </v-row>
-                    </div>
-                    <div class="saleProducts">
-                        <p>Sale 상품!</p>
-                        <v-row class="saleRow">
-                            <v-item v-for="n in 3"
-                            :key="n"
-                            style="margin:0 16px;"
-                            >
-                                <div class="itemBox"></div>
-                            </v-item>
-                        </v-row>
-                    </div>
+                <p class="introduceMessage" style="padding-top:20px;">만족도 평가가<br />저장됩니다.</p>
+                <div class="satisfiedBox">
+                    
+                    
                 </div>
             </div>
             <div class="col-6 cambox">
@@ -49,7 +27,6 @@
                 
             </div>
         </v-row>
-        <v-btn @click="goCamPayment">결제화면보기</v-btn>
     </v-container>
 </template>
 
@@ -114,13 +91,10 @@ export default {
             this.camera = deviceId;
             console.log('On Camera Change Event', deviceId);
         },
-        goCamPayment(){
-            this.$router.push({name:'CamPayment'});
-        }
     },
 };
 </script>
 <style scoped>
 @import '../assets/css/cam.css';
-
+@import '../assets/css/camSatisfied.css';
 </style>
