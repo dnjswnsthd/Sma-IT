@@ -1,12 +1,6 @@
-from typing import List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-import datetime
-
-from database.db import session
-from models.model import Member, MemberTable
-from crud import member_crud as crud
 from router import member_router
 
 app = FastAPI()
