@@ -2,31 +2,28 @@
     <v-container>
         <v-row class="wrapBox">
             <div class="col-6">
-                <p class="introduceMessage" style="padding-top:20px;">방문을 진심으로<br />환영합니다.</p>
-                <div class="productBox">
-                    <div class="newProducts">
-                        <p>New 상품!</p>
-                        <v-row class="newRow">
-                            <v-item v-for="n in 3"
-                            :key="n"
-                            style="margin:0 16px;"
-                            >
-                                <div class="itemBox">
-                               
-                                </div>
-                            </v-item>
+                <p class="introduceMessage" style="padding-top:20px;">등록된 결제 수단으로<br />결제됩니다.</p>
+                <div class="purchaseList">
+                    <div class="purchaseListBox">
+                        <p>구매목록</p>
+                        <v-row>
+                            <div class="nameBox">
+                                <p>상품명</p>
+                                <ul>
+                                    <li>벤츠 e350</li>
+                                    <li>에르메스 벌킨30</li>
+                                </ul>
+                            </div>
+                            <div class="middledivider"></div>
+                            <div class="priceBox">
+                                <p>가격</p>
+                                <ul>
+                                    <li>89,500,000</li>
+                                    <li>10,500,000</li>
+                                </ul>
+                            </div>
                         </v-row>
-                    </div>
-                    <div class="saleProducts">
-                        <p>Sale 상품!</p>
-                        <v-row class="saleRow">
-                            <v-item v-for="n in 3"
-                            :key="n"
-                            style="margin:0 16px;"
-                            >
-                                <div class="itemBox"></div>
-                            </v-item>
-                        </v-row>
+                        <p class="totalPay" style="margin-bottom:7px; border:none;">총액 : 100,000,000</p>
                     </div>
                 </div>
             </div>
@@ -49,7 +46,6 @@
                 
             </div>
         </v-row>
-        <v-btn @click="goCamPayment">결제화면보기</v-btn>
     </v-container>
 </template>
 
@@ -114,13 +110,10 @@ export default {
             this.camera = deviceId;
             console.log('On Camera Change Event', deviceId);
         },
-        goCamPayment(){
-            this.$router.push({name:'CamPayment'});
-        }
     },
 };
 </script>
 <style scoped>
 @import '../assets/css/cam.css';
-
+@import '../assets/css/camPayment.css';
 </style>
