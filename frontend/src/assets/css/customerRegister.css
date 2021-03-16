@@ -1,0 +1,14 @@
+@charset "utf-8";
+.profileImg{
+    width:100%;
+    display: block; 
+    margin:0 auto;
+    border-radius:60px;
+}
+.registBtn, .resetBtn{
+    width:80px;
+}
+
+.resetBtn{
+    margin:0 20px;
+}

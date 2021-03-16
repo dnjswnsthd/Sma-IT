@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.customInfoBox {
+    float: left;
+    height: 100%;
+    
+}
+.customInfoBox::after {
+    clear: both;
+}
+.firstBox {
+    height: 150px;
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+}
+.secondBox {
+    height: 350px;
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+}
+.thirdBox {
+    text-align:center;
+}
