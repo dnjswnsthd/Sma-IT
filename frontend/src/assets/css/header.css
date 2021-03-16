@@ -1,0 +1,20 @@
+@charset "utf-8";
+.logoBox {
+    width: 300px;
+    height: 100px;
+}
+.logoImg {
+    display: block;
+    width: 100%;
+    height: calc(100% - 10px);
+    margin-top: 10px;
+    padding-left: 10px;
+}
+.menu {
+    color: white;
+}
+.menu li {
+    line-height: 100px;
+    text-align: center;
+    color: white;
+}

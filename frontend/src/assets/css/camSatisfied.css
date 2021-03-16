@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.satisfiedBox{
+    border-radius: 20px;
+    width:60%;
+    height: 70%;
+    margin:0 auto;
+    background-image:url('../images/frame.png');
+    background-position: center center;
+    background-size: 100% 100%;
+}
