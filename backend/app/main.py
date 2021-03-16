@@ -1,11 +1,12 @@
 from typing import List
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from starlette.middleware.cors import CORSMiddleware
 
 import datetime
 
 from database.db import session
-from database.model import Member, MemberTable
+from models.model import Member, MemberTable
+from crud import member_crud as crud
 
 app = FastAPI()
 
@@ -17,55 +18,47 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
 @app.get("/members")
 async def read_members():
-    members = session.query(MemberTable).all()
-
+    members = crud.get_members(session)
     return members
 
 
 @app.get("/members/{member_uuid}")
 async def read_member(member_uuid: int):
-    member = session.query(MemberTable).filter(MemberTable.uuid == member_uuid).first()
-
+    member = crud.get_member_by_uuid(session, member_uuid)
     return member
 
 
 @app.post("/members")
 async def create_members(member: Member):
-    now = datetime.datetime.now()
+    # 중복체크인 나중에 따로 db에 데이터 추가해서 걸러야할듯
+    db_member = crud.get_member_by_name(session, member.name)
+    if db_member:
+         raise HTTPException(status_code=400, detail="?? already registered")
+    
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    db_member = crud.create_member(session, member, now)
+    if db_member is None:
+        raise HTTPException(status_code=400, detail="Creation failure")
 
-    memberT = MemberTable()
-    memberT.uuid = member.uuid
-    memberT.name = member.name
-    memberT.age = member.age
-    memberT.interests = member.interests
-    memberT.requirements = member.requirements
-    memberT.join_date = now.strftime('%Y-%m-%d %H:%M:%S')
-    memberT.image = member.image
-
-    session.add(memberT)
-    session.commit()
-
-    return f"{member.name} created..."
+    return db_member
 
 @app.put("/members")
-async def update_members(members: List[Member]):
-    for i in members:
-        member = session.query(MemberTable).filter(MemberTable.uuid == i.uuid).first()
-        member.uuid = i.uuid
-        member.name = i.name
-        member.age = i.age
-        member.interests = i.interests
-        member.requirements = i.requirements
-        member.join_date = i.join_date
-        member.image = i.image
-
-    return f"{member.name} updated..."
+async def update_members(member: Member):
+    db_member = crud.get_member_by_name(session, member.name)
+    if db_member is None:
+        raise HTTPException(status_code=400, detail="No members")
+    db_member = crud.update_member(session, db_member, member)
+    print(db_member)
+    return db_member
 
 @app.delete("/members")
 async def delete_members(member_uuid: int):
-    member = session.query(MemberTable).filter(MemberTable.uuid == member_uuid).delete()
-    session.commit()
-
-    return member
+    db_member = crud.delete_member_by_uuid(session,member_uuid)
+    if db_member is None:
+        raise HTTPException(status_code=400, detail="Delete failure")
+    return db_member
+    

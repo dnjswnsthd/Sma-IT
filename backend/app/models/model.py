@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String
 from pydantic import BaseModel
-from .db import Base
-from .db import ENGINE
+from database import db
 
 
-class MemberTable(Base):
+
+class MemberTable(db.Base):
     __tablename__ = 'member'
     uuid = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(45), nullable=False)
@@ -15,6 +15,7 @@ class MemberTable(Base):
     image = Column(String(300), nullable=False)
 
 class Member(BaseModel):
+    uuid : int
     name: str
     age: int
     interests: str
