@@ -1,6 +1,9 @@
 from fastapi import APIRouter
 from models.model import Member
 
+from crud import member_crud as crud
+from database.db import session
+
 router = APIRouter()
 
 
