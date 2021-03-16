@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from database import db
 
 
-
 class MemberTable(db.Base):
     __tablename__ = 'member'
     uuid = Column(Integer, primary_key=True, autoincrement=True)
