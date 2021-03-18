@@ -1,11 +1,11 @@
 <template>
         <v-container class="col-6 centerContent">
-            <h1 class="centerText">고객 등록</h1>
+            <p class="centerText registerTitle">고객 등록</p>
             <div class="col-6 centerContent">
                     <v-img
-                    lazy-src="https://picsum.photos/id/11/10/6"
+                    
                     height="300"
-                    src="https://picsum.photos/id/11/500/300"
+                    src="../assets/images/profile.png"
                     class="profileImg col-4 centerContent"
                     ></v-img>
                     <v-file-input
@@ -29,21 +29,22 @@
                     label="관심분야"
                     type="string"
                     dark></v-text-field>
-                    <v-text-field
+                    <v-textarea
+                    outlined
                     label="요구사항"
                     type="string"
-                    dark></v-text-field>
+                    dark></v-textarea>
                     <v-row style="margin:0; padding:0;">
                         <v-spacer></v-spacer>
-                            <v-btn
-                            elevation="2"
+                            <button
+                            
                             class="resetBtn"
-                            >초기화</v-btn>
+                            >초기화</button>
 
-                            <v-btn
-                            elevation="2" 
+                            <button
+                            
                             class="registBtn"
-                            >등록</v-btn>
+                            >등록</button>
                     </v-row>
             </div>
             
