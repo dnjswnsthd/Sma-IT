@@ -1,4 +1,7 @@
 @charset "utf-8";
+.registerTitle{
+    font-size:24px;
+}
 .profileImg{
     width:100%;
     display: block; 
@@ -7,6 +10,8 @@
 }
 .registBtn, .resetBtn{
     width:80px;
+    background-color:#192537;
+    color:#fff;
 }
 
 .resetBtn{

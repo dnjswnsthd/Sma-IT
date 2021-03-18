@@ -36,4 +36,8 @@ export default {
 </script>
 <style scoped>
 @import '../../assets/css/header.css';
+header{
+    border-bottom:1px solid #fff;
+    margin-bottom:20px;
+}
 </style>
