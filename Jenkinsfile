@@ -8,12 +8,6 @@ pipeline {
 	options { skipDefaultCheckout(true) }
 	// stage의 모음
 	stages {
-		stage('Build and Test') {
-            options {skipDefaultCheckout(false)}
-            steps {
-                sh 'ls'
-            }
-        }
 		// 실제 작업이 수행되는 블록
 		// 해당 stage 명으로 jenkins 화면에 표시된다
         stage('Docker build') {
@@ -21,6 +15,7 @@ pipeline {
             steps {
                 // front-end 및 back-end dockerfile 실행을 통해 image 생성
                 // -t : 이미지 이름과 tag 설정, 만약 이미지 이름만 설정하면 latest로 설정됨
+				sh 'ls'
 				sh 'pwd'
                 sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/test/frontend'
                 sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/test/backend'
