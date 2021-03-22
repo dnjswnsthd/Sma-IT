@@ -1,66 +1,61 @@
 <template>
-        <v-container class="col-6 centerContent">
-            <p class="centerText registerTitle">고객 등록</p>
-            <div class="col-6 centerContent">
-                    <v-img
-                    
-                    height="300"
-                    src="../assets/images/profile.png"
-                    class="profileImg col-4 centerContent"
-                    ></v-img>
-                    <v-file-input
-                    accept="image/*"
-                    label="사진 변경"
-                    dark
-                    >
-                    </v-file-input>
-                    <v-row style="margin:0; padding:0;">
-                        <v-text-field
-                        label="name"
-                        type="string"
-                        dark></v-text-field> 
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                        label="나이"
-                        type="number"
-                        dark></v-text-field>                       
-                    </v-row>
-                    <v-text-field
-                    label="관심분야"
-                    type="string"
-                    dark></v-text-field>
-                    <v-textarea
-                    outlined
-                    label="요구사항"
-                    type="string"
-                    dark></v-textarea>
-                    <v-row style="margin:0; padding:0;">
-                        <v-spacer></v-spacer>
-                            <button
-                            
-                            class="resetBtn"
-                            >초기화</button>
+    <v-container class="col-6 centerContent">
+        <h1 class="centerText">고객 등록</h1>
+        <div class="col-6 centerContent">
+            <div>
+                <v-spacer></v-spacer>
+                <figure class="figure">
+                    <img
+                        :src="imageUrl"
+                        class="img-responsive"
+                        style="width: 100%; height: 100%;"
+                    />
+                </figure>
+                <v-row style="padding-top:20px;">
+                    <v-spacer></v-spacer>
+                    <input ref="imageInput" type="file" hidden @change="onChangeImages" />
 
-                            <button
-                            
-                            class="registBtn"
-                            >등록</button>
-                    </v-row>
+                    <v-btn type="button" @click="onClickImageUpload">이미지 업로드</v-btn>
+                </v-row>
+                <v-spacer></v-spacer>
             </div>
-            
+            <v-row style="margin:0; padding:0;">
+                <v-text-field label="name" type="string" dark></v-text-field>
+                <v-spacer></v-spacer>
+                <v-text-field label="나이" type="number" dark></v-text-field>
+            </v-row>
+            <v-text-field label="관심분야" type="string" dark></v-text-field>
+            <v-text-field label="요구사항" type="string" dark></v-text-field>
+            <v-row style="margin:0; padding:0;">
+                <v-spacer></v-spacer>
+                <v-btn elevation="2" class="resetBtn">초기화</v-btn>
 
-        </v-container>
-    
-    
+                <v-btn elevation="2" class="registBtn">등록</v-btn>
+            </v-row>
+        </div>
+    </v-container>
 </template>
 
 <script>
 export default {
-    
-}
+    data() {
+        return {
+            imageUrl: '',
+        };
+    },
+    methods: {
+        onClickImageUpload() {
+            this.$refs.imageInput.click();
+        },
+        onChangeImages(e) {
+            console.log(e.target.files);
+            const file = e.target.files[0];
+            this.imageUrl = URL.createObjectURL(file);
+        },
+    },
+};
 </script>
 
 <style scoped>
 @import '../assets/css/customerRegister.css';
-
 </style>
