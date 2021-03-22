@@ -16,8 +16,8 @@ pipeline {
                 // front-end 및 back-end dockerfile 실행을 통해 image 생성
                 // -t : 이미지 이름과 tag 설정, 만약 이미지 이름만 설정하면 latest로 설정됨
 				sh 'pwd'
-                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/Sma-IT/frontend'
-                sh 'docker build -t smaitback:latest ./backend'
+                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/test/frontend'
+                sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/test/backend'
             }
         }
         stage('Docker run') {
@@ -44,7 +44,7 @@ pipeline {
 				sh 'docker run -d --name smaitfront \
 					-p 80:80 \
 					-p 443:443 \
-					-v /home/ubuntu/keys:/var/jenkins_home/workspace/Sma-IT/sslkey/ \
+					-v /home/ubuntu/keys:/var/jenkins_home/workspace/test/sslkey/ \
 					--network smait \
 					smaitfront:latest'
 				sh 'docker run -d --name smaitback \
