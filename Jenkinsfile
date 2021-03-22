@@ -15,7 +15,7 @@ pipeline {
             steps {
                 // front-end 및 back-end dockerfile 실행을 통해 image 생성
                 // -t : 이미지 이름과 tag 설정, 만약 이미지 이름만 설정하면 latest로 설정됨
-                sh 'docker build -t smaitfront:latest ./frontend'
+                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/Sma-IT'
                 sh 'docker build -t smaitback:latest ./backend'
             }
         }
