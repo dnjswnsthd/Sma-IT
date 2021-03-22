@@ -15,24 +15,24 @@ pipeline {
             steps {
                 // front-end 및 back-end dockerfile 실행을 통해 image 생성
                 // -t : 이미지 이름과 tag 설정, 만약 이미지 이름만 설정하면 latest로 설정됨
-                sh 'docker build -t SmaitFront:latest /var/jenkins_home/workspace/smait/frontend'
-                sh 'docker build -t SmaitBack:latest /var/jenkins_home/workspace/smait/backend'
+                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/smait/frontend'
+                sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/smait/backend'
             }
         }
         stage('Docker run') {
             agent any
             steps {
-				// 현재 동작중인 컨테이너 중 SmaitFront의 이름을 가진 컨테이너를 stop
-				sh 'docker ps -f name=SmaitFront -q \
+				// 현재 동작중인 컨테이너 중 smaitfront의 이름을 가진 컨테이너를 stop
+				sh 'docker ps -f name=smaitfront -q \
 					| xargs --no-run-if-empty docker container stop'
-				// 현재 동작중인 컨테이너 중 SmaitBack의 이름을 가진 컨테이너를 stop
-				sh 'docker ps -f name=SmaitBack -q \
+				// 현재 동작중인 컨테이너 중 smaitback의 이름을 가진 컨테이너를 stop
+				sh 'docker ps -f name=smaitback -q \
 					| xargs --no-run-if-empty docker container stop'
-				// SmaitFront의 이름을 가진 컨테이너를 삭제
-				sh 'docker container ls -a -f name=SmaitFront -q \
+				// smaitfront의 이름을 가진 컨테이너를 삭제
+				sh 'docker container ls -a -f name=smaitfront -q \
 					| xargs -r docker container rm'
-				// SmaitBack의 이름을 가진 컨테이너를 삭제
-				sh 'docker container ls -a -f name=SmaitBack -q \
+				// smaitback의 이름을 가진 컨테이너를 삭제
+				sh 'docker container ls -a -f name=smaitback -q \
 					| xargs -r docker container rm'
 				// docker image build 시 기존에 존재하던 이미지는
 				// dangling 상태가 되기 때문에 이미지를 일괄 삭제
@@ -40,15 +40,15 @@ pipeline {
 					docker rmi $(docker images -f "dangling=true" -q)'
 				// docker container 실행
 				// 하나의 docker network에 연결하여 통신이 가능하도록 설정
-				sh 'docker run -d --name SmaitFront \
+				sh 'docker run -d --name smaitfront \
 					-p 80:80 \
 					-p 443:443 \
 					-v /home/ubuntu/keys:/var/jenkins_home/workspace/smait/sslkey/ \
 					--network smait \
-					SmaitFront:latest'
-				sh 'docker run -d --name SmaitBack \
+					smaitfront:latest'
+				sh 'docker run -d --name smaitback \
 					--network smait \
-					SmaitBack:latest'
+					smaitback:latest'
 			}
 		}
 	}
