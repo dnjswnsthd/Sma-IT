@@ -46,7 +46,7 @@ pipeline {
 				sh 'docker run -d --name smaitfront \
 					-p 80:80 \
 					-p 443:443 \
-					-v /home/ubuntu/keys:/var/jenkins_home/workspace/Sma-IT/sslkey/ \
+					-v /home/ubuntu/keys/:/var/jenkins_home/workspace/Sma-IT/sslkey/ \
 					--network smait \
 					smaitfront:latest'
 				sh 'docker run -d --name smaitback \
