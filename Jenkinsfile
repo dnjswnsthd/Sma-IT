@@ -18,8 +18,8 @@ pipeline {
 				sh 'ls'
 				sh 'cat README.md'
 				sh 'pwd'
-                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/test/frontend'
-                sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/test/backend'
+                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/Sma-IT/frontend'
+                sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/Sma-IT/backend'
             }
         }
         stage('Docker run') {
