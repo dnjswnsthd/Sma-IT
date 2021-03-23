@@ -17,7 +17,6 @@ pipeline {
                 // -t : 이미지 이름과 tag 설정, 만약 이미지 이름만 설정하면 latest로 설정됨
 				sh 'pwd'
 				sh 'ls'
-				sh 'cat README.md'
                 sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/Sma-IT/frontend'
                 sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/Sma-IT/backend'
             }
