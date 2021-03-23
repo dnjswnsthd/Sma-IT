@@ -13,6 +13,7 @@
                 </figure>
                 <v-row style="padding-top:20px;">
                     <v-spacer></v-spacer>
+                    <p>{{ imageName }}</p>
                     <input ref="imageInput" type="file" hidden @change="onChangeImages" />
 
                     <v-btn type="button" @click="onClickImageUpload">이미지 업로드</v-btn>
@@ -41,6 +42,7 @@ export default {
     data() {
         return {
             imageUrl: '',
+            imageName: this.imageName,
         };
     },
     methods: {
@@ -51,6 +53,7 @@ export default {
             console.log(e.target.files);
             const file = e.target.files[0];
             this.imageUrl = URL.createObjectURL(file);
+            this.imageName = file.name;
         },
     },
 };
