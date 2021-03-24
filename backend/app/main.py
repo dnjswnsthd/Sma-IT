@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
 
 from router import member_router
 
@@ -15,6 +16,20 @@ app.add_middleware(
 
 app.include_router(member_router.router, tags=["Member"], prefix="/api/member")
 
-@app.get("/api/app")
-def read_main(request: Request):
-    return {"message": "Hello World", "root_path": request.scope.get("root_path")}
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="Sma-IT",
+        version="3.0.2",
+        description="Sma-IT 서비스 Swagger",
+        routes=app.routes,
+    )
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
