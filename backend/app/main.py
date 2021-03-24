@@ -3,7 +3,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from router import member_router
 
-app = FastAPI(docs_url="/api/docs")
+app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc")
 
 app.add_middleware(
     CORSMiddleware,
