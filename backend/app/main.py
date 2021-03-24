@@ -7,7 +7,7 @@ from router import member_router
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 
 
-app = FastAPI(root_path="/api")
+app = FastAPI(root_path="/api", openapi_url="/api/openapi.json")
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,9 +21,9 @@ app.include_router(member_router.router, tags=["Member"], prefix="/api/member")
 
 @app.get("/api/docs")
 async def get_swagger_documentation():
-    return get_swagger_ui_html(openapi_url="/openapi.json", title="docs")
+    return get_swagger_ui_html(openapi_url="/api/openapi.json", title="docs")
 
 
 @app.get("/api/redoc")
 async def get_redoc_documentation():
-    return get_redoc_html(openapi_url="/openapi.json", title="docs")
+    return get_redoc_html(openapi_url="/api/openapi.json", title="docs")
