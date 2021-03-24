@@ -11,3 +11,5 @@ RUN pip install paddlehub==2.0.0rc0
 
 RUN pip install pymysql sqlalchemy
 RUN pip install async-exit-stack async-generator
+
+EXPOSE 8000
