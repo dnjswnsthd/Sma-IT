@@ -8,12 +8,14 @@
                 <v-spacer></v-spacer>
                 <v-dialog v-model="dialogDelete" max-width="500px">
                     <v-card>
-                        <v-card-title class="headline" style="color: black;"
-                            >{{ editedItem.name }}님의 고객정보를 삭제하시겠습니까?</v-card-title
+                        <p
+                            class="headTitle"
+                            style="color: black; text-align:center; padding-top: 10px; "
                         >
+                            {{ editedItem.name }}님의 고객정보를 삭제하시겠습니까?
+                        </p>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <p></p>
                             <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
                             <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
                             <v-spacer></v-spacer>
@@ -291,5 +293,9 @@ export default {
 };
 </script>
 <style scoped>
+.v-dialog {
+    font-family: 'MapoFlowerIsland';
+    color: #fff;
+}
 @import '../assets/css/customerModify.css';
 </style>
