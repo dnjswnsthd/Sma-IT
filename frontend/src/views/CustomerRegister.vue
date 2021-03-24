@@ -4,32 +4,27 @@
         <div class="col-6 centerContent">
             <div>
                 <v-spacer></v-spacer>
-                <figure class="figure">
-                    <img
-                        :src="imageUrl"
-                        class="img-responsive"
-                        style="width: 100%; height: 100%;"
-                    />
-                </figure>
+                <div>
+                    <img :src="imageUrl" style="border:0px; width:100%;" />
+                </div>
                 <v-row style="padding-top:20px;">
                     <v-spacer></v-spacer>
                     <p>{{ imageName }}</p>
                     <input ref="imageInput" type="file" hidden @change="onChangeImages" />
-
                     <v-btn type="button" @click="onClickImageUpload">이미지 업로드</v-btn>
                 </v-row>
                 <v-spacer></v-spacer>
             </div>
             <v-row style="margin:0; padding:0;">
-                <v-text-field label="name" type="string" dark></v-text-field>
+                <v-text-field v-model="name" label="name" type="string" dark></v-text-field>
                 <v-spacer></v-spacer>
-                <v-text-field label="나이" type="number" dark></v-text-field>
+                <v-text-field v-model="age" label="나이" type="number" dark></v-text-field>
             </v-row>
-            <v-text-field label="관심분야" type="string" dark></v-text-field>
-            <v-text-field label="요구사항" type="string" dark></v-text-field>
+            <v-text-field v-model="interest" label="관심분야" type="string" dark></v-text-field>
+            <v-text-field v-model="demand" label="요구사항" type="string" dark></v-text-field>
             <v-row style="margin:0; padding:0;">
                 <v-spacer></v-spacer>
-                <v-btn elevation="2" class="resetBtn">초기화</v-btn>
+                <v-btn elevation="2" class="resetBtn" @click="resetInformation">초기화</v-btn>
 
                 <v-btn elevation="2" class="registBtn">등록</v-btn>
             </v-row>
@@ -43,6 +38,10 @@ export default {
         return {
             imageUrl: '',
             imageName: this.imageName,
+            name: '',
+            age: '',
+            interest: '',
+            demand: '',
         };
     },
     methods: {
@@ -54,6 +53,13 @@ export default {
             const file = e.target.files[0];
             this.imageUrl = URL.createObjectURL(file);
             this.imageName = file.name;
+        },
+        resetInformation() {
+            console.log('resetInformation');
+            this.name = '';
+            this.age = '';
+            this.interest = '';
+            this.demand = '';
         },
     },
 };
