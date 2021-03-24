@@ -6,23 +6,9 @@
                 <v-divider class="mx-4" inset vertical></v-divider>
 
                 <v-spacer></v-spacer>
-                <v-dialog v-model="dialogDelete" max-width="500px">
-                    <v-card>
-                        <p
-                            class="headTitle"
-                            style="color: black; text-align:center; padding-top: 10px; "
-                        >
-                            {{ editedItem.name }}님의 고객정보를 삭제하시겠습니까?
-                        </p>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                            <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                            <v-spacer></v-spacer>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                <v-dialog v-model="dialogEdit" max-width="500px">
+                <DeleteDialog :dialogDelete="dialogDelete" :item="editedItem"></DeleteDialog>
+                <EditDialog :dialogEdit="dialogEdit" :item="editedItem"></EditDialog>
+                <!-- <v-dialog v-model="dialogEdit" max-width="500px">
                     <v-card>
                         <v-card-text>
                             <v-container>
@@ -83,7 +69,7 @@
                             </v-btn>
                         </v-card-actions>
                     </v-card>
-                </v-dialog>
+                </v-dialog> -->
             </template>
             <template v-slot:item.actions="{ item }">
                 <v-icon small class="mr-2" style="color:#fff;" @click="editItem(item)">
@@ -102,7 +88,14 @@
     </v-container>
 </template>
 <script>
+import DeleteDialog from '../components/dialog/DeleteDialog';
+import EditDialog from '../components/dialog/EditDialog';
+
 export default {
+    components: {
+        DeleteDialog,
+        EditDialog,
+    },
     data: () => ({
         dialog: false,
         dialogEdit: false,
@@ -258,36 +251,6 @@ export default {
             this.editedIndex = this.customers.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
-        },
-
-        deleteItemConfirm() {
-            this.customers.splice(this.editedIndex, 1);
-            this.closeDelete();
-        },
-
-        close() {
-            this.dialogEdit = false;
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
-            });
-        },
-
-        closeDelete() {
-            this.dialogDelete = false;
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
-            });
-        },
-
-        save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.customers[this.editedIndex], this.editedItem);
-            } else {
-                this.customers.push(this.editedItem);
-            }
-            this.close();
         },
     },
 };
