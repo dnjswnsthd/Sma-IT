@@ -4,7 +4,10 @@ from fastapi.openapi.utils import get_openapi
 
 from router import member_router
 
-app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc")
+from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
+
+
+app = FastAPI(root_path="/api")
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,20 +19,11 @@ app.add_middleware(
 
 app.include_router(member_router.router, tags=["Member"], prefix="/api/member")
 
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi(
-        title="Sma-IT",
-        version="3.0.2",
-        description="Sma-IT 서비스 Swagger",
-        routes=app.routes,
-    )
-    openapi_schema["info"]["x-logo"] = {
-        "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
-    }
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
+@app.get("/api/docs")
+async def get_swagger_documentation():
+    return get_swagger_ui_html(openapi_url="/openapi.json", title="docs")
 
 
-app.openapi = custom_openapi
+@app.get("/api/redoc")
+async def get_redoc_documentation():
+    return get_redoc_html(openapi_url="/openapi.json", title="docs")
