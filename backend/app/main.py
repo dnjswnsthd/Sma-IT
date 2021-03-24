@@ -1,9 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 
 from router import member_router
 
-app = FastAPI(root_path="/api")
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -13,4 +13,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(member_router.router, tags=["Member"], prefix="/member")
+app.include_router(member_router.router, tags=["Member"], prefix="/api/member")
+
+@app.get("/api/app")
+def read_main(request: Request):
+    return {"message": "Hello World", "root_path": request.scope.get("root_path")}
