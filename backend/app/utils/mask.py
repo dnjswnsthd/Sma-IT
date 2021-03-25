@@ -6,7 +6,7 @@ import paddlehub as hub
 
 def mask_check(img_path: str):
     # 사진 경로
-    img_path = "./img/" + img_path
+    img_path = "../cam_img/" + img_path
     test_img_path = [img_path]
     img = mpimg.imread(test_img_path[0])
 
