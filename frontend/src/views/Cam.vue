@@ -62,7 +62,7 @@
 
 <script>
 // import { WebCam } from 'vue-web-cam';
-// import http from '../api/axios';
+import http from '../api/axios';
 import Axios from 'axios';
 
 export default {
@@ -82,6 +82,7 @@ export default {
       testTimer: '',
       decodeUrl:'',
       imgUrl:'',
+      formValues:{},
         };
     },
     computed: {
@@ -188,6 +189,21 @@ export default {
     //   //Convert the format of the image added at the end of the array and assign it to the imgURL format
       const imgURL = this.makeblob(this.captures[this.captures.length - 1])
       console.log('imgURL : ' + URL.createObjectURL(imgURL));
+      const file = imgURL;
+      const fileName = 'canvas_img_'+new Date().getMilliseconds()+'.png';
+      let formData = new FormData();
+      formData.append('file', file, fileName);
+      console.log(formData.values());
+      for(var value of formData.values()){
+          this.formValues = value;
+      }
+    let captureImg = this.formValues;
+    //   console.log(this.formValues);
+        http.post(`/face/`,captureImg).then(()=>{
+            alert('승공');
+        }).catch(()=>{
+            alert('실패');
+        })
       //Send imgURL image to Face API
       Axios.post(
         uriBase + "?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion",
