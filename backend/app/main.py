@@ -1,9 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
 
 from router import member_router, face_router
 
-app = FastAPI()
+from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
+
+
+app = FastAPI(root_path="/api", openapi_url="/api/openapi.json")
 
 app.add_middleware(
     CORSMiddleware,
@@ -13,5 +17,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(member_router.router, tags=["Member"], prefix="/member")
-app.include_router(face_router.router, tags=["Face"], prefix="/face")
+app.include_router(member_router.router, tags=["Member"], prefix="/api/member")
+app.include_router(face_router.router, tags=["Face"], prefix="/api/face")
+
+@app.get("/api/docs")
+async def get_swagger_documentation():
+    return get_swagger_ui_html(openapi_url="/api/openapi.json", title="docs")
+
+
+@app.get("/api/redoc")
+async def get_redoc_documentation():
+    return get_redoc_html(openapi_url="/api/openapi.json", title="docs")
+

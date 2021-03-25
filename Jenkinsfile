@@ -5,7 +5,7 @@ pipeline {
 	// gitlab의 소스를 jenkins 디렉토리로 내려받을 시
 	// skipDefaultCheckout(true)일 경우 내려받는 프로세스 skip
 	// skipDefaultCheckout(false)일 경우 gitlab 소스 체크
-	options { skipDefaultCheckout(true) }
+	options { skipDefaultCheckout(false) }
 	// stage의 모음
 	stages {
 		// 실제 작업이 수행되는 블록
@@ -15,11 +15,10 @@ pipeline {
             steps {
                 // front-end 및 back-end dockerfile 실행을 통해 image 생성
                 // -t : 이미지 이름과 tag 설정, 만약 이미지 이름만 설정하면 latest로 설정됨
-				sh 'ls'
-				sh 'cat README.md'
 				sh 'pwd'
-                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/test/frontend'
-                sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/test/backend'
+				sh 'ls'
+                sh 'docker build -t smaitback:latest /var/jenkins_home/workspace/Sma-IT/backend'
+                sh 'docker build -t smaitfront:latest /var/jenkins_home/workspace/Sma-IT/frontend'
             }
         }
         stage('Docker run') {
@@ -46,7 +45,7 @@ pipeline {
 				sh 'docker run -d --name smaitfront \
 					-p 80:80 \
 					-p 443:443 \
-					-v /home/ubuntu/keys:/var/jenkins_home/workspace/test/sslkey/ \
+					-v /home/ubuntu/keys/:/var/jenkins_home/workspace/Sma-IT/sslkey/ \
 					--network smait \
 					smaitfront:latest'
 				sh 'docker run -d --name smaitback \

@@ -1,28 +1,86 @@
 <template>
     <v-container class="col-8 centerContent">
-        <v-data-table
-            :headers="headers"
-            :items="desserts"
-            sort-by="calories"
-            style="background:rgba(0,0,0,0)"
-            dark
-        >
+        <v-data-table :headers="headers" :items="customers" style="background:rgba(0,0,0,0)" dark>
             <template v-slot:top>
                 <p class="modifyTitle">고객 정보 수정</p>
                 <v-divider class="mx-4" inset vertical></v-divider>
 
                 <v-spacer></v-spacer>
-
                 <v-dialog v-model="dialogDelete" max-width="500px">
                     <v-card>
-                        <v-card-title class="headline"
-                            >Are you sure you want to delete this item?</v-card-title
+                        <p
+                            class="headTitle"
+                            style="color: black; text-align:center; padding-top: 10px; "
                         >
+                            {{ editedItem.name }}님의 고객정보를 삭제하시겠습니까?
+                        </p>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
                             <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
                             <v-spacer></v-spacer>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogEdit" max-width="500px">
+                    <v-card>
+                        <v-card-text>
+                            <v-container>
+                                <img
+                                    src="../assets/images/profile.png"
+                                    alt="프로필 사진"
+                                    style="width: 100%; padding-top: 10px;"
+                                />
+                                <v-row style="padding-top: 10px">
+                                    <v-spacer></v-spacer>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field
+                                            v-model="editedItem.name"
+                                            label="name"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-spacer></v-spacer>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field
+                                            v-model="editedItem.age"
+                                            label="나이"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-spacer></v-spacer>
+                                </v-row>
+                                <v-row>
+                                    <v-spacer></v-spacer>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field
+                                            v-model="editedItem.rate"
+                                            label="등급"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-spacer></v-spacer>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field
+                                            v-model="editedItem.interest"
+                                            label="관심품목"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-spacer></v-spacer>
+                                </v-row>
+                                <v-spacer></v-spacer>
+                                <v-text-field
+                                    v-model="editedItem.require"
+                                    label="요구사항"
+                                ></v-text-field>
+                                <v-spacer></v-spacer>
+                            </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="black darken-1" text @click="close">
+                                Cancel
+                            </v-btn>
+                            <v-btn color="black darken-1" text @click="save">
+                                Save
+                            </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -47,6 +105,7 @@
 export default {
     data: () => ({
         dialog: false,
+        dialogEdit: false,
         dialogDelete: false,
         headers: [
             {
@@ -62,7 +121,7 @@ export default {
             { text: '사진', value: 'picture' },
             { text: 'Actions', value: 'actions', sortable: false },
         ],
-        desserts: [],
+        customers: [],
         editedIndex: -1,
         editedItem: {
             name: '',
@@ -103,7 +162,7 @@ export default {
 
     methods: {
         initialize() {
-            this.desserts = [
+            this.customers = [
                 {
                     name: '송원준',
                     age: '26',
@@ -113,7 +172,7 @@ export default {
                     picture: 0,
                 },
                 {
-                    name: '조석준ㄴ',
+                    name: '조석준',
                     age: '29',
                     rate: 'Diamond',
                     interest: '맨투맨',
@@ -188,24 +247,26 @@ export default {
         },
 
         editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
+            console.log(item);
+            this.editedIndex = this.customers.indexOf(item);
             this.editedItem = Object.assign({}, item);
-            this.dialog = true;
+            this.dialogEdit = true;
         },
 
         deleteItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
+            console.log(item);
+            this.editedIndex = this.customers.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
         },
 
         deleteItemConfirm() {
-            this.desserts.splice(this.editedIndex, 1);
+            this.customers.splice(this.editedIndex, 1);
             this.closeDelete();
         },
 
         close() {
-            this.dialog = false;
+            this.dialogEdit = false;
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedIndex = -1;
@@ -222,9 +283,9 @@ export default {
 
         save() {
             if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem);
+                Object.assign(this.customers[this.editedIndex], this.editedItem);
             } else {
-                this.desserts.push(this.editedItem);
+                this.customers.push(this.editedItem);
             }
             this.close();
         },
@@ -232,5 +293,9 @@ export default {
 };
 </script>
 <style scoped>
+.v-dialog {
+    font-family: 'MapoFlowerIsland';
+    color: #fff;
+}
 @import '../assets/css/customerModify.css';
 </style>
