@@ -4,6 +4,7 @@ COPY ./app /app
 RUN pip install --upgrade pip
 
 RUN pip install pip cmake numpy opencv-python-headless pillow
+RUN apt-get install libgl1-mesa-glx
 RUN pip install dlib
 RUN pip install face_recognition
 RUN python -m pip install paddlepaddle==2.0.1 -i https://mirror.baidu.com/pypi/simple
