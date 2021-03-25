@@ -58,6 +58,7 @@ export default {
     methods: {
         close() {
             this.dialogEdit = false;
+            this.$emit('close');
             this.$nextTick(() => {
                 this.item = Object.assign({}, this.defaultItem);
                 this.editedIndex = -1;
