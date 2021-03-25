@@ -62,13 +62,14 @@
 .divider{
     border:1px solid white;
     width:88%;
-    margin:30px auto;
+    margin:55px auto;
 }
 
 .guideMessage{
-    text-align: center;
+    /* text-align: center; */
+    width:70%;
+    display:block;
     color: white;
-    display: block;
     font-size:28px;
-    margin-bottom:60px;
+    padding-left:100px;
 }
