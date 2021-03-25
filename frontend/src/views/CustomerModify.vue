@@ -7,8 +7,7 @@
         <v-row>
             <div v-for="(item, index) in customers" :key="index" class="imgBox">
                 <div class="customInfoBox">
-                    <v-col>{{ item.picture }}</v-col>
-                    <v-col>{{ item.name }}</v-col>
+                    <v-col><img :src="item.picture" style="width:100%; margin:0 auto;"/></v-col>
                     <v-col>{{ item.age }}</v-col>
                     <v-col>{{ item.rate }}</v-col>
                     <v-col>{{ item.interest }}</v-col>
@@ -98,8 +97,8 @@ export default {
                     age: '26',
                     rate: 'Diamond',
                     interest: '운동화',
-                    require: '먼저 말 걸지 말아주세요. 문의 사항이 있으면 여쭤볼게요!',
-                    picture: 0,
+                    require: '먼저 말 걸지 말아주세요.',
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '조석준',
@@ -107,7 +106,7 @@ export default {
                     rate: 'Diamond',
                     interest: '맨투맨',
                     require: '먼저 말 거는게 힘들어요. 먼저 다가와주세요.',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '조준형',
@@ -115,7 +114,7 @@ export default {
                     rate: 'Platinum',
                     interest: '후드티',
                     require: '신상 후드티에 관심이 많아요.',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '김두상',
@@ -123,7 +122,7 @@ export default {
                     rate: 'Platinum',
                     interest: '양말',
                     require: '양말은 색깔별로 다 좋아요!',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '천민주',
@@ -131,7 +130,7 @@ export default {
                     rate: 'Gold',
                     interest: '안경테',
                     require: '양말은 색깔별로 다 좋아요!',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '천민주',
@@ -139,7 +138,7 @@ export default {
                     rate: 'Gold',
                     interest: '안경테',
                     require: '양말은 색깔별로 다 좋아요!',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
             ];
         },
@@ -180,7 +179,7 @@ export default {
                     rate: 'Diamond',
                     interest: '맨투맨',
                     require: '먼저 말 거는게 힘들어요. 먼저 다가와주세요.',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '조준형',
@@ -188,7 +187,7 @@ export default {
                     rate: 'Platinum',
                     interest: '후드티',
                     require: '신상 후드티에 관심이 많아요.',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '김두상',
@@ -196,7 +195,7 @@ export default {
                     rate: 'Platinum',
                     interest: '양말',
                     require: '양말은 색깔별로 다 좋아요!',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '천민주',
@@ -204,7 +203,7 @@ export default {
                     rate: 'Gold',
                     interest: '안경테',
                     require: '양말은 색깔별로 다 좋아요!',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 },
                 {
                     name: '조준형',
@@ -212,7 +211,7 @@ export default {
                     rate: 'Platinum',
                     interest: '후드티',
                     require: '신상 후드티에 관심이 많아요.',
-                    picture: 0,
+                    picture: require('@/assets/images/profile.png'),
                 }
             );
         },

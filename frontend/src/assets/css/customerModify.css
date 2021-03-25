@@ -19,7 +19,7 @@ tr:hover {
     background-image: url('../images/frame.png');
     background-position: center center;
     width: 420px;
-    height: 500px;
+    /* height: 500px; */
     text-align: center;
 }
 .customInfoBox {
@@ -28,5 +28,5 @@ tr:hover {
     padding: 30px;
     padding-top: 40px;
     width: 400px;
-    height: 500px;
+    /* height: 500px; */
 }
