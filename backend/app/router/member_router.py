@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-from models.model import Member
-
+from models.model import Member, Emotion
 from crud import member_crud as crud
 from database.db import session
 
@@ -53,3 +52,16 @@ async def delete_members(member_uuid: int):
     if db_member is None:
         raise HTTPException(status_code=400, detail="Delete failure")
     return db_member
+
+@router.get("/emotion/{member_uuid}")
+async def read_emotion(member_uuid: int):
+    db_emotion = crud.get_emotion(session, member_uuid)
+    return db_emotion
+
+@router.post("/emotion")
+async def create_emotion(emotion: Emotion,):
+    db_emotion = crud.create_emotion(session, emotion)
+    if db_emotion is None:
+        raise HTTPException(status_code=400, detail="Creation failure")
+
+    return db_emotion
