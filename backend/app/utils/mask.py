@@ -6,10 +6,8 @@ import paddlehub as hub
 
 def mask_check(img_path: str):
     # 사진 경로
-    img_path = "../cam_img/" + img_path
     test_img_path = [img_path]
     img = mpimg.imread(test_img_path[0])
-
 
     hub.server_check()
 
@@ -19,10 +17,7 @@ def mask_check(img_path: str):
     imgs = [cv2.imread(test_img_path[0])]
 
     # 얼굴인식 및 마스크 인식
-    results = module.face_detection(images=imgs, use_multi_scale=True, shrink=0.6, visualization=True, output_dir='detection_result')
+    results = module.face_detection(images=imgs, use_multi_scale=True, shrink=0.6, visualization=False)
 
-    for result in results:
-        print(result)
-    
-    return results
+    return results[0]['data'][0]['label']
     
