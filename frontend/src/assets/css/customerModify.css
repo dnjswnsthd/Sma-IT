@@ -14,3 +14,19 @@
 tr:hover {
     background-color: transparent !important;
 }
+
+.imgBox {
+    background-image: url('../images/frame.png');
+    background-position: center center;
+    width: 420px;
+    /* height: 500px; */
+    text-align: center;
+}
+.customInfoBox {
+    float: left;
+    height: 100%;
+    padding: 30px;
+    padding-top: 40px;
+    width: 400px;
+    /* height: 500px; */
+}
