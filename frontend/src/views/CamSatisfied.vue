@@ -2,10 +2,11 @@
     <v-container>
         <v-row class="wrapBox">
             <div class="col-6">
-                <p class="introduceMessage" style="padding-top:20px;">만족도 평가가<br />저장됩니다.</p>
+                <p class="introduceMessage" style="padding-top:20px;">
+                    만족도 평가가<br />저장됩니다.
+                </p>
                 <div class="satisfiedBox">
-                    
-                    
+                    <chart></chart>
                 </div>
             </div>
             <div class="col-6 cambox">
@@ -24,7 +25,6 @@
                 <p class="guideMessage mb-10">
                     얼굴을 가이드라인에 맞춰주시고 <br />인식이 완료될때까지 잠시 기다려주세요
                 </p>
-                
             </div>
         </v-row>
     </v-container>
@@ -32,10 +32,12 @@
 
 <script>
 import { WebCam } from 'vue-web-cam';
+import Chart from '../components/Chart.vue';
 export default {
     name: 'App',
     components: {
         'vue-web-cam': WebCam,
+        chart: Chart,
     },
     data() {
         return {
