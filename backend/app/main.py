@@ -7,7 +7,7 @@ from router import member_router, face_router
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 
 
-app = FastAPI(root_path="/api", openapi_url="/api/openapi.json")
+app = FastAPI(openapi_url="/api/openapi.json")
 
 app.add_middleware(
     CORSMiddleware,
