@@ -4,11 +4,13 @@ from models.model import Member
 from crud import member_crud as crud
 from database.db import session
 
+import datetime
+
 router = APIRouter()
 
 
 @router.get("/")
-async def read_members_limit(start: int, limit: int):
+async def read_members_limit(start: int = 0, limit: int = 10):
     members = crud.get_members(session, start, limit)
 
     return members

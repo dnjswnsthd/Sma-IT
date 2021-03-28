@@ -46,10 +46,12 @@ pipeline {
 					-p 80:80 \
 					-p 443:443 \
 					-v /home/ubuntu/keys/:/var/jenkins_home/workspace/Sma-IT/sslkey/ \
+					-e TZ=Asia/Seoul \
 					--network smait \
 					smaitfront:latest'
 				sh 'docker run -d --name smaitback \
 					-v img-vol:/img \
+					-e TZ=Asia/Seoul \
 					--network smait \
 					smaitback:latest'
 			}
