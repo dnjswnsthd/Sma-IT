@@ -19,7 +19,7 @@ router = APIRouter()
 async def mask_checking(file: UploadFile = File(...)):
     members = crud.get_members(session)
     content = await file.read()
-    with open(f'../cam_img/{file.filename}', 'wb') as fh:
+    with open(f'../img/cam_img/{file.filename}', 'wb') as fh:
         fh.write(content)
     face_data = face_check(file.filename, members)
     # mask_data = mask_check()

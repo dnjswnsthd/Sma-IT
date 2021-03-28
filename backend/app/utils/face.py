@@ -2,16 +2,16 @@ import cv2
 import numpy as np
 import face_recognition
 from models.model import MemberTable as Member
+from .mask import mask_check
+
 
 
 def face_check(img_path: str, members: Member):
     print("이까지왔니?")
     # 비교할 이미지 로드
-    img_path = "../cam_img/" + img_path 
+    img_path = "../img/cam_img/" + img_path 
     img = face_recognition.load_image_file(img_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    # cv2.imshow('cam', img)
-    # cv2.waitKey(0)
     
     print(img_path)
     if len(face_recognition.face_locations(img)) == 0:
@@ -22,7 +22,7 @@ def face_check(img_path: str, members: Member):
 
     for member in members:
         # 디비에 데이터를 가져와야함(임시 데이터 준형이 마스크얼굴)
-        memberimg_path = "./member_img/" + member.image
+        memberimg_path = "../img/member_img/" + member.image
         memberimg = face_recognition.load_image_file(memberimg_path)
         memberimg = cv2.cvtColor(memberimg, cv2.COLOR_BGR2RGB)
 
@@ -34,9 +34,9 @@ def face_check(img_path: str, members: Member):
 
         # 얼굴이 같으면 바로 리턴 하고 맴버정보 제공
         if result[0]:
-            print("회원 확인")
-            return member
-    print("등록된 회원이 아닙니다")
+            result = dict(member = member, isMask = mask_check(img_path))
+            return result
+    #print("등록된 회원이 아닙니다")
 
     return "등록된 회원이 아닙니다"
    
