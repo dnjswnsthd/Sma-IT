@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 
 from models import model
 
-def get_members(db: Session):
-    return db.query(model.MemberTable).all()
+def get_members(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(model.MemberTable).offset(skip).limit(limit).all()
 
 def get_member_by_name(db: Session, member_name: str):
     return db.query(model.MemberTable).filter(model.MemberTable.name == member_name).first()
