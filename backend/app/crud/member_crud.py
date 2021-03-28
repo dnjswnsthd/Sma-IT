@@ -40,3 +40,25 @@ def update_member(db: Session, db_member: model.MemberTable, member:model.Member
     db_member.image = member.image
     db.commit()
     return db_member
+
+# parameter : uuid 의 emotion 값 list로 return
+def get_emotion(db: Session, member_uuid: int):
+    return db.query(model.EmotionTable).filter(member_uuid == model.EmotionTable.uuid).all()
+
+# Insert Emotion
+def create_emotion(db: Session, emotion: model.Emotion):
+    db_emotion = model.EmotionTable()
+    db_emotion.uuid = emotion.uuid
+    db_emotion.anger = emotion.anger
+    db_emotion.contempt = emotion.contempt
+    db_emotion.disgust = emotion.disgust
+    db_emotion.fear = emotion.fear
+    db_emotion.happiness = emotion.happiness
+    db_emotion.neutral = emotion.neutral
+    db_emotion.sadness = emotion.sadness
+    db_emotion.surprise = emotion.surprise
+    db_emotion.end_visit = emotion.end_visit
+    db.add(db_emotion)
+    db.commit()
+    db.refresh(db_emotion)
+    return db_emotion
