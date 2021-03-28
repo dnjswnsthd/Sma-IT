@@ -8,8 +8,9 @@ router = APIRouter()
 
 
 @router.get("/")
-async def read_members():
-    members = crud.get_members(session)
+async def read_members_limit(start: int, limit: int):
+    members = crud.get_members(session, start, limit)
+
     return members
 
 
