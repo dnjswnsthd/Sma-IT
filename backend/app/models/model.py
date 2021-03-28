@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, Float
 from pydantic import BaseModel
 from database import db
 
@@ -22,55 +22,6 @@ class Member(BaseModel):
     requirements: str
     image: str
 
-# Response Negative Database
-class NegativeTable(db.Base):
-    __tablename__ = 'negative'
-    uuid = Column(Integer, primary_key=True)
-    anger = Column(Integer)
-    aversion = Column(Integer)
-    sad = Column(Integer)
-    fear = Column(Integer)
-    anxiety = Column(Integer)
-
-# Request Negative Database
-class Negative(BaseModel):
-    uuid : int
-    anger: int
-    aversion: int
-    sad: int
-    fear: int
-    anxiety: int
-
-# Response Positive Database
-class PositiveTable(db.Base):
-    __tablename__ = "positive"
-    uuid = Column(Integer, primary_key=True)
-    satisfaction = Column(Integer)
-    comfortable = Column(Integer)
-    joy = Column(Integer)
-    funny = Column(Integer)
-    pride = Column(Integer)
-
-# Request Positive Database
-class Positive(BaseModel):
-    uuid: int
-    satisfaction: int
-    comfortable : int
-    joy : int
-    funny: int
-    pride: int
-    
-# Response Satisfaction Database
-class SatisfactiontTable(db.Base):
-    __tablename__ = "satisfaction"
-    uuid = Column(Integer, primary_key=True)
-    exist = Column(Boolean, nullable=False, default=False)
-
-# Request Satisfaction Database
-class Satisfaction(BaseModel):
-    uuid : int
-    exist : bool
-
 # Response Visited Database
 class VisitedTable(db.Base):
     __tablename__ = "visited"
@@ -84,6 +35,32 @@ class Visited(BaseModel):
     start_visit : str
     end_visit : str
 
+#Response Emotion Database
+class EmotionTable(db.Base):
+    __tablename__ = "emotion"
+    uuid = Column(Integer, primary_key = True)
+    anger = Column(Float)
+    contempt = Column(Float)
+    disgust = Column(Float)
+    fear = Column(Float)
+    happiness = Column(Float)
+    neutral = Column(Float)
+    sadness = Column(Float)
+    surprise = Column(Float)
+    end_visit = Column(String(30), primary_key = True)
+
+#Request Emotion Database
+class Emotion(BaseModel):
+    uuid : int
+    anger : float
+    contempt : float
+    disgust : float
+    fear : float
+    happiness : float
+    neutral : float
+    sadness : float
+    surprise : float
+    end_visit : str
 
     
 
