@@ -49,6 +49,7 @@ pipeline {
 					--network smait \
 					smaitfront:latest'
 				sh 'docker run -d --name smaitback \
+					-v img-vol:/img \
 					--network smait \
 					smaitback:latest'
 			}
