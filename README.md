@@ -1,6 +1,6 @@
 <div style="width:100%; height:100px "><img src="images/logo.png" style="width:200px;height:100px;float:left; display : block;"></div>
 
- ![Generic badge](https://img.shields.io/badge/Vue.js-2.6.1-orange.svg) ![Generic badge](https://img.shields.io/badge/python-3.8.0-{color}.svg) ![Generic badge](https://img.shields.io/badge/Axios-0.21.1-blue.svg)![Generic badge](https://img.shields.io/badge/Uvicorn-fe0094.svg)![Generic badge](https://img.shields.io/badge/FastAPI-red.svg)![Generic badge](https://img.shields.io/badge/Nginx-lightgrey.svg)![Generic badge](https://img.shields.io/badge/Mysql-yellowgreen.svg)
+ ![Generic badge](https://img.shields.io/badge/Vue.js-2.6.1-orange.svg) ![Generic badge](https://img.shields.io/badge/python-3.8.0-{color}.svg) ![Generic badge](https://img.shields.io/badge/Axios-0.21.1-blue.svg)![Generic badge](https://img.shields.io/badge/Uvicorn-0.13.4-fe0094.svg)![Generic badge](https://img.shields.io/badge/FastAPI-0.63.0-red.svg)![Generic badge](https://img.shields.io/badge/Mysql-8.0.22-yellowgreen.svg)![Generic badge](https://img.shields.io/badge/Nginx-lightgrey.svg)
 
 # Sma-IT
 
@@ -187,6 +187,14 @@ pip install async-exit-stack async-generator
 
 - HA와 Load Balancing을 위하여 Nginx 적용
 - SSL 키를 적용하여 https 준수
+
+
+
+# Tech Stacks
+
+<img src="images/tech.png"/>
+
+
 
 # 프로젝트 상세 소개
 
