@@ -16,12 +16,22 @@
                 <v-spacer></v-spacer>
             </div>
             <v-row style="margin:0; padding:0;">
-                <v-text-field v-model="name" label="name" type="string" dark></v-text-field>
+                <v-text-field v-model="member.name" label="name" type="string" dark></v-text-field>
                 <v-spacer></v-spacer>
-                <v-text-field v-model="age" label="나이" type="number" dark></v-text-field>
+                <v-text-field v-model="member.age" label="나이" type="number" dark></v-text-field>
             </v-row>
-            <v-text-field v-model="interest" label="관심분야" type="string" dark></v-text-field>
-            <v-text-field v-model="demand" label="요구사항" type="string" dark></v-text-field>
+            <v-text-field
+                v-model="member.interests"
+                label="관심분야"
+                type="string"
+                dark
+            ></v-text-field>
+            <v-text-field
+                v-model="member.requirements"
+                label="요구사항"
+                type="string"
+                dark
+            ></v-text-field>
             <v-row style="margin:0; padding:0;">
                 <v-spacer></v-spacer>
                 <v-btn elevation="2" class="resetBtn" @click="resetInformation">초기화</v-btn>
@@ -33,15 +43,20 @@
 </template>
 
 <script>
+import http from '../api/axios';
+import swal from 'sweetalert';
 export default {
     data() {
         return {
-            imageUrl: '',
             imageName: this.imageName,
-            name: '',
-            age: '',
-            interest: '',
-            demand: '',
+            imageFile: '',
+            imageUrl: '',
+            member: {
+                name: '',
+                age: '',
+                interests: '',
+                requirements: '',
+            },
         };
     },
     methods: {
@@ -51,6 +66,7 @@ export default {
         onChangeImages(e) {
             console.log(e.target.files);
             const file = e.target.files[0];
+            this.imageFile = file;
             this.imageUrl = URL.createObjectURL(file);
             this.imageName = file.name;
         },
@@ -58,8 +74,22 @@ export default {
             console.log('resetInformation');
             this.name = '';
             this.age = '';
-            this.interest = '';
-            this.demand = '';
+            this.interests = '';
+            this.requirements = '';
+        },
+        registInformation() {
+            http.post('api/member', this.member, this.imageFile)
+                .then(() => {
+                    swal('등록 성공!', {
+                        icon: 'success',
+                    });
+                    this.$router.push({ name: 'Cam' });
+                })
+                .catch(() => {
+                    swal('등록 실패!', {
+                        icon: 'error',
+                    });
+                });
         },
     },
 };
