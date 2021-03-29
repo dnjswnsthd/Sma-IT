@@ -17,3 +17,8 @@ async def insert_cardInfo(payment: Payment):
         raise HTTPException(status_code=400, detail="Insert fail")
 
     return db_payment
+
+@router.get("/{member_uuid}")
+async def get_cardInfo(member_uuid: int):
+    payment = crud.select_cardInfo_by_UUID(session, member_uuid)
+    return payment
