@@ -1,4 +1,4 @@
-<img src="C:\Users\multicampus\Desktop\ㄴㅁㅇㄹ.png" alt="ㄴㅁㅇㄹ" style="width:200px; height:150px; float : left; display : block;" />
+<div style="width:100%; height:100px "><img src="images/logo.png" style="width:200px;height:100px;float:left; display : block;"></div>
 
  ![Generic badge](https://img.shields.io/badge/Vue.js-2.6.1-orange.svg) ![Generic badge](https://img.shields.io/badge/python-3.8.0-{color}.svg) ![Generic badge](https://img.shields.io/badge/Axios-0.21.1-blue.svg)![Generic badge](https://img.shields.io/badge/Uvicorn-fe0094.svg)![Generic badge](https://img.shields.io/badge/FastAPI-red.svg)![Generic badge](https://img.shields.io/badge/Nginx-lightgrey.svg)![Generic badge](https://img.shields.io/badge/Mysql-yellowgreen.svg)
 
@@ -193,9 +193,10 @@ pip install async-exit-stack async-generator
 ### 고객 입장 얼굴 인식 페이지
 
 <div>
-    <img src="C:\Users\multicampus\Desktop\Untitled.png" style="width: 50%; height : 500px; float:left; display : block;" />
-    <img src="C:\Users\multicampus\Desktop\Untitled (1).png" style="width: 50%;height : 500px;float: right ; display : block;" />
+    <img src="images/masky.png" style="width: 50%; height : 500px; float:left; display : block;" />
+    <img src="images/maskn.png" style="width: 50%;height : 500px;float: right ; display : block;" />
 </div>
+
 
 
 
@@ -230,15 +231,15 @@ pip install async-exit-stack async-generator
 
 # ER-Diagram
 
-<img src="C:\Users\multicampus\Desktop\erd.png"  />
+<img src="images/erd.png"  />
 
 # 기술스택
 
-<img src="C:\Users\multicampus\Desktop\stack.png" style="zoom: 80%;" />
+<img src="images/stack.png" style="zoom: 80%;" />
 
 # 진행프로세스
 
-<img src="C:\Users\multicampus\Desktop\ing.png" style="zoom:67%; " />
+<img src="images/ing.png" style="zoom:67%; " />
 
 
 
@@ -248,4 +249,4 @@ pip install async-exit-stack async-generator
 
 
 
-<img src="C:\Users\multicampus\Desktop\23242.png" style="zoom:67%;" />
+<img src="images/team.png" style="zoom:67%;" />
