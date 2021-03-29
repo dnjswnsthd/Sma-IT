@@ -5,13 +5,15 @@
 
         <v-spacer></v-spacer>
         <v-row>
-            <div v-for="(item, index) in customers" :key="index" class="imgBox">
+            <div v-for="(customer, index) in customers" :key="index" class="imgBox">
                 <div class="customInfoBox">
-                    <v-col><img :src="item.picture" style="width:100%; margin:0 auto;"/></v-col>
-                    <v-col>{{ item.age }}</v-col>
-                    <v-col>{{ item.rate }}</v-col>
-                    <v-col>{{ item.interest }}</v-col>
-                    <v-col>{{ item.require }}</v-col>
+                    <v-col
+                        ><img :src="customer.customer_picture" style="width:100%; margin:0 auto;"
+                    /></v-col>
+                    <v-col>{{ customer.customer_name }}</v-col>
+                    <v-col>{{ customer.customer_age }}</v-col>
+                    <v-col>관심분야 : {{ customer.customer_interest }}</v-col>
+                    <v-col>요구사항 : {{ customer.customer_require }}</v-col>
                     <div>
                         <v-spacer></v-spacer>
                         <v-icon small class="mr-2" style="color:#fff;" @click="editItem(item)">
@@ -30,22 +32,13 @@
             @closeDelete="closeDelete"
         ></DeleteDialog>
         <EditDialog :dialogEdit="dialogEdit" :item="editedItem" @close="close"></EditDialog>
-        <v-row>
-            <v-col cols="12" lg="5">
-                <hr />
-            </v-col>
-            <v-col cols="12" lg="2" style="text-align: center">
-                <v-btn color="white accent-4" @click="moreView"> More </v-btn>
-            </v-col>
-            <v-col cols="12" lg="5">
-                <hr />
-            </v-col>
-        </v-row>
     </v-container>
 </template>
 <script>
 import DeleteDialog from '../components/dialog/DeleteDialog';
 import EditDialog from '../components/dialog/EditDialog';
+
+import http from '../api/axios';
 
 export default {
     components: {
@@ -66,8 +59,9 @@ export default {
             require: 0,
             picture: 0,
         },
-        limit: 4,
-        total: 10,
+        start: 0,
+        limit: 6,
+        isLoading: true,
     }),
 
     computed: {
@@ -85,135 +79,75 @@ export default {
         },
     },
 
+    // created() {
+    //     this.initialize();
+    // },
     created() {
-        this.initialize();
+        this.append_list();
+        window.addEventListener('scroll', this.scroll);
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.scroll);
+    },
+    mounted() {
+        this.isLoading = false;
     },
 
     methods: {
-        initialize() {
-            this.customers = [
-                {
-                    name: '송원준',
-                    age: '26',
-                    rate: 'Diamond',
-                    interest: '운동화',
-                    require: '먼저 말 걸지 말아주세요.',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '조석준',
-                    age: '29',
-                    rate: 'Diamond',
-                    interest: '맨투맨',
-                    require: '먼저 말 거는게 힘들어요. 먼저 다가와주세요.',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '조준형',
-                    age: '26',
-                    rate: 'Platinum',
-                    interest: '후드티',
-                    require: '신상 후드티에 관심이 많아요.',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '김두상',
-                    age: '27',
-                    rate: 'Platinum',
-                    interest: '양말',
-                    require: '양말은 색깔별로 다 좋아요!',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '천민주',
-                    age: '27',
-                    rate: 'Gold',
-                    interest: '안경테',
-                    require: '양말은 색깔별로 다 좋아요!',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '천민주',
-                    age: '27',
-                    rate: 'Gold',
-                    interest: '안경테',
-                    require: '양말은 색깔별로 다 좋아요!',
-                    picture: require('@/assets/images/profile.png'),
-                },
-            ];
-        },
+        scroll() {
+            let scrolledToBottom =
+                document.documentElement.scrollTop + window.innerHeight ===
+                document.documentElement.offsetHeight;
+            console.log(this.isLoading);
 
-        editItem(item) {
-            console.log(item);
-            this.editedIndex = this.customers.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            this.dialogEdit = true;
+            if (this.isLoading && scrolledToBottom) {
+                this.isLoading = true;
+                setTimeout(this.append_list, 1000);
+            }
         },
-
-        deleteItem(item) {
-            console.log(item);
-            this.editedIndex = this.customers.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            this.dialogDelete = true;
-        },
-        closeDelete() {
-            this.dialogDelete = false;
-        },
-        close() {
-            this.dialogEdit = false;
-        },
-        moreView() {
-            this.limit += 5;
-            this.customers.push(
-                {
-                    name: '송원준',
-                    age: '26',
-                    rate: 'Diamond',
-                    interest: '운동화',
-                    require: '먼저 말 걸지 말아주세요. 문의 사항이 있으면 여쭤볼게요!',
-                    picture: '../../assets/images/profile.png',
+        append_list() {
+            http.get(`/api/member/`, {
+                params: {
+                    start: this.start,
+                    limit: this.limit,
                 },
-                {
-                    name: '조석준',
-                    age: '29',
-                    rate: 'Diamond',
-                    interest: '맨투맨',
-                    require: '먼저 말 거는게 힘들어요. 먼저 다가와주세요.',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '조준형',
-                    age: '26',
-                    rate: 'Platinum',
-                    interest: '후드티',
-                    require: '신상 후드티에 관심이 많아요.',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '김두상',
-                    age: '27',
-                    rate: 'Platinum',
-                    interest: '양말',
-                    require: '양말은 색깔별로 다 좋아요!',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '천민주',
-                    age: '27',
-                    rate: 'Gold',
-                    interest: '안경테',
-                    require: '양말은 색깔별로 다 좋아요!',
-                    picture: require('@/assets/images/profile.png'),
-                },
-                {
-                    name: '조준형',
-                    age: '26',
-                    rate: 'Platinum',
-                    interest: '후드티',
-                    require: '신상 후드티에 관심이 많아요.',
-                    picture: require('@/assets/images/profile.png'),
-                }
-            );
+            })
+                .then((response) => {
+                    if (response.data.length >= this.limit) {
+                        this.isLoading = true;
+                        for (var i = 0; i < this.limit; i++) {
+                            if (response.data[i].requirements == 'null')
+                                response.data[i].requirements = '없음';
+                            this.customers.push({
+                                customer_name: response.data[i].name,
+                                customer_age: response.data[i].age,
+                                customer_interest: response.data[i].interests,
+                                customer_require: response.data[i].requirements,
+                                customer_picture: response.data[i].image,
+                            });
+                        }
+                        this.start += this.limit;
+                        console.log(this.start);
+                    } else {
+                        for (i = 0; i < response.data.length; i++) {
+                            if (response.data[i].requirements == 'null')
+                                response.data[i].requirements = '없음';
+                            this.customers.push({
+                                customer_name: response.data[i].name,
+                                customer_age: response.data[i].age,
+                                customer_interest: response.data[i].interests,
+                                customer_require: response.data[i].requirements,
+                                customer_picture: response.data[i].image,
+                            });
+                        }
+                        this.start += this.limit;
+                        console.log(this.start);
+                        this.isLoading = false;
+                    }
+                })
+                .catch(() => {
+                    alert('회원 정보가 더 이상 존재하지 않습니다.');
+                });
         },
     },
 };
