@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import face_recognition
-from models.model import MemberTable as Member
+from models.member import MemberTable as Member
 from .mask import mask_check
 
 
