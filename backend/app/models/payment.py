@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, BigInteger
+from sqlalchemy import Column, Integer, String, BigInteger
 from pydantic import BaseModel
 from database import db
 
