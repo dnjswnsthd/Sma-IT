@@ -72,6 +72,7 @@
 // import { WebCam } from 'vue-web-cam';
 import http from '../api/axios';
 import Axios from 'axios';
+import { mapState } from 'vuex';
 
 export default {
     name: 'App',
@@ -97,6 +98,7 @@ export default {
         device: function() {
             return this.devices.find((n) => n.deviceId === this.deviceId);
         },
+        ...mapState(['customerInfo', 'emotionAnalysis']),
     },
     mounted() {
         //Start the PC front camera and display real-time video on the video tag
@@ -208,13 +210,15 @@ export default {
             //console.log(formData.toDataURL)
             http.post(`/face/`, formData)
                 .then((response) => {
-                    console.log(response.data);
+                    console.log(response.data.member);
+                    this.$store.commit('setCustomerInfo', response.data.member);
+                    console.log('------------------------');
+                    console.log(this.customerInfo);
                     alert('승공');
                 })
                 .catch(() => {
                     alert('실패');
                 });
-
             //Send imgURL image to Face API
             Axios.post(
                 uriBase +
@@ -229,6 +233,11 @@ export default {
             )
                 .then((response) => {
                     console.log(response.data[0].faceAttributes.emotion);
+                    this.$store.commit(
+                        'setEmotionAnalysis',
+                        response.data[0].faceAttributes.emotion
+                    );
+                    console.log();
                 })
                 .catch((error) => {
                     console.log(error.response);
