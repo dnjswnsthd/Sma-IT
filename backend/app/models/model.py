@@ -15,12 +15,12 @@ class MemberTable(db.Base):
 
 # Request Member Database
 class Member(BaseModel):
-    uuid : int
     name: str
     age: int
     interests: str
     requirements: str
     image: str
+
 
 # Response Visited Database
 class VisitedTable(db.Base):
