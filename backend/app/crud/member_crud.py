@@ -25,10 +25,18 @@ def create_member(db: Session, member: model.Member, time : str):
     db.refresh(db_member)
     return db_member
 
+def update_image_member(db: Session, db_member: model.MemberTable, image: int):
+    db_member.image = str(image) + ".jpg"
+    db.commit()
+    db.refresh(db_member)
+    return db_member
+
+
 def delete_member_by_uuid(db: Session, member_uuid: int):
     db_member = model.MemberTable()
     db_member = db.query(model.MemberTable).filter(model.MemberTable.uuid == member_uuid).delete()
     db.commit()
+    db.refresh(db_member)
     return db_member
 
 def update_member(db: Session, db_member: model.MemberTable, member:model.Member):
@@ -39,6 +47,7 @@ def update_member(db: Session, db_member: model.MemberTable, member:model.Member
     db_member.requirements = member.requirements
     db_member.image = member.image
     db.commit()
+    db.refresh(db_member)
     return db_member
 
 # parameter : uuid 의 emotion 값 list로 return

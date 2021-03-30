@@ -1,10 +1,13 @@
-from fastapi import APIRouter, File, Form, UploadFile
+from fastapi import APIRouter, File, Form, UploadFile, Depends, HTTPException
 from models.model import Member, Emotion
 
 from crud import member_crud as crud
 from database.db import session
 
+from typing import Optional
+
 import datetime
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -12,7 +15,6 @@ router = APIRouter()
 @router.get("/")
 async def read_members_limit(start: int = 0, limit: int = 10):
     members = crud.get_members(session, start, limit)
-
     return members
 
 
@@ -23,25 +25,33 @@ async def read_member(member_uuid: int):
 
 
 @router.post("/")
-async def create_members(member: Member, file: UploadFile = File(...)):
-    # 중복체크인 나중에 따로 db에 데이터 추가해서 걸러야할듯
+async def create_members(member : Member):
+    # 등록되있는지 체크
     db_member = crud.get_member_by_name(session, member.name)
     # 이미 가입된 회원
     if db_member:
          raise HTTPException(status_code=400, detail="?? already registered")
     
+    # 시간생성
     now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # 등록
     db_member = crud.create_member(session, member, now)
+    # image 등록
+    db_member = crud.update_image_member(session, db_member, db_member.uuid)
+        
     # 가입 실패
     if db_member is None:
         raise HTTPException(status_code=400, detail="Creation failure")
-    else:
-        content = await file.read()
-        with open(f'../img/member_img/{db_member.image}', 'wb') as fh:
-        fh.write(content)
 
+    db_member = crud.get_member_by_name(session, member.name)
     return db_member
 
+@router.post("/image/{image}")
+async def create_members_img(image : str, file: UploadFile = File(...)): 
+    content = await file.read()
+    with open(f'../img/member_img/{image}', 'wb') as fh:
+        fh.write(content)
+    return "OK"
 
 @router.put("/")
 async def update_members(member: Member):
@@ -59,6 +69,7 @@ async def delete_members(member_uuid: int):
     if db_member is None:
         raise HTTPException(status_code=400, detail="Delete failure")
     return db_member
+
 @router.get("/emotion/{member_uuid}")
 async def read_emotion(member_uuid: int):
     db_emotion = crud.get_emotion(session, member_uuid)
