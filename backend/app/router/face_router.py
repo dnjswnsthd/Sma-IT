@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, UploadFile
 
-from models.model import Member
+from models.member import Member
 from crud import member_crud as crud
 from database.db import session
 

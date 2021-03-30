@@ -1,18 +1,19 @@
 from sqlalchemy.orm import Session
 
-from models import model
+from models.member import MemberTable, Member
+from models.emotion import EmotionTable, Emotion
 
 def get_members(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(model.MemberTable).offset(skip).limit(limit).all()
+    return db.query(MemberTable).offset(skip).limit(limit).all()
 
 def get_member_by_name(db: Session, member_name: str):
-    return db.query(model.MemberTable).filter(model.MemberTable.name == member_name).first()
+    return db.query(MemberTable).filter(MemberTable.name == member_name).first()
 
 def get_member_by_uuid(db: Session, member_uuid: int):
-    return db.query(model.MemberTable).filter(model.MemberTable.uuid == member_uuid).first()
+    return db.query(MemberTable).filter(MemberTable.uuid == member_uuid).first()
 
-def create_member(db: Session, member: model.Member, time : str):
-    db_member = model.MemberTable()
+def create_member(db: Session, member: Member, time : str):
+    db_member = MemberTable()
     db_member.name = member.name
     db_member.age = member.age
     db_member.interests = member.interests
@@ -25,7 +26,7 @@ def create_member(db: Session, member: model.Member, time : str):
     db.refresh(db_member)
     return db_member
 
-def update_image_member(db: Session, db_member: model.MemberTable, image: int):
+def update_image_member(db: Session, db_member: MemberTable, image: int):
     db_member.image = str(image) + ".jpg"
     db.commit()
     db.refresh(db_member)
@@ -33,13 +34,13 @@ def update_image_member(db: Session, db_member: model.MemberTable, image: int):
 
 
 def delete_member_by_uuid(db: Session, member_uuid: int):
-    db_member = model.MemberTable()
-    db_member = db.query(model.MemberTable).filter(model.MemberTable.uuid == member_uuid).delete()
+    db_member = MemberTable()
+    db_member = db.query(MemberTable).filter(MemberTable.uuid == member_uuid).delete()
     db.commit()
     db.refresh(db_member)
     return db_member
 
-def update_member(db: Session, db_member: model.MemberTable, member:model.Member):
+def update_member(db: Session, db_member: MemberTable, member: Member):
     db_member.uuid = member.uuid
     db_member.name = member.name
     db_member.age = member.age
@@ -52,11 +53,11 @@ def update_member(db: Session, db_member: model.MemberTable, member:model.Member
 
 # parameter : uuid 의 emotion 값 list로 return
 def get_emotion(db: Session, member_uuid: int):
-    return db.query(model.EmotionTable).filter(member_uuid == model.EmotionTable.uuid).all()
+    return db.query(EmotionTable).filter(member_uuid == EmotionTable.uuid).all()
 
 # Insert Emotion
-def create_emotion(db: Session, emotion: model.Emotion):
-    db_emotion = model.EmotionTable()
+def create_emotion(db: Session, emotion: Emotion):
+    db_emotion = EmotionTable()
     db_emotion.uuid = emotion.uuid
     db_emotion.anger = emotion.anger
     db_emotion.contempt = emotion.contempt
