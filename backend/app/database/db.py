@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.pool import NullPool
 
 user_name = "smait"
 user_pwd = "1234"
@@ -17,7 +18,8 @@ DATABASE = 'mysql+pymysql://%s:%s@%s/%s?charset=utf8' % (
 ENGINE = create_engine(
     DATABASE,
     encoding="utf-8",
-    echo=True
+    echo=True,
+    poolclass=NullPool
 )
 
 session = scoped_session(
