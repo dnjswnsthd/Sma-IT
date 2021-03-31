@@ -1,31 +1,24 @@
 <template>
-    <v-container>
+    <v-container style="padding-top: 40px">
+        <v-spacer></v-spacer>
         <v-row class="wrapBox">
-            <div class="col-6">
-                <p class="introduceMessage" style="padding-top:20px;">등록된 결제 수단으로<br />결제됩니다.</p>
-                <div class="purchaseList">
-                    <div class="purchaseListBox">
-                        <p>구매목록</p>
-                        <v-row>
-                            <div class="nameBox">
-                                <p>상품명</p>
-                                <ul>
-                                    <li>벤츠 e350</li>
-                                    <li>에르메스 벌킨30</li>
-                                </ul>
-                            </div>
-                            <div class="middledivider"></div>
-                            <div class="priceBox">
-                                <p>가격</p>
-                                <ul>
-                                    <li>89,500,000</li>
-                                    <li>10,500,000</li>
-                                </ul>
-                            </div>
-                        </v-row>
-                        <p class="totalPay" style="margin-bottom:7px; border:none;">총액 : 100,000,000</p>
-                    </div>
-                </div>
+            <div class="col-3" style="padding-top: 200px;">
+                <p class="introduceMessage" style="padding-top:20px;">
+                    버튼을 눌러<br />합계를 확인하세요.
+                </p>
+                <v-img
+                    @click="checkTotal"
+                    v-if="!won_c"
+                    :src="require('../assets/images/won(w).png')"
+                    class="wonImage"
+                ></v-img>
+                <v-img
+                    @click="checkTotal"
+                    class="wonImage"
+                    v-else
+                    :src="require('../assets/images/won.png')"
+                ></v-img>
+                <p style="font-size: 30px; text-align: center; padding-top: 20px;">{{ total }}</p>
             </div>
             <div class="col-6 cambox">
                 <vue-web-cam
@@ -39,13 +32,38 @@
                     @cameras="onCameras"
                     @camera-change="onCameraChange"
                 />
-                <div class="divider"></div>
-                <p class="guideMessage mb-10">
+                <div
+                    style="border:1px solid white;
+    width:88%;
+    margin:25px auto;"
+                ></div>
+                <p
+                    class="mb-15 pl-15"
+                    style="color: white;
+    font-size:28px;"
+                >
                     얼굴을 가이드라인에 맞춰주시고 <br />인식이 완료될때까지 잠시 기다려주세요
                 </p>
-                
+            </div>
+            <div class="col-3" style="padding-top: 200px;">
+                <p class="introduceMessage" style="padding-top:20px;">
+                    결제를 원하시면 <br />버튼을 눌러주세요.
+                </p>
+                <v-img
+                    v-if="!pay_c"
+                    class="wonImage"
+                    @click="checkPayment"
+                    :src="require('../assets/images/click(w).png')"
+                ></v-img>
+                <v-img
+                    v-else
+                    class="wonImage"
+                    @click="checkPayment"
+                    :src="require('../assets/images/click.png')"
+                ></v-img>
             </div>
         </v-row>
+        <v-spacer></v-spacer>
     </v-container>
 </template>
 
@@ -62,6 +80,9 @@ export default {
             camera: null,
             deviceId: null,
             devices: [],
+            total: '',
+            won_c: false,
+            pay_c: false,
         };
     },
     computed: {
@@ -83,6 +104,19 @@ export default {
         },
     },
     methods: {
+        checkTotal() {
+            this.won_c = !this.won_c;
+            if (this.won_c == true) {
+                console.log('금액확인');
+                this.total = '￦ 1,000,000';
+            } else this.total = '';
+        },
+        checkPayment() {
+            this.pay_c = !this.pay_c;
+            if (this.pay_c == true) {
+                alert('결제 진행 중입니다');
+            }
+        },
         onCapture() {
             this.img = this.$refs.webcam.capture();
         },
