@@ -11,9 +11,12 @@ def insert_cardInfo(db: Session, payment: Payment):
     db_payment.uuid = payment.uuid
     db_payment.card_num = payment.card_num
     db_payment.card_name = payment.card_name
-
-    db.add(db_payment)
-    db.commit()
-    db.refresh(db_payment)
+    try:
+        db.add(db_payment)
+        db.commit()
+        db.refresh(db_payment)
+    except:
+        db.rollback()
+        raise
 
     return db_payment
