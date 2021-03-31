@@ -21,23 +21,36 @@ def create_member(db: Session, member: Member, time : str):
     db_member.join_date = time
     db_member.image = member.image
 
-    db.add(db_member)
-    db.commit()
-    db.refresh(db_member)
+    try:
+        db.add(db_member)
+        db.commit()
+        db.refresh(db_member)
+    except:
+        db.rollback()
+        raise
+
     return db_member
 
 def update_image_member(db: Session, db_member: MemberTable, image: int):
     db_member.image = str(image) + ".jpg"
-    db.commit()
-    db.refresh(db_member)
+    try:
+        db.commit()
+        db.refresh(db_member)
+    except:
+        db.rollback()
+        raise
     return db_member
 
 
 def delete_member_by_uuid(db: Session, member_uuid: int):
     db_member = MemberTable()
-    db_member = db.query(MemberTable).filter(MemberTable.uuid == member_uuid).delete()
-    db.commit()
-    db.refresh(db_member)
+    try:
+        db_member = db.query(MemberTable).filter(MemberTable.uuid == member_uuid).delete()
+        db.commit()
+        db.refresh(db_member)
+    except:
+        db.rollback()
+        raise
     return db_member
 
 def update_member(db: Session, db_member: MemberTable, member: Member):
@@ -47,8 +60,12 @@ def update_member(db: Session, db_member: MemberTable, member: Member):
     db_member.interests = member.interests
     db_member.requirements = member.requirements
     db_member.image = member.image
-    db.commit()
-    db.refresh(db_member)
+    try:
+        db.commit()
+        db.refresh(db_member)
+    except:
+        db.rollback()
+        raise
     return db_member
 
 # parameter : uuid 의 emotion 값 list로 return
@@ -68,7 +85,11 @@ def create_emotion(db: Session, emotion: Emotion):
     db_emotion.sadness = emotion.sadness
     db_emotion.surprise = emotion.surprise
     db_emotion.end_visit = emotion.end_visit
-    db.add(db_emotion)
-    db.commit()
-    db.refresh(db_emotion)
+    try:
+        db.add(db_emotion)
+        db.commit()
+        db.refresh(db_emotion)
+    except:
+        db.rollback()
+        raise
     return db_emotion
