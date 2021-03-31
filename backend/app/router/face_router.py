@@ -17,7 +17,7 @@ router = APIRouter()
 
 
 @router.post("/{start_visted}" , summary="얼굴 인식 및 마스크 인식")
-async def face_mask_checking(time: str, file: UploadFile = File(...)):
+async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
     # 회원정보 전체 조회
     members = member_crud.get_members(session)
     
@@ -34,7 +34,7 @@ async def face_mask_checking(time: str, file: UploadFile = File(...)):
     
     return face_data
 
-@router.post("/fase", summary="얼굴인식")
+@router.post("/onlyface", summary="얼굴인식")
 async def face_checking(file: UploadFile = File(...)):
     # 회원정보 전체 조회
     members = member_crud.get_members(session)
