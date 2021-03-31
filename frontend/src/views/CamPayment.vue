@@ -7,6 +7,7 @@
                     버튼을 눌러<br />합계를 확인하세요.
                 </p>
                 <v-img
+                    @mouseover="domouseover_won"
                     @click="checkTotal"
                     v-if="!won_c"
                     :src="require('../assets/images/won(w).png')"
@@ -14,6 +15,7 @@
                 ></v-img>
                 <v-img
                     @click="checkTotal"
+                    @mouseout="domouseout_won"
                     class="wonImage"
                     v-else
                     :src="require('../assets/images/won.png')"
@@ -37,13 +39,10 @@
     width:88%;
     margin:25px auto;"
                 ></div>
-                <p
-                    class="mb-15 pl-15"
-                    style="color: white;
-    font-size:28px;"
-                >
-                    얼굴을 가이드라인에 맞춰주시고 <br />인식이 완료될때까지 잠시 기다려주세요
+                <p class="mb-15 pl-15" style="font-size:28px;">
+                    카메라 정면을 봐주시고 <br />우측의 결제버튼을 클릭해주세요.
                 </p>
+                <v-spacer></v-spacer>
             </div>
             <div class="col-3" style="padding-top: 200px;">
                 <p class="introduceMessage" style="padding-top:20px;">
@@ -52,12 +51,14 @@
                 <v-img
                     v-if="!pay_c"
                     class="wonImage"
+                    @mouseover="domouseover_pay"
                     @click="checkPayment"
                     :src="require('../assets/images/click(w).png')"
                 ></v-img>
                 <v-img
                     v-else
                     class="wonImage"
+                    @mouseout="domouseout_pay"
                     @click="checkPayment"
                     :src="require('../assets/images/click.png')"
                 ></v-img>
@@ -69,6 +70,8 @@
 
 <script>
 import { WebCam } from 'vue-web-cam';
+import swal from 'sweetalert';
+
 export default {
     name: 'App',
     components: {
@@ -102,20 +105,41 @@ export default {
                 this.deviceId = first.deviceId;
             }
         },
+        // won_c: function() {
+        //     if (this.won_c == false) {
+        //         console.log('금액확인');
+        //         this.total = '￦ 1,000,000';
+        //     } else this.total = '';
+        // },
     },
     methods: {
+        domouseover_won() {
+            this.won_c = true;
+        },
+        domouseout_won() {
+            this.won_c = false;
+        },
+        domouseover_pay() {
+            this.pay_c = true;
+        },
+        domouseout_pay() {
+            this.pay_c = false;
+        },
         checkTotal() {
-            this.won_c = !this.won_c;
-            if (this.won_c == true) {
+            this.won_c = false;
+            if (this.won_c == false) {
                 console.log('금액확인');
                 this.total = '￦ 1,000,000';
-            } else this.total = '';
+            }
         },
         checkPayment() {
             this.pay_c = !this.pay_c;
-            if (this.pay_c == true) {
-                alert('결제 진행 중입니다');
+            if (this.pay_c == false) {
+                swal('결제를 진행합니다', {
+                    icon: 'success',
+                });
             }
+            this.total = '';
         },
         onCapture() {
             this.img = this.$refs.webcam.capture();
