@@ -41,7 +41,7 @@ def face_mask_check(img_path: str, members: Member):
     return "등록된 회원이 아닙니다"
    
 def face_check(img_path: str, members: Member):
-    print("이까지왔니?")
+    print("이까지왔니?>>>>>>>>>>>")
     # 비교할 이미지 로드
     img_path = "../img/cam_img/" + img_path 
     img = face_recognition.load_image_file(img_path)
