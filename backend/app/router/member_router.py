@@ -3,6 +3,7 @@ from models.member import Member
 from models.emotion import Emotion
 
 from crud import member_crud as crud
+from crud import visited_crud
 from database.db import session
 
 from typing import Optional
@@ -71,15 +72,31 @@ async def delete_members(member_uuid: int):
         raise HTTPException(status_code=400, detail="Delete failure")
     return db_member
 
+
 @router.get("/emotion/{member_uuid}")
 async def read_emotion(member_uuid: int):
     db_emotion = crud.get_emotion(session, member_uuid)
     return db_emotion
 
 @router.post("/emotion")
-async def create_emotion(emotion: Emotion,):
+async def create_emotion(emotion: Emotion):
+    #감정 데이터 생성
     db_emotion = crud.create_emotion(session, emotion)
     if db_emotion is None:
         raise HTTPException(status_code=400, detail="Creation failure")
-
+    
+    # 나가는 시간 기록
+    db_visited = visited_crud.get_visited_by_uuid(session,emotion.uuid)
+    visited_crud.update_visited(session,db_visited,emotion.end_visit)
+    
     return db_emotion
+
+#///////////////////////
+# @router.post("/test/{member_uuid}")
+# async def create_emotion(member_uuid: int):
+
+#     db_visited = visited_crud.get_visited_by_uuid(session, member_uuid)
+#     visited_crud.update_visited(session,db_visited,"2021-03-31 12:30:32")
+#     return db_visited
+
+    
