@@ -105,6 +105,12 @@ export default {
                 this.deviceId = first.deviceId;
             }
         },
+        // won_c: function() {
+        //     if (this.won_c == false) {
+        //         console.log('금액확인');
+        //         this.total = '￦ 1,000,000';
+        //     } else this.total = '';
+        // },
     },
     methods: {
         domouseover_won() {
@@ -120,11 +126,11 @@ export default {
             this.pay_c = false;
         },
         checkTotal() {
-            this.won_c = !this.won_c;
+            this.won_c = false;
             if (this.won_c == false) {
                 console.log('금액확인');
                 this.total = '￦ 1,000,000';
-            } else this.total = '';
+            }
         },
         checkPayment() {
             this.pay_c = !this.pay_c;
@@ -133,6 +139,7 @@ export default {
                     icon: 'success',
                 });
             }
+            this.total = '';
         },
         onCapture() {
             this.img = this.$refs.webcam.capture();
