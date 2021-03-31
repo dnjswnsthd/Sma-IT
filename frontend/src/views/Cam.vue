@@ -60,7 +60,7 @@
             </div>
             <v-spacer></v-spacer>
             <div class="productBox col-2" style="padding-top: 80px;">
-                <img src="../assets/images/banner03.png" alt="배너이미지" style="height:700px;" />
+                <img src="../assets/images/banner.png" alt="배너이미지" style="height:700px;" />
             </div>
         </v-row>
         <!-- <v-btn @click="goCamPayment">결제화면보기</v-btn> -->
