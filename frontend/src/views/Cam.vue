@@ -207,25 +207,67 @@ export default {
       var min = curDate.getMinutes();
       var sec = curDate.getSeconds();
 
-      this.current = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
-      console.log(this.current);
-      http
-        .post(`/face/mask/${this.current}`, formData)
-        .then((response) => {
-          console.log(response.data.member);
-          this.$store.commit('setCustomerInfo', response.data.member);
-          console.log('------------------------');
-          console.log(this.customerInfo);
-          alert('승공');
-        })
-        .catch(() => {
-          alert('실패');
-        });
-      //Send imgURL image to Face API
-      Axios.post(uriBase + '?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion', file, {
-        headers: {
-          'Content-Type': 'application/octet-stream',
-          'Ocp-Apim-Subscription-Key': subscriptionKey,
+            this.current = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
+            console.log(this.current);
+            http.post(`/face/mask/${this.current}`, formData)
+                .then((response) => {
+                    console.log(response.data.member);
+                    this.$store.commit('setCustomerInfo', response.data.member);
+                    console.log('------------------------');
+                    console.log(this.customerInfo);
+                    console.log(response.data.isMask);
+                    if (response.data.isMask == 'NO MASK')
+                        alert(response.data.member.name + '님 마스크 안쓰면 뚝배기 날림');
+                    else alert('반가워요');
+                })
+                .catch((error) => {
+                    if (error.response.data.detail)
+                        alert('등록 안한 고객님 마스크 안쓰시면 뚝배기 깹니다');
+                    else alert(error.response.data.detail);
+                    console.log(error.response.data.detail);
+                });
+            //Send imgURL image to Face API
+            Axios.post(
+                uriBase +
+                    '?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion',
+                file,
+                {
+                    headers: {
+                        'Content-Type': 'application/octet-stream',
+                        'Ocp-Apim-Subscription-Key': subscriptionKey,
+                    },
+                }
+            )
+                .then((response) => {
+                    console.log(response.data[0].faceAttributes.emotion);
+                    this.$store.commit(
+                        'setEmotionAnalysis',
+                        response.data[0].faceAttributes.emotion
+                    );
+                    console.log();
+                })
+                .catch((error) => {
+                    console.log(error.response);
+                });
+        },
+        makeblob: function(dataURL) {
+            let BASE64_MARKER = ';base64,';
+            if (dataURL.indexOf(BASE64_MARKER) == -1) {
+                let parts = dataURL.split(',');
+                let contentType = parts[0].split(':')[1];
+                let raw = decodeURIComponent(parts[1]);
+                return new File([raw], { type: contentType });
+            }
+            let parts = dataURL.split(BASE64_MARKER);
+            let fileName = 'captureImage.jpg';
+            let contentType = parts[0].split(':')[1];
+            let raw = window.atob(parts[1]);
+            let rawLength = raw.length;
+            let uInt8Array = new Uint8Array(rawLength);
+            for (let i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+            return new File([uInt8Array], fileName, { type: contentType });
         },
       })
         .then((response) => {

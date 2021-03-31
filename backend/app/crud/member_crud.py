@@ -3,16 +3,24 @@ from sqlalchemy.orm import Session
 from models.member import MemberTable, Member
 from models.emotion import EmotionTable, Emotion
 
+
 def get_members(db: Session, skip: int = 0, limit: int = 100):
     return db.query(MemberTable).offset(skip).limit(limit).all()
+
 
 def get_member_by_name(db: Session, member_name: str):
     return db.query(MemberTable).filter(MemberTable.name == member_name).first()
 
+
 def get_member_by_uuid(db: Session, member_uuid: int):
     return db.query(MemberTable).filter(MemberTable.uuid == member_uuid).first()
 
-def create_member(db: Session, member: Member, time : str):
+
+def get_member_by_image(db: Session, member_img: int):
+    return db.query(MemberTable).filter(MemberTable.image == member_img).first()
+
+
+def create_member(db: Session, member: Member, time: str):
     db_member = MemberTable()
     db_member.name = member.name
     db_member.age = member.age
@@ -31,6 +39,7 @@ def create_member(db: Session, member: Member, time : str):
 
     return db_member
 
+
 def update_image_member(db: Session, db_member: MemberTable, image: int):
     db_member.image = str(image) + ".jpg"
     try:
@@ -45,13 +54,15 @@ def update_image_member(db: Session, db_member: MemberTable, image: int):
 def delete_member_by_uuid(db: Session, member_uuid: int):
     db_member = MemberTable()
     try:
-        db_member = db.query(MemberTable).filter(MemberTable.uuid == member_uuid).delete()
+        db_member = db.query(MemberTable).filter(
+            MemberTable.uuid == member_uuid).delete()
         db.commit()
         db.refresh(db_member)
     except:
         db.rollback()
         raise
     return db_member
+
 
 def update_member(db: Session, db_member: MemberTable, member: Member):
     db_member.uuid = member.uuid
@@ -69,10 +80,14 @@ def update_member(db: Session, db_member: MemberTable, member: Member):
     return db_member
 
 # parameter : uuid 의 emotion 값 list로 return
+
+
 def get_emotion(db: Session, member_uuid: int):
     return db.query(EmotionTable).filter(member_uuid == EmotionTable.uuid).all()
 
 # Insert Emotion
+
+
 def create_emotion(db: Session, emotion: Emotion):
     db_emotion = EmotionTable()
     db_emotion.uuid = emotion.uuid
