@@ -107,19 +107,6 @@ export default {
 
         this.canvas = this.$refs.canvas;
     },
-    watch: {
-        camera: function(id) {
-            this.deviceId = id;
-        },
-        devices: function() {
-            // Once we have a list select the first one
-            const [first, ...tail] = this.devices; // eslint-disable-line no-unused-vars
-            if (first) {
-                this.camera = first.deviceId;
-                this.deviceId = first.deviceId;
-            }
-        },
-    },
     methods: {
         goCapture() {
             // console.log(this.$refs.canvas)
@@ -156,16 +143,22 @@ export default {
 
             this.current = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
             console.log(this.current);
-            http.post(`/face/${this.current}`, formData)
+            http.post(`/face/mask/${this.current}`, formData)
                 .then((response) => {
                     console.log(response.data.member);
                     this.$store.commit('setCustomerInfo', response.data.member);
                     console.log('------------------------');
                     console.log(this.customerInfo);
-                    alert('승공');
+                    console.log(response.data.isMask);
+                    if (response.data.isMask == 'NO MASK')
+                        alert(response.data.member.name + '님 마스크 안쓰면 뚝배기 날림');
+                    else alert('반가워요');
                 })
-                .catch(() => {
-                    alert('실패');
+                .catch((error) => {
+                    if (error.response.data.detail)
+                        alert('등록 안한 고객님 마스크 안쓰시면 뚝배기 깹니다');
+                    else alert(error.response.data.detail);
+                    console.log(error.response.data.detail);
                 });
             //Send imgURL image to Face API
             Axios.post(
