@@ -92,6 +92,7 @@ export default {
             decodeUrl: '',
             imgUrl: '',
             formValues: {},
+            current: '',
         };
     },
     computed: {
@@ -208,7 +209,17 @@ export default {
             // let captureImg = this.formValues;
             // //   console.log(this.formValues);
             //console.log(formData.toDataURL)
-            http.post(`/face/`, formData)
+            var curDate = new Date();
+            var year = curDate.getUTCFullYear();
+            var month = curDate.getMonth() + 1;
+            var day = curDate.getDate();
+            var hour = curDate.getHours();
+            var min = curDate.getMinutes();
+            var sec = curDate.getSeconds();
+
+            this.current = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
+            console.log(this.current);
+            http.post(`/face/${this.current}`, formData)
                 .then((response) => {
                     console.log(response.data.member);
                     this.$store.commit('setCustomerInfo', response.data.member);
@@ -264,7 +275,7 @@ export default {
         },
 
         goCamPayment() {
-            this.$router.push({ name: 'CamPayment' });
+            this.$router.push({ name: 'CamSatisfied' });
         },
     },
 };
