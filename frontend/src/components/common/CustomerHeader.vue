@@ -2,7 +2,7 @@
     <header>
         <v-row>
             <div class="logoBox" @click="goMain">
-                <img src="@/assets/images/logo.png" alt="Logo" class="logoImg"/>
+                <img src="@/assets/images/logo.png" alt="Logo" class="logoImg" />
             </div>
         </v-row>
     </header>

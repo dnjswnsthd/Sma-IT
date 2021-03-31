@@ -7,6 +7,7 @@
 
 <script>
 import Chart from 'chart.js';
+import { mapState } from 'vuex';
 export default {
     name: 'RadarCanvas',
     props: {
@@ -17,7 +18,6 @@ export default {
     data() {
         return {
             memberData: {
-                labels: [],
                 datasets: [
                     {
                         data: [],
@@ -39,8 +39,11 @@ export default {
                     },
                     ticks: {
                         min: 0,
-                        max: 5,
-                        stepSize: 1,
+                        max: 1,
+                        stepSize: 0.2,
+                        fontColor: '#ab47bc',
+                        backgroundColor: '#000',
+                        backdropColor: 'rgba(0,0,0,0)',
                     },
                     pointLabels: {
                         fontSize: 18,
@@ -54,6 +57,9 @@ export default {
             },
             chratObject: Object,
         };
+    },
+    computed: {
+        ...mapState(['emotionAnalysis']),
     },
     watch: {
         data() {

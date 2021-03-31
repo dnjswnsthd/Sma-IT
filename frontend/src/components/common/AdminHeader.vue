@@ -2,7 +2,7 @@
     <header>
         <v-row>
             <div class="logoBox" @click="goMain">
-                <img src="@/assets/images/logo.png" alt="Logo" class="logoImg"/>
+                <img src="@/assets/images/logo.png" alt="Logo" class="logoImg" />
             </div>
             <v-spacer></v-spacer>
             <v-row class="menu col-3">
@@ -19,25 +19,25 @@ export default {
         return {};
     },
     methods: {
-        goMain(){
-            this.$router.push({name:'Cam'});
+        goMain() {
+            this.$router.push({ name: 'Cam' });
         },
         goAdminMain() {
             this.$router.push({ name: 'AdminMain' });
         },
-        goCustomerRegister(){
-            this.$router.push({ name:'CustomerRegister' });
+        goCustomerRegister() {
+            this.$router.push({ name: 'CustomerRegister' });
         },
-        goCustomerModify(){
-            this.$router.push({name:'CustomerModify'});
-        }
+        goCustomerModify() {
+            this.$router.push({ name: 'CustomerModify' });
+        },
     },
 };
 </script>
 <style scoped>
 @import '../../assets/css/header.css';
-header{
-    border-bottom:1px solid #fff;
-    margin-bottom:20px;
+header {
+    border-bottom: 1px solid #fff;
+    margin-bottom: 20px;
 }
 </style>
