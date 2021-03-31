@@ -7,7 +7,6 @@ from database.db import session
 
 from utils.mask import mask_check
 from utils.face import face_check
-from utils.face import face_mask_check
 router = APIRouter()
 
 
