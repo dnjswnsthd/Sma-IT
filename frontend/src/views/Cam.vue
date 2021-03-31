@@ -1,94 +1,81 @@
 <template>
     <v-container>
         <v-row class="wrapBox">
-            <div class="col-6">
-                <p class="introduceMessage" style="padding-top:20px;">
-                    방문을 진심으로
-                    <br />
-                    환영합니다.
-                </p>
-                <div class="productBox">
-                    <div class="newProducts">
-                        <p>New 상품!</p>
-                        <v-row class="newRow">
-                            <v-item v-for="n in 3" :key="n" style="margin:0 16px;">
-                                <div class="itemBox"></div>
-                            </v-item>
-                        </v-row>
+            <div class="welcomeBox col-2">
+                <!-- <p class="introduceMessage" style="padding-top:300px; padding-left:100px">
+                    print <br />(Welcome to Visit);
+                </p> -->
+                <img
+                    src="../assets/images/welcome.png"
+                    alt="welcome"
+                    style="width:300px; margin-left:50px; margin-top : 100px;"
+                />
+            </div>
+            <v-spacer></v-spacer>
+            <div class="col-6 cambox">
+                <div class="camInBox">
+                    <div class="camTopBox">
+                        <canvas
+                            ref="canvas"
+                            id="emo_canvas"
+                            width="650px"
+                            height="650px"
+                            class="canvasBox"
+                        ></canvas>
+                        <video
+                            ref="video"
+                            id="video"
+                            playsinline
+                            muted
+                            autoplay
+                            class="videoBox"
+                        ></video>
                     </div>
-                    <div class="saleProducts">
-                        <p>Sale 상품!</p>
-                        <v-row class="saleRow">
-                            <v-item v-for="n in 3" :key="n" style="margin:0 16px;">
-                                <div class="itemBox"></div>
-                            </v-item>
-                        </v-row>
-                    </div>
+                    <div class="divider"></div>
+                    <v-row class="camBottomBox">
+                        <p class="guideMessage">
+                            카메라를 정면으로 봐주시고
+                            <br />버튼을 클릭해주세요
+                        </p>
+                        <v-spacer></v-spacer>
+                        <div
+                            @click="goCapture"
+                            class="clickBtn"
+                            @mouseover="hoverClickBtn"
+                            @mouseout="outClickBtn"
+                        >
+                            <img
+                                v-if="!clickDialog"
+                                src="../assets/images/click.png"
+                                alt="클릭버튼"
+                            />
+                            <img v-else src="../assets/images/click_color.png" alt="클릭버튼" />
+                        </div>
+
+                        <!-- <button @click="goCapture" style="color: gold; font-size:40px; ">
+                            Click
+                        </button> -->
+                    </v-row>
                 </div>
             </div>
-            <div class="col-6 cambox">
-                <!-- <vue-web-cam
-                    ref="webcam"
-                    :device-id="deviceId"
-                    style="margin-top: 70px; "
-                    width="100%"
-                    height="580px"
-                    @stopped="onStopped"
-                    @error="onError"
-                    @cameras="onCameras"
-                    @camera-change="onCameraChange"
-                /> -->
-
-                <div class="camInnerBox">
-                    <canvas
-                        ref="canvas"
-                        id="emo_canvas"
-                        width="650px"
-                        height="650px"
-                        class="canvasBox"
-                    ></canvas>
-                    <video
-                        ref="video"
-                        id="video"
-                        height="650px"
-                        playsinline
-                        muted
-                        autoplay
-                        class="videoBox"
-                    ></video>
-                </div>
-                <div class="divider"></div>
-                <v-row>
-                    <p class="guideMessage" style="padding-left:80px;">
-                        얼굴을 가이드라인에 맞춰주시고
-                        <br />
-                        클릭 버튼을 눌러주세요!
-                    </p>
-                    <button @click="goCapture" style="color: gold; font-size:40px;">Click</button>
-                </v-row>
+            <v-spacer></v-spacer>
+            <div class="productBox col-2" style="padding-top: 80px;">
+                <img src="../assets/images/banner.png" alt="배너이미지" style="height:700px;" />
             </div>
         </v-row>
-        <v-btn @click="goCamPayment">결제화면보기</v-btn>
+        <!-- <v-btn @click="goCamPayment">결제화면보기</v-btn> -->
     </v-container>
 </template>
 
 <script>
-// import { WebCam } from 'vue-web-cam';
 import http from '../api/axios';
 import Axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
     name: 'App',
-    components: {
-        // 'vue-web-cam': WebCam,
-    },
     data() {
         return {
-            img: null,
-            camera: null,
-            deviceId: null,
-            devices: [],
             video: {},
             canvas: {},
             captures: [],
@@ -97,6 +84,7 @@ export default {
             imgUrl: '',
             formValues: {},
             current: '',
+            clickDialog: false,
         };
     },
     computed: {
@@ -116,60 +104,8 @@ export default {
         }
 
         console.log(this.$refs.canvas);
-        // console.log(this.$refs.canvas)
 
         this.canvas = this.$refs.canvas;
-        // this.testTimer = this.goCapture();
-        // this.testTimer = function() {
-        //   // console.log(this.$refs.canvas)
-        //   let context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 400, 240);
-        //   console.log("context : " + context);
-        //   this.captures.push(this.canvas.toDataURL("image/png")) //Store the captured image in the "captures" array
-        //   let subscriptionKey = "c2ade783cde74c478a3f5ec193cf6b3f";
-        //   let uriBase = "https://koreacentral.api.cognitive.microsoft.com/face/v1.0/detect/";
-        // //   https://smait.cognitiveservices.azure.com/
-        //   let params = {
-        //     "returnFaceId": "false",
-        //     "returnFaceLandmarks": "true",
-        //     "returnFaceAttributes":
-        //       "emotion"
-        //   };
-        //   console.log(params);
-        // //   //Convert the format of the image added at the end of the array and assign it to the imgURL format
-        //   const imgURL = this.makeblob(this.captures[this.captures.length - 1])
-        //   //Send imgURL image to Face API
-        //   Axios.post(
-        //     uriBase + "?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion",
-        //     imgURL,
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/octet-stream",
-        //         "Ocp-Apim-Subscription-Key": subscriptionKey,
-        //       }
-        //     },
-
-        //   )
-        //   .then(response => {
-        //     console.log(response.data[0].faceAttributes.emotion)
-
-        //   })
-        //   .catch(error => {
-        //     console.log(error.response);
-        //   });
-        // };
-    },
-    watch: {
-        camera: function(id) {
-            this.deviceId = id;
-        },
-        devices: function() {
-            // Once we have a list select the first one
-            const [first, ...tail] = this.devices; // eslint-disable-line no-unused-vars
-            if (first) {
-                this.camera = first.deviceId;
-                this.deviceId = first.deviceId;
-            }
-        },
     },
     methods: {
         goCapture() {
@@ -178,16 +114,6 @@ export default {
             let context = this.canvas.getContext('2d').drawImage(this.video, 0, 0, 728, 650);
             console.log('context : ' + context);
             this.captures.push(this.canvas.toDataURL('image/png')); //Store the captured image in the "captures" array
-            //   console.log(this.captures);
-            //   this.decodeUrl = window.atob(this.captures);
-            //   console.log('decode : ' + this.decodeUrl);
-
-            // Define the string
-
-            // Decode the String
-            // var decodedString = atob(string);
-
-            // console.log(decodedString); // Outputs: "Hello World!"
 
             let subscriptionKey = 'c2ade783cde74c478a3f5ec193cf6b3f';
             let uriBase = 'https://koreacentral.api.cognitive.microsoft.com/face/v1.0/detect/';
@@ -206,13 +132,7 @@ export default {
             let formData = new FormData();
             formData.append('file', file);
             console.log(file);
-            //   console.log(formData.values());
-            //   for(var value of formData.values()){
-            //       this.formValues = value;
-            //   }
-            // let captureImg = this.formValues;
-            // //   console.log(this.formValues);
-            //console.log(formData.toDataURL)
+
             var curDate = new Date();
             var year = curDate.getUTCFullYear();
             var month = curDate.getMonth() + 1;
@@ -263,6 +183,7 @@ export default {
                 .catch((error) => {
                     console.log(error.response);
                 });
+            this.clickDialog = false;
         },
         makeblob: function(dataURL) {
             let BASE64_MARKER = ';base64,';
@@ -283,6 +204,12 @@ export default {
             }
             return new File([uInt8Array], fileName, { type: contentType });
         },
+        hoverClickBtn() {
+            this.clickDialog = true;
+        },
+        outClickBtn() {
+            this.clickDialog = false;
+        },
         goCamPayment() {
             this.$router.push({ name: 'CamSatisfied' });
         },
@@ -291,9 +218,17 @@ export default {
 </script>
 <style scoped>
 @import '../assets/css/cam.css';
-.camInnerBox {
-    height: 65%;
+.camInBox {
+    width: calc(100% - 100px);
+    margin: 60px auto;
+}
+.camTopBox {
+    height: 75%;
     position: relative;
+}
+.camBottomBox {
+    height: 25%;
+    padding: 0 100px;
 }
 .canvasBox {
     display: block;
@@ -304,14 +239,34 @@ export default {
     margin-left: -200px;
     z-index: -1;
 }
+
 .videoBox {
     display: block;
-    width: calc(100% - 140px);
     margin: 0 auto;
+    width: 750px;
+    height: 565px;
+    border-radius: 20px;
+    border: 4px solid #fff;
 }
+.productBox {
+    margin-right: 50px;
+}
+.productBox img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 3px solid #6e0b40;
+    /* box-shadow: 0px 0px 3px 7px rgb(255, 255, 255); */
+}
+
 .clickBtn {
-    position: absolute;
-    right: 10%;
-    bottom: 0%;
+    width: 80px;
+}
+.clickBtn img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
 }
 </style>
