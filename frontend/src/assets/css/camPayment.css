@@ -1,42 +1,49 @@
 @charset "utf-8";
-@charset "utf-8";
-.purchaseList{
+.purchaseList {
     border-radius: 20px;
-    width:60%;
+    width: 60%;
     height: 70%;
-    margin:0 auto;
-    background-image:url('../images/frame.png');
+    margin: 0 auto;
+    background-image: url('../images/frame.png');
     background-position: center center;
     background-size: 100% 100%;
 }
-.purchaseListBox{
-    position:relative;
-    height:100%;
-    padding:50px;
+.purchaseListBox {
+    position: relative;
+    height: 70%;
+    padding: 50px;
 }
 
 .purchaseListBox p {
-    border-bottom:1px solid white;
+    border-bottom: 1px solid white;
 }
 
-.purchaseListBox p, .purchaseListBox ul li{
-    text-align:center;
+.purchaseListBox p,
+.purchaseListBox ul li {
+    text-align: center;
 }
 
-.nameBox, .priceBox{
-    width:calc(50% - 2px);
-    padding:5px 10px;
-    border-bottom:1px solid white;
+.nameBox,
+.priceBox {
+    width: calc(50% - 2px);
+    padding: 5px 10px;
+    border-bottom: 1px solid white;
 }
-.middledivider{
-    width:1px;
-    height:450px;
-    border:1px solid white;
+.middledivider {
+    width: 1px;
+    height: 450px;
+    border: 1px solid white;
 }
 
-.totalPay{
-    position:absolute;
-    bottom:5%;
-    text-align:center;
-    border-bottom:none;
+.totalPay {
+    position: absolute;
+    bottom: 5%;
+    text-align: center;
+    border-bottom: none;
+}
+
+.wonImage {
+    height: 250px;
+    width: 250px;
+    margin: 0 auto;
 }
