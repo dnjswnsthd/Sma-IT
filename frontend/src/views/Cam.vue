@@ -63,7 +63,7 @@
                 <img src="../assets/images/banner.png" alt="배너이미지" style="height:700px;" />
             </div>
         </v-row>
-        <!-- <v-btn @click="goCamPayment">결제화면보기</v-btn> -->
+        <v-btn @click="goCamPayment">결제화면보기</v-btn>
     </v-container>
 </template>
 
@@ -85,6 +85,16 @@ export default {
             formValues: {},
             current: '',
             clickDialog: false,
+            member: {
+                age: '',
+                image: '',
+                interests: '',
+                join_date: '',
+                name: '',
+                requirements: '',
+                uuid: '',
+                visit_start: '',
+            },
         };
     },
     computed: {
@@ -146,16 +156,26 @@ export default {
             http.post(`/face/mask/${this.current}`, formData)
                 .then((response) => {
                     console.log(response.data.member);
-                    this.$store.commit('setCustomerInfo', response.data.member);
+
+                    this.member.age = response.data.member.age;
+                    this.member.image = response.data.member.image;
+                    this.member.interests = response.data.member.interests;
+                    this.member.join_date = response.data.member.join_date;
+                    this.member.name = response.data.member.name;
+                    this.member.requirements = response.data.member.requirements;
+                    this.member.uuid = response.data.member.uuid;
+                    this.member.visit_start = this.current;
+
+                    this.$store.commit('setCustomerInfo', this.member);
                     console.log('------------------------');
                     console.log(this.customerInfo);
                     console.log(response.data.isMask);
                     if (response.data.isMask == 'NO MASK')
                         alert(response.data.member.name + '님 마스크 안쓰면 뚝배기 날림');
-                    else alert('반가워요');
+                    else alert(response.data.member.name + '님 반가워요');
                 })
                 .catch((error) => {
-                    if (error.response.data.detail)
+                    if (error.response.data.detail == 'NO MASK')
                         alert('등록 안한 고객님 마스크 안쓰시면 뚝배기 깹니다');
                     else alert(error.response.data.detail);
                     console.log(error.response.data.detail);
