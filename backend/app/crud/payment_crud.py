@@ -6,6 +6,7 @@ from models.payment import Payment, PaymentTable
 def select_cardInfo_by_UUID(db: Session, uuid: int):
     return db.query(PaymentTable).filter(PaymentTable.uuid == uuid).first()
 
+
 def insert_cardInfo(db: Session, payment: Payment):
     db_payment = PaymentTable()
     db_payment.uuid = payment.uuid

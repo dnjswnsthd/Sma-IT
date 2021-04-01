@@ -50,10 +50,10 @@ def update_visited(db: Session, db_visited: VisitedTable, end_visited: str):
 
 def delete_visited_by_uuid(db: Session, uuid: int):
     db_member = VisitedTable()
-    db_member = db.query(VisitedTable).filter(
-        MemberTable.uuid == uuid).delete()
 
     try:
+        db_member = db.query(VisitedTable).filter(
+            MemberTable.uuid == uuid).delete()
         db.commit()
         db.refresh(db_member)
     except:
