@@ -21,8 +21,8 @@ export default {
                 datasets: [
                     {
                         data: [],
-                        backgroundColor: 'rgba(188, 111, 241, .5)',
-                        borderColor: '#ab47bc',
+                        backgroundColor: '#9B8D77',
+                        borderColor: '#fff',
                         borderWidth: '1',
                     },
                 ],
@@ -41,13 +41,13 @@ export default {
                         min: 0,
                         max: 1,
                         stepSize: 0.2,
-                        fontColor: '#ab47bc',
+                        fontColor: '#fff',
                         backgroundColor: '#000',
                         backdropColor: 'rgba(0,0,0,0)',
                     },
                     pointLabels: {
                         fontSize: 18,
-                        fontColor: '#ab47bc',
+                        fontColor: '#fff',
                         fontFamily: 'CookieRunOTF-Bold',
                         src: `url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Bold00.woff') format('woff')`,
                         fontWeight: 'normal',
