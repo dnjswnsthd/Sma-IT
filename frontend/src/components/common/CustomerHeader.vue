@@ -1,9 +1,9 @@
 <template>
     <header>
         <v-row>
-            <!-- <div class="logoBox" @click="goMain">
+            <div class="logoBox" @click="goMain">
                 <img src="@/assets/images/logo.png" alt="Logo" class="logoImg" />
-            </div> -->
+            </div>
         </v-row>
     </header>
 </template>
