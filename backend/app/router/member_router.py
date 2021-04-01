@@ -1,5 +1,5 @@
 from fastapi import APIRouter, File, Form, UploadFile, Depends, HTTPException
-from models.member import Member
+from models.member import Member ,UpdateMember
 from models.emotion import Emotion
 
 from crud import member_crud as crud
@@ -56,8 +56,8 @@ async def create_members_img(image: str, file: UploadFile = File(...)):
 
 
 @router.put("/")
-async def update_members(member: Member):
-    db_member = crud.get_member_by_name(session, member.name)
+async def update_members(member: UpdateMember):
+    db_member = crud.get_member_by_uuid(session, member.uuid)
     if db_member is None:
         raise HTTPException(status_code=400, detail="No members")
     db_member = crud.update_member(session, db_member, member)

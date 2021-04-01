@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models.member import MemberTable, Member
+from models.member import MemberTable, Member, UpdateMember
 from models.emotion import EmotionTable, Emotion
 
 
@@ -64,7 +64,7 @@ def delete_member_by_uuid(db: Session, member_uuid: int):
     return db_member
 
 
-def update_member(db: Session, db_member: MemberTable, member: Member):
+def update_member(db: Session, db_member: MemberTable, member: UpdateMember):
     db_member.uuid = member.uuid
     db_member.name = member.name
     db_member.age = member.age
