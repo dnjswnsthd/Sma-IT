@@ -2,43 +2,62 @@
     <v-container>
         <v-row class="wrapBox">
             <div class="col-6">
-                <p class="introduceMessage" style="padding-top:20px;">
-                    만족도 평가가
-                    <br />
-                    저장됩니다.
-                </p>
-                <div class="satisfiedBox">
-                    <chart :id="'satisfy'" :labels="labels" :data="data"></chart>
+                <div class="satisfiedOutBox">
+                    <p class="introduceMessage" style="padding-top:20px;">
+                        만족도 평가가
+                        <br />
+                        저장됩니다.
+                    </p>
+                    <div class="satisfiedBox">
+                        <chart :id="'satisfy'" :labels="labels" :data="data"></chart>
+                    </div>
                 </div>
             </div>
             <div class="col-6 cambox">
-                <div class="camInnerBox">
-                    <canvas
-                        ref="canvas"
-                        id="emo_canvas"
-                        width="650px"
-                        height="650px"
-                        class="canvasBox"
-                    ></canvas>
-                    <video
-                        ref="video"
-                        id="video"
-                        height="650px"
-                        playsinline
-                        muted
-                        autoplay
-                        class="videoBox"
-                    ></video>
+                <div class="camInBox">
+                    <div class="camTopBox">
+                        <canvas
+                            ref="canvas"
+                            id="emo_canvas"
+                            width="650px"
+                            height="650px"
+                            class="canvasBox"
+                        ></canvas>
+                        <video
+                            ref="video"
+                            id="video"
+                            playsinline
+                            muted
+                            autoplay
+                            class="videoBox"
+                        ></video>
+                    </div>
+                    <div class="divider"></div>
+                    <v-row class="camBottomBox">
+                        <p class="guideMessage">
+                            카메라를 정면으로 봐주시고
+                            <br />버튼을 클릭해주세요
+                        </p>
+                        <v-spacer></v-spacer>
+                        <div
+                            @click="goCapture"
+                            class="clickBtn"
+                            @mouseover="hoverClickBtn"
+                            @mouseout="outClickBtn"
+                        >
+                            <img
+                                v-if="!clickDialog"
+                                src="../assets/images/click.png"
+                                alt="클릭버튼"
+                            />
+                            <img v-else src="../assets/images/click_color.png" alt="클릭버튼" />
+                        </div>
+
+                        <!-- <button @click="goCapture" style="color: gold; font-size:40px; ">
+                            Click
+                        </button> -->
+                    </v-row>
                 </div>
-                <div class="divider"></div>
-                <v-row>
-                    <p class="guideMessage" style="padding-left:80px;">
-                        얼굴을 가이드라인에 맞춰주시고
-                        <br />
-                        클릭 버튼을 눌러주세요!
-                    </p>
-                    <button @click="goCapture" style="color: gold; font-size:40px;">Click</button>
-                </v-row>
             </div>
         </v-row>
     </v-container>
@@ -86,6 +105,7 @@ export default {
                 'surprise',
             ],
             data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            clickDialog: false,
         };
     },
     computed: {
@@ -220,10 +240,71 @@ export default {
             }
             return new File([uInt8Array], fileName, { type: contentType });
         },
+        hoverClickBtn() {
+            this.clickDialog = true;
+        },
+        outClickBtn() {
+            this.clickDialog = false;
+        },
     },
 };
 </script>
 <style scoped>
 @import '../assets/css/cam.css';
 @import '../assets/css/camSatisfied.css';
+.camInBox {
+    width: calc(100% - 100px);
+    margin: 60px auto;
+}
+.camTopBox {
+    height: 75%;
+    position: relative;
+}
+.camBottomBox {
+    height: 25%;
+    padding: 0 100px;
+}
+.canvasBox {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-top: 100px;
+    margin-left: -200px;
+    z-index: -1;
+}
+
+.videoBox {
+    display: block;
+    margin: 0 auto;
+    width: 750px;
+    height: 565px;
+    border-radius: 20px;
+    border: 4px solid #fff;
+}
+.productBox {
+    margin-right: 50px;
+}
+.productBox img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 3px solid #6e0b40;
+    /* box-shadow: 0px 0px 3px 7px rgb(255, 255, 255); */
+}
+
+.clickBtn {
+    width: 80px;
+}
+.clickBtn img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.satisfiedOutBox {
+    margin-top: 100px;
+}
 </style>
