@@ -52,12 +52,10 @@ def update_image_member(db: Session, db_member: MemberTable, image: int):
 
 
 def delete_member_by_uuid(db: Session, member_uuid: int):
-    db_member = MemberTable()
     try:
         db_member = db.query(MemberTable).filter(
             MemberTable.uuid == member_uuid).delete()
         db.commit()
-        db.refresh(db_member)
     except:
         db.rollback()
         raise

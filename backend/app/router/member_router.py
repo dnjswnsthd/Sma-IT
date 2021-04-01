@@ -1,5 +1,5 @@
 from fastapi import APIRouter, File, Form, UploadFile, Depends, HTTPException
-from models.member import Member ,UpdateMember
+from models.member import Member, UpdateMember
 from models.emotion import Emotion
 
 from crud import member_crud as crud
