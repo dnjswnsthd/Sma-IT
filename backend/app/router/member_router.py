@@ -8,6 +8,7 @@ from database.db import session
 
 import base64
 
+import os
 import datetime
 
 router = APIRouter()
@@ -79,6 +80,10 @@ async def delete_members(member_uuid: int):
     db_member = crud.delete_member_by_uuid(session, member_uuid)
     if db_member is None:
         raise HTTPException(status_code=400, detail="Delete failure")
+    path = "../img/member_img/"+str(member_uuid)+".jpg"
+    if os.path.isfile(path):
+        os.remove(path)
+
     return db_member
 
 
