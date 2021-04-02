@@ -5,23 +5,27 @@
 
         <v-spacer></v-spacer>
         <v-row>
-            <div v-for="(customer, index) in customers" :key="index" class="imgBox">
-                <div class="customInfoBox">
-                    <v-col
+            <div v-for="(customer, index) in customers" :key="index">
+                <div class="customInfoBox imgBox">
+                    <v-col style="height:300px;"
                         ><img
                             :src="`data:image/jpg;base64,${customer.customer_image}`"
-                            style="width:100%;  height:100%;"
+                            style="width:100%;  height:100%; display:block; margin:0 auto;"
                     /></v-col>
-                    <v-col>{{ customer.name }}</v-col>
-                    <v-col>{{ customer.age }}</v-col>
-                    <v-col>관심분야 : {{ customer.interests }}</v-col>
-                    <v-col>요구사항 : {{ customer.requirements }}</v-col>
-                    <div>
+                    <br />
+                    <hr />
+                    <br />
+                    <p>이름 : {{ customer.name }}</p>
+                    <p>나이 : {{ customer.age }}</p>
+                    <p>관심분야 : {{ customer.interests }}</p>
+                    <p>요구사항 : {{ customer.requirements }}</p>
+                    <hr />
+                    <div style="text-align:center;">
                         <v-spacer></v-spacer>
-                        <v-icon small class="mr-2" style="color:#fff;" @click="editItem(customer)">
+                        <v-icon large class="mr-2" style="color:#fff;" @click="editItem(customer)">
                             mdi-pencil
                         </v-icon>
-                        <v-icon small style="color:#fff;" @click="deleteItem(customer)">
+                        <v-icon large style="color:#fff;" @click="deleteItem(customer)">
                             mdi-delete
                         </v-icon>
                     </div>
@@ -39,9 +43,9 @@
 <script>
 import DeleteDialog from '../components/dialog/DeleteDialog';
 import EditDialog from '../components/dialog/EditDialog';
-
+import swal from 'sweetalert';
 import http from '../api/axios';
-
+import { mapState } from 'vuex';
 export default {
     components: {
         DeleteDialog,
@@ -58,7 +62,7 @@ export default {
             age: '',
             interests: 0,
             requirements: 0,
-            image: 0,
+            customer_image: '',
         },
         start: 0,
         limit: 6,
@@ -68,6 +72,7 @@ export default {
         formTitle() {
             return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
         },
+        ...mapState(['customerInfo']),
     },
     watch: {
         dialog(val) {
@@ -171,7 +176,9 @@ export default {
                     }
                 })
                 .catch(() => {
-                    alert('회원 정보가 더 이상 존재하지 않습니다.');
+                    swal('회원 정보가 더 이상 존재하지 않습니다.', {
+                        icon: 'error',
+                    });
                 });
         },
     },
@@ -181,6 +188,9 @@ export default {
 .v-dialog {
     font-family: 'MapoFlowerIsland';
     color: #fff;
+}
+p {
+    margin: 8px;
 }
 @import '../assets/css/customerModify.css';
 </style>

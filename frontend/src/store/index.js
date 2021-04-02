@@ -21,7 +21,9 @@ export default new Vuex.Store({
   mutations: {
     setCustomerInfo(state, customerInfo) {
       state.customerInfo.push(customerInfo);
-
+    },
+    updateCustomerInfo(state, customerInfo) {
+      state.customerInfo = customerInfo
     },
     setEmotionAnalysis(state, emotionAnalysis) {
       state.emotionAnalysis = emotionAnalysis;
