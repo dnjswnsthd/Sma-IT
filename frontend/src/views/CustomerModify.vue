@@ -7,19 +7,17 @@
         <v-row>
             <div v-for="(customer, index) in customers" :key="index" class="imgBox">
                 <div class="customInfoBox">
-                    <v-col
-                        ><img :src="customer.customer_picture" style="width:100%; margin:0 auto;"
-                    /></v-col>
-                    <v-col>{{ customer.customer_name }}</v-col>
-                    <v-col>{{ customer.customer_age }}</v-col>
-                    <v-col>관심분야 : {{ customer.customer_interest }}</v-col>
-                    <v-col>요구사항 : {{ customer.customer_require }}</v-col>
+                    <v-col></v-col>
+                    <v-col>{{ customer.name }}</v-col>
+                    <v-col>{{ customer.age }}</v-col>
+                    <v-col>관심분야 : {{ customer.interests }}</v-col>
+                    <v-col>요구사항 : {{ customer.requirements }}</v-col>
                     <div>
                         <v-spacer></v-spacer>
-                        <v-icon small class="mr-2" style="color:#fff;" @click="editItem(item)">
+                        <v-icon small class="mr-2" style="color:#fff;" @click="editItem(customer)">
                             mdi-pencil
                         </v-icon>
-                        <v-icon small style="color:#fff;" @click="deleteItem(item)">
+                        <v-icon small style="color:#fff;" @click="deleteItem(customer)">
                             mdi-delete
                         </v-icon>
                     </div>
@@ -54,10 +52,9 @@ export default {
         editedItem: {
             name: '',
             age: '',
-            rate: 0,
-            interest: 0,
-            require: 0,
-            picture: 0,
+            interests: 0,
+            requirements: 0,
+            image: 0,
         },
         start: 0,
         limit: 6,
@@ -105,6 +102,26 @@ export default {
                 setTimeout(this.append_list, 1000);
             }
         },
+        editItem(item) {
+            console.log('item');
+            this.editedIndex = this.customers.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            this.dialogEdit = true;
+        },
+
+        deleteItem(item) {
+            // console.log(item);
+            this.editedIndex = this.customers.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            console.log(this.editedItem);
+            this.dialogDelete = true;
+        },
+        closeDelete() {
+            this.dialogDelete = false;
+        },
+        close() {
+            this.dialogEdit = false;
+        },
         append_list() {
             http.get(`/member/`, {
                 params: {
@@ -116,28 +133,30 @@ export default {
                     if (response.data.length >= this.limit) {
                         this.isLoading = true;
                         for (var i = 0; i < this.limit; i++) {
-                            if (response.data[i].requirements == 'null')
-                                response.data[i].requirements = '없음';
+                            if (response.data.members[i].requirements == 'null')
+                                response.data.members[i].requirements = '없음';
                             this.customers.push({
-                                customer_name: response.data[i].name,
-                                customer_age: response.data[i].age,
-                                customer_interest: response.data[i].interests,
-                                customer_require: response.data[i].requirements,
-                                customer_picture: response.data[i].image,
+                                uuid: response.data.members[i].uuid,
+                                name: response.data.members[i].name,
+                                age: response.data.members[i].age,
+                                interests: response.data.members[i].interests,
+                                requirements: response.data.members[i].requirements,
+                                image: response.data.members[i].uuid.image,
                             });
                         }
                         this.start += this.limit;
                         console.log(this.start);
                     } else {
-                        for (i = 0; i < response.data.length; i++) {
-                            if (response.data[i].requirements == 'null')
-                                response.data[i].requirements = '없음';
+                        for (i = 0; i < response.data.members.length; i++) {
+                            if (response.data.members[i].requirements == 'null')
+                                response.data.members[i].requirements = '없음';
                             this.customers.push({
-                                customer_name: response.data[i].name,
-                                customer_age: response.data[i].age,
-                                customer_interest: response.data[i].interests,
-                                customer_require: response.data[i].requirements,
-                                customer_picture: response.data[i].image,
+                                uuid: response.data.members[i].uuid,
+                                name: response.data.members[i].name,
+                                age: response.data.members[i].age,
+                                interests: response.data.members[i].interests,
+                                requirements: response.data.members[i].requirements,
+                                image: response.data.members[i].image,
                             });
                         }
                         this.start += this.limit;

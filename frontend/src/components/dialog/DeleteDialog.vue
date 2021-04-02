@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import http from '../../api/axios';
+
 export default {
     name: 'DeleteDialog',
     props: {
@@ -25,14 +27,18 @@ export default {
         closeDelete() {
             this.dialogDelete = false;
             this.$emit('closeDelete');
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
-            });
         },
         deleteItemConfirm() {
-            this.customers.splice(this.editedIndex, 1);
-            this.closeDelete();
+            console.log('here');
+            http.delete(`/member/${this.item.uuid}`)
+                .then((response) => {
+                    console.log(response.data);
+                    alert('삭제되었습니다');
+                    this.closeDelete();
+                })
+                .catch(() => {
+                    alert('삭제 실패!');
+                });
         },
     },
 };
