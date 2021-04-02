@@ -4,9 +4,8 @@
             <v-card-text>
                 <v-container>
                     <img
-                        src="../../assets/images/profile.png"
-                        alt="프로필 사진"
-                        style="width: 100%; padding-top: 10px;"
+                        :src="`data:image/jpg;base64,${item.customer_image}`"
+                        style="width:100%;  height:100%;"
                     />
                     <v-row style="padding-top: 10px">
                         <v-col cols="12" sm="6" md="4">
@@ -60,7 +59,7 @@ export default {
     methods: {
         close() {
             this.dialogEdit = false;
-            this.$emit('close');
+            this.$emit('close', this.item);
         },
         save() {
             http.put('/member/', this.item)

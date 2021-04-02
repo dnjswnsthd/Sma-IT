@@ -7,7 +7,11 @@
         <v-row>
             <div v-for="(customer, index) in customers" :key="index" class="imgBox">
                 <div class="customInfoBox">
-                    <v-col><img :src="`data:image/jpg;base64,${customer.customer_image}`" style="width:100%;  height:100%;" /></v-col>
+                    <v-col
+                        ><img
+                            :src="`data:image/jpg;base64,${customer.customer_image}`"
+                            style="width:100%;  height:100%;"
+                    /></v-col>
                     <v-col>{{ customer.name }}</v-col>
                     <v-col>{{ customer.age }}</v-col>
                     <v-col>관심분야 : {{ customer.interests }}</v-col>
@@ -60,13 +64,11 @@ export default {
         limit: 6,
         isLoading: true,
     }),
-
     computed: {
         formTitle() {
             return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
         },
     },
-
     watch: {
         dialog(val) {
             val || this.close();
@@ -75,10 +77,6 @@ export default {
             val || this.closeDelete();
         },
     },
-
-    // created() {
-    //     this.initialize();
-    // },
     created() {
         this.append_list();
         window.addEventListener('scroll', this.scroll);
@@ -116,11 +114,17 @@ export default {
             console.log(this.editedItem);
             this.dialogDelete = true;
         },
-        closeDelete() {
+        closeDelete(item) {
             this.dialogDelete = false;
+            for (var i = 0; i < this.customers.length; i++)
+                if (this.customers[i].uuid == item.uuid) this.customers.splice(i, 1);
+
+            // location.href = '/customerModify';
         },
-        close() {
+        close(item) {
             this.dialogEdit = false;
+            for (var i = 0; i < this.customers.length; i++)
+                if (this.customers[i].uuid == item.uuid) this.customers[i] = item;
         },
         append_list() {
             http.get(`/member/`, {
