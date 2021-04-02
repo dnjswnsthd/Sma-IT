@@ -3,9 +3,10 @@
 .satisfiedBox {
     border-radius: 20px;
     width: 60%;
-    height: 70%;
     margin: 0 auto;
-    background-image: url('../images/frame.png');
+    border: 1px solid #fff;
+    padding: 50px 0;
+    /* background-image: url('../images/frame.png');
     background-position: center center;
-    background-size: 100% 100%;
+    background-size: 100% 100%; */
 }

@@ -7,7 +7,7 @@
         <v-row>
             <div v-for="(customer, index) in customers" :key="index" class="imgBox">
                 <div class="customInfoBox">
-                    <v-col></v-col>
+                    <v-col><img :src="`data:image/jpg;base64,${customer.customer_image}`" style="width:100%;  height:100%;" /></v-col>
                     <v-col>{{ customer.name }}</v-col>
                     <v-col>{{ customer.age }}</v-col>
                     <v-col>관심분야 : {{ customer.interests }}</v-col>
@@ -142,6 +142,7 @@ export default {
                                 interests: response.data.members[i].interests,
                                 requirements: response.data.members[i].requirements,
                                 image: response.data.members[i].uuid.image,
+                                customer_image: response.data.images[i],
                             });
                         }
                         this.start += this.limit;
@@ -157,6 +158,7 @@ export default {
                                 interests: response.data.members[i].interests,
                                 requirements: response.data.members[i].requirements,
                                 image: response.data.members[i].image,
+                                customer_image: response.data.images[i],
                             });
                         }
                         this.start += this.limit;

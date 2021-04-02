@@ -7,6 +7,9 @@ from database.db import session
 
 from utils.mask import mask_check
 from utils.face import face_check
+
+import base64
+
 router = APIRouter()
 
 
@@ -32,7 +35,14 @@ async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
         session, memberInfo.uuid, start_visted)
     # 아니 위에 visited 테이블 건드니깐 왜 이것도 바뀌냐고 망할 파이썬
     memberInfo = member_crud.get_member_by_image(session, member_img)
-    face_data = dict(member=memberInfo, isMask=isMask)
+
+    #image 업로딩
+    path = '../img/member_img/' + memberInfo.image
+    base64_string = None
+    with open(path, 'rb') as img:
+        base64_string = base64.b64encode(img.read())
+    
+    face_data = dict(member=memberInfo, isMask=isMask, image=base64_string)
 
     return face_data
 

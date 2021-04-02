@@ -7,23 +7,23 @@
       </h2>
       <v-slide-group class="my-slider" center-active dark>
         <v-slide-item v-for="customer in getCustomerInfo" :key="customer" v-slot="{ active, toggle }">
-          <v-card :color="active ? '#192537' : '#192537'" class="ma-4" height="600" width="380" @click="toggle">
+          <v-card :color="active ? '#1D1C22' : '#1D1C22'" class="ma-4" height="600" width="380" @click="toggle" style="margin:0 auto;">
             <div class="fill-height imgBox">
               <div class="firstBox">
-                <div class="col-6 customInfoBox">
-                  <p class="imgArea">이미지영역</p>
+                <div class=" customInfoBox" style="width:50%; padding:40px 0 0 30px;">
+                  <img :src="`data:image/jpg;base64,${customer.image}`" style="width:100%;  height:100%;" />
                 </div>
-                <div class="col-6 customInfoBox">
+                <div class=" customInfoBox" style="width:50%;  padding:40px 30px 0 30px;">
                   <p>이름 : {{ customer.name }}</p>
                   <p>나이 : {{ customer.age }}세</p>
                 </div>
               </div>
 
               <div class="secondBox">
-                <p>관심상품 : {{ customer.interest }}</p>
+                <p>관심상품 : {{ customer.interests }}</p>
                 <p>
-                  요구사항
-                  <br />
+                  요구사항 :
+
                   {{ customer.requirements }}
                 </p>
 
@@ -47,7 +47,7 @@
                 </v-dialog>
               </div>
               <div class="thirdBox">
-                <p>입장시간 : sadfdf</p>
+                <p>입장시간 : {{ customer.visit_start }}</p>
                 <p>퇴장시간 : 퇴장전</p>
               </div>
             </div>
