@@ -16,7 +16,7 @@
 
 <script>
 import http from '../../api/axios';
-
+import swal from 'sweetalert';
 export default {
     name: 'DeleteDialog',
     props: {
@@ -33,11 +33,15 @@ export default {
             http.delete(`/member/${this.item.uuid}`)
                 .then((response) => {
                     console.log(response.data);
-                    alert('삭제되었습니다');
+                    swal('삭제 되었습니다.', {
+                        icon: 'success',
+                    });
                     this.closeDelete();
                 })
                 .catch(() => {
-                    alert('삭제 실패!');
+                    swal('삭제 실패', {
+                        icon: 'error',
+                    });
                 });
         },
     },

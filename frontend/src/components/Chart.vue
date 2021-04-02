@@ -1,6 +1,6 @@
 <template>
     <!-- 그래프 그리기 -->
-    <div>
+    <div style="background-color:#1D1C22">
         <canvas :id="id" height="50vh" width="80vw"></canvas>
     </div>
 </template>
@@ -21,7 +21,7 @@ export default {
                 datasets: [
                     {
                         data: [],
-                        backgroundColor: '#9B8D77',
+                        backgroundColor: '#fff',
                         borderColor: '#fff',
                         borderWidth: '1',
                     },
@@ -42,7 +42,7 @@ export default {
                         max: 1,
                         stepSize: 0.2,
                         fontColor: '#fff',
-                        backgroundColor: '#000',
+                        backgroundColor: '#fff',
                         backdropColor: 'rgba(0,0,0,0)',
                     },
                     pointLabels: {
