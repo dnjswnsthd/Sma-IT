@@ -49,12 +49,16 @@
 
 <script>
 import http from '../../api/axios';
-
+import swal from 'sweetalert';
+import { mapState } from 'vuex';
 export default {
     name: 'EditDialog',
     props: {
         dialogEdit: Boolean,
         item: Object,
+    },
+    computed: {
+        ...mapState(['customerInfo']),
     },
     methods: {
         close() {
@@ -65,10 +69,13 @@ export default {
             http.put('/member/', this.item)
                 .then((response) => {
                     console.log(response);
+                    this.$store.commit('updateCustomerInfo', this.item);
                     this.close();
                 })
                 .catch(() => {
-                    alert('실패!');
+                    swal('실패', {
+                        icon: 'error',
+                    });
                 });
         },
     },

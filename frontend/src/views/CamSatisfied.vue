@@ -68,7 +68,7 @@ import Chart from '../components/Chart.vue';
 import http from '../api/axios';
 import Axios from 'axios';
 import { mapState } from 'vuex';
-
+import swal from 'sweetalert';
 export default {
     name: 'App',
     components: {
@@ -168,13 +168,17 @@ export default {
                     this.member.uuid = response.data.member.uuid;
                     console.log('uuid : ' + this.member.uuid);
 
-                    alert('인식성공');
+                    swal('인식 성공!', {
+                        icon: 'success',
+                    });
 
                     this.saveEmotion();
                     setInterval(this.$store.commit('deleteCustomerInfo', this.member.uuid), 1000);
                 })
                 .catch(() => {
-                    alert('인식실패');
+                    swal('인식 실패!', {
+                        icon: 'error',
+                    });
                 });
             // console.log('uuid2 : ' + this.member.uuid);
 
@@ -215,10 +219,14 @@ export default {
         saveEmotion() {
             http.post('/member/emotion', this.member)
                 .then(() => {
-                    alert('저장성공.');
+                    swal('저장 성공!', {
+                        icon: 'success',
+                    });
                 })
                 .catch(() => {
-                    alert('저장실패!');
+                    swal('저장 실패!', {
+                        icon: 'error',
+                    });
                 });
         },
         makeblob: function(dataURL) {

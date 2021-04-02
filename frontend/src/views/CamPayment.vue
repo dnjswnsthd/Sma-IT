@@ -28,7 +28,7 @@
                     :device-id="deviceId"
                     style="margin-top: 70px; "
                     width="100%"
-                    height="580px"
+                    height="500px"
                     @stopped="onStopped"
                     @error="onError"
                     @cameras="onCameras"
@@ -39,7 +39,7 @@
     width:88%;
     margin:25px auto;"
                 ></div>
-                <p class="mb-15 pl-15" style="font-size:28px;">
+                <p style="font-size:28px; text-align:center; margin:0; padding:10px 0 40px;">
                     카메라 정면을 봐주시고 <br />우측의 결제버튼을 클릭해주세요.
                 </p>
                 <v-spacer></v-spacer>
