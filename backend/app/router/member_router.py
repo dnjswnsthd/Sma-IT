@@ -75,7 +75,7 @@ async def update_members(member: UpdateMember):
     return db_member
 
 
-@router.delete("/")
+@router.delete("/{member_uuid}")
 async def delete_members(member_uuid: int):
     db_member = crud.delete_member_by_uuid(session, member_uuid)
     if db_member is None:
