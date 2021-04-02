@@ -26,7 +26,7 @@ export default {
     methods: {
         closeDelete() {
             this.dialogDelete = false;
-            this.$emit('closeDelete');
+            this.$emit('closeDelete', this.item);
         },
         deleteItemConfirm() {
             console.log('here');
