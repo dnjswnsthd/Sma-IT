@@ -9,7 +9,6 @@
                         style="width: 100%; padding-top: 10px;"
                     />
                     <v-row style="padding-top: 10px">
-                        <v-spacer></v-spacer>
                         <v-col cols="12" sm="6" md="4">
                             <v-text-field v-model="item.name" label="name"></v-text-field>
                         </v-col>
@@ -20,19 +19,20 @@
                         <v-spacer></v-spacer>
                     </v-row>
                     <v-row>
-                        <v-spacer></v-spacer>
                         <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="item.rate" label="등급"></v-text-field>
-                        </v-col>
-                        <v-spacer></v-spacer>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="item.interest" label="관심품목"></v-text-field>
+                            <v-text-field v-model="item.interests" label="관심품목"></v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
                     </v-row>
-                    <v-spacer></v-spacer>
-                    <v-text-field v-model="item.require" label="요구사항"></v-text-field>
-                    <v-spacer></v-spacer>
+                    <v-row>
+                        <v-col>
+                            <v-text-field
+                                v-model="item.requirements"
+                                label="요구사항"
+                            ></v-text-field>
+                            <v-spacer></v-spacer>
+                        </v-col>
+                    </v-row>
                 </v-container>
             </v-card-text>
             <v-card-actions>
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import http from '../../api/axios';
+
 export default {
     name: 'EditDialog',
     props: {
@@ -59,18 +61,16 @@ export default {
         close() {
             this.dialogEdit = false;
             this.$emit('close');
-            this.$nextTick(() => {
-                this.item = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
-            });
         },
         save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.customers[this.editedIndex], this.item);
-            } else {
-                this.customers.push(this.item);
-            }
-            this.close();
+            http.put('/member/', this.item)
+                .then((response) => {
+                    console.log(response);
+                    this.close();
+                })
+                .catch(() => {
+                    alert('실패!');
+                });
         },
     },
 };
