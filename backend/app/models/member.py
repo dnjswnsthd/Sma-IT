@@ -20,3 +20,12 @@ class Member(BaseModel):
     interests: str
     requirements: str
     image: str
+
+# Request UpdateMember Database
+class UpdateMember(BaseModel):
+    uuid : int
+    name: str
+    age: int
+    interests: str
+    requirements: str
+    image: str

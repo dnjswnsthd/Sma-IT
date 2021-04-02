@@ -1,12 +1,14 @@
 from fastapi import APIRouter, File, Form, UploadFile, Depends, HTTPException
-from models.member import Member
+from models.member import Member, UpdateMember
 from models.emotion import Emotion
 
 from crud import member_crud as crud
 from crud import visited_crud
 from database.db import session
 
+import base64
 
+import os
 import datetime
 
 router = APIRouter()
@@ -15,7 +17,15 @@ router = APIRouter()
 @router.get("/")
 async def read_members_limit(start: int = 0, limit: int = 10):
     members = crud.get_members(session, start, limit)
-    return members
+    images = []
+    for member in members:
+        print(member.image)     
+        path = '../img/member_img/'+ member.image
+        with open(path, 'rb') as img:
+            base64_string = base64.b64encode(img.read())
+            images.append(base64_string)
+    data = dict(members=members, images=images)
+    return data
 
 
 @router.get("/{member_uuid}")
@@ -56,8 +66,8 @@ async def create_members_img(image: str, file: UploadFile = File(...)):
 
 
 @router.put("/")
-async def update_members(member: Member):
-    db_member = crud.get_member_by_name(session, member.name)
+async def update_members(member: UpdateMember):
+    db_member = crud.get_member_by_uuid(session, member.uuid)
     if db_member is None:
         raise HTTPException(status_code=400, detail="No members")
     db_member = crud.update_member(session, db_member, member)
@@ -70,6 +80,10 @@ async def delete_members(member_uuid: int):
     db_member = crud.delete_member_by_uuid(session, member_uuid)
     if db_member is None:
         raise HTTPException(status_code=400, detail="Delete failure")
+    path = "../img/member_img/"+str(member_uuid)+".jpg"
+    if os.path.isfile(path):
+        os.remove(path)
+
     return db_member
 
 
