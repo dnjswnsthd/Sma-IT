@@ -6,6 +6,8 @@ from crud import member_crud as crud
 from crud import visited_crud
 from database.db import session
 
+import base64
+
 import os
 import datetime
 
@@ -15,7 +17,15 @@ router = APIRouter()
 @router.get("/")
 async def read_members_limit(start: int = 0, limit: int = 10):
     members = crud.get_members(session, start, limit)
-    return members
+    images = []
+    for member in members:
+        print(member.image)     
+        path = '../img/member_img/'+ member.image
+        with open(path, 'rb') as img:
+            base64_string = base64.b64encode(img.read())
+            images.append(base64_string)
+    data = dict(members=members, images=images)
+    return data
 
 
 @router.get("/{member_uuid}")
