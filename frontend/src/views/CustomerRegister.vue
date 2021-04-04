@@ -1,24 +1,39 @@
 <template>
     <v-container class="col-6 centerContent">
-        <h1 class="centerText">고객 등록</h1>
+        <p class="centerText registerTitle">고객 등록</p>
         <div class="col-6 centerContent">
             <div>
                 <v-spacer></v-spacer>
-                <div>
-                    <img :src="imageUrl" style="border:0px; width:100%;" />
+                <div class="pb-5">
+                    <img v-if="imageUrl == ''" :src="imageUrl" />
+                    <img v-else :src="imageUrl" class="profileImg" />
                 </div>
-                <v-row style="padding-top:20px;">
+                <v-row>
                     <v-spacer></v-spacer>
-                    <p>{{ imageName }}</p>
+                    <p class="profileName">{{ imageName }}</p>
+
                     <input ref="imageInput" type="file" hidden @change="onChangeImages" />
                     <v-btn type="button" @click="onClickImageUpload">이미지 업로드</v-btn>
                 </v-row>
                 <v-spacer></v-spacer>
             </div>
-            <v-row style="margin:0; padding:0;">
-                <v-text-field v-model="member.name" label="name" type="string" dark></v-text-field>
+
+            <v-row>
+                <v-text-field
+                    v-model="member.name"
+                    label="name"
+                    type="string"
+                    dark
+                    class="nameField"
+                ></v-text-field>
                 <v-spacer></v-spacer>
-                <v-text-field v-model="member.age" label="나이" type="number" dark></v-text-field>
+                <v-text-field
+                    v-model="member.age"
+                    label="나이"
+                    type="number"
+                    dark
+                    class="ageField"
+                ></v-text-field>
             </v-row>
             <v-text-field
                 v-model="member.interests"
@@ -32,11 +47,11 @@
                 type="string"
                 dark
             ></v-text-field>
-            <v-row style="margin:0; padding:0;">
+            <v-row>
                 <v-spacer></v-spacer>
-                <v-btn elevation="2" class="resetBtn" @click="resetInformation">초기화</v-btn>
+                <button class="resetBtn" @click="resetInformation">초기화</button>
 
-                <v-btn elevation="2" class="registBtn" @click="registInformation">등록</v-btn>
+                <button class="registBtn" @click="registInformation">등록</button>
             </v-row>
         </div>
     </v-container>

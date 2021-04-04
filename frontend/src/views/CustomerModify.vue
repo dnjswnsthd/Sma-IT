@@ -6,26 +6,24 @@
         <v-spacer></v-spacer>
         <v-row>
             <div v-for="(customer, index) in customers" :key="index">
-                <div class="customInfoBox imgBox">
-                    <v-col style="height:300px;"
-                        ><img
-                            :src="`data:image/jpg;base64,${customer.customer_image}`"
-                            style="width:100%;  height:100%; display:block; margin:0 auto;"
-                    /></v-col>
-                    <br />
-                    <hr />
-                    <br />
+                <div class="imgBox">
+                    <div class="imgOutBox">
+                        <img :src="`data:image/jpg;base64,${customer.customer_image}`" />
+                    </div>
+
+                    <div class="divider"></div>
+
                     <p>이름 : {{ customer.name }}</p>
                     <p>나이 : {{ customer.age }}</p>
                     <p>관심분야 : {{ customer.interests }}</p>
                     <p>요구사항 : {{ customer.requirements }}</p>
-                    <hr />
-                    <div style="text-align:center;">
+                    <div class="divider"></div>
+                    <div class="btnBox">
                         <v-spacer></v-spacer>
-                        <v-icon large class="mr-2" style="color:#fff;" @click="editItem(customer)">
+                        <v-icon large class="mr-2" @click="editItem(customer)">
                             mdi-pencil
                         </v-icon>
-                        <v-icon large style="color:#fff;" @click="deleteItem(customer)">
+                        <v-icon large @click="deleteItem(customer)">
                             mdi-delete
                         </v-icon>
                     </div>
@@ -95,6 +93,12 @@ export default {
 
     methods: {
         scroll() {
+            // scrollTop
+            // 요소의 상단에서 맨 위에 보이는 콘텐츠 까지의 거리를 측정 한 것입니다 .
+            // 요소의 콘텐츠가 수직 스크롤바를 생성하지 않는 경우 해당 scrollTop값은 0입니다.
+
+            // offsetHeight
+            // padding이나 border등을 모두 포함한 요소의 높이.
             let scrolledToBottom =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
@@ -185,12 +189,5 @@ export default {
 };
 </script>
 <style scoped>
-.v-dialog {
-    font-family: 'MapoFlowerIsland';
-    color: #fff;
-}
-p {
-    margin: 8px;
-}
 @import '../assets/css/customerModify.css';
 </style>
