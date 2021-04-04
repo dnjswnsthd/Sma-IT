@@ -1,63 +1,59 @@
 <template>
-    <v-container style="padding-top: 40px">
+    <v-container>
         <v-spacer></v-spacer>
-        <v-row class="wrapBox">
-            <div class="col-3" style="padding-top: 200px;">
-                <p class="introduceMessage" style="padding-top:20px;">
-                    버튼을 눌러<br />합계를 확인하세요.
-                </p>
+        <v-row>
+            <div class="col-3 totalBox">
+                <p class="totalMessage">버튼을 눌러<br />합계를 확인하세요.</p>
                 <v-img
                     @mouseover="domouseover_won"
                     @click="checkTotal"
                     v-if="!won_c"
                     :src="require('../assets/images/won(w).png')"
-                    class="wonImage"
+                    class="totalBtn"
                 ></v-img>
                 <v-img
                     @click="checkTotal"
                     @mouseout="domouseout_won"
-                    class="wonImage"
+                    class="totalBtn"
                     v-else
                     :src="require('../assets/images/won.png')"
                 ></v-img>
-                <p style="font-size: 30px; text-align: center; padding-top: 20px;">{{ total }}</p>
+                <p class="totalMoney">{{ total }}</p>
             </div>
             <div class="col-6 cambox">
-                <vue-web-cam
-                    ref="webcam"
-                    :device-id="deviceId"
-                    style="margin-top: 70px; "
-                    width="100%"
-                    height="500px"
-                    @stopped="onStopped"
-                    @error="onError"
-                    @cameras="onCameras"
-                    @camera-change="onCameraChange"
-                />
-                <div
-                    style="border:1px solid white;
-    width:88%;
-    margin:25px auto;"
-                ></div>
-                <p style="font-size:28px; text-align:center; margin:0; padding:10px 0 40px;">
-                    카메라 정면을 봐주시고 <br />우측의 결제버튼을 클릭해주세요.
-                </p>
-                <v-spacer></v-spacer>
+                <div class="camInBox">
+                    <div class="camTopBox">
+                        <video
+                            ref="video"
+                            id="video"
+                            playsinline
+                            muted
+                            autoplay
+                            class="videoBox"
+                        ></video>
+                    </div>
+                    <div class="divider"></div>
+                    <v-row class="camBottomBox">
+                        <p class="guideMessage">
+                            카메라를 정면으로 봐주시고
+                            <br />
+                            버튼을 클릭해주세요
+                        </p>
+                    </v-row>
+                </div>
             </div>
-            <div class="col-3" style="padding-top: 200px;">
-                <p class="introduceMessage" style="padding-top:20px;">
-                    결제를 원하시면 <br />버튼을 눌러주세요.
-                </p>
+            <div class="col-3 payBox">
+                <p class="payMessage">결제를 원하시면 <br />버튼을 눌러주세요.</p>
                 <v-img
                     v-if="!pay_c"
-                    class="wonImage"
+                    class="payBtn"
                     @mouseover="domouseover_pay"
                     @click="checkPayment"
                     :src="require('../assets/images/click(w).png')"
                 ></v-img>
                 <v-img
                     v-else
-                    class="wonImage"
+                    class="payBtn"
                     @mouseout="domouseout_pay"
                     @click="checkPayment"
                     :src="require('../assets/images/click.png')"
@@ -69,48 +65,33 @@
 </template>
 
 <script>
-import { WebCam } from 'vue-web-cam';
 import swal from 'sweetalert';
 
 export default {
     name: 'App',
-    components: {
-        'vue-web-cam': WebCam,
-    },
+
     data() {
         return {
             img: null,
             camera: null,
-            deviceId: null,
-            devices: [],
             total: '',
             won_c: false,
             pay_c: false,
         };
     },
-    computed: {
-        device: function() {
-            return this.devices.find((n) => n.deviceId === this.deviceId);
-        },
-    },
-    watch: {
-        camera: function(id) {
-            this.deviceId = id;
-        },
-        devices: function() {
-            // Once we have a list select the first one
-            const [first, ...tail] = this.devices; // eslint-disable-line no-unused-vars
-            if (first) {
-                this.camera = first.deviceId;
-                this.deviceId = first.deviceId;
-            }
-        },
-        // won_c: function() {
-        //     if (this.won_c == false) {
-        //         console.log('금액확인');
-        //         this.total = '￦ 1,000,000';
-        //     } else this.total = '';
-        // },
+    mounted() {
+        //Start the PC front camera and display real-time video on the video tag
+        this.video = this.$refs.video;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then((stream) => {
+                this.video.srcObject = stream;
+                this.video.play();
+            });
+        }
+
+        console.log(this.$refs.canvas);
+
+        this.canvas = this.$refs.canvas;
     },
     methods: {
         domouseover_won() {
@@ -141,37 +122,9 @@ export default {
             }
             this.total = '';
         },
-        onCapture() {
-            this.img = this.$refs.webcam.capture();
-        },
-        onStarted(stream) {
-            console.log('On Started Event', stream);
-        },
-        onStopped(stream) {
-            console.log('On Stopped Event', stream);
-        },
-        onStop() {
-            this.$refs.webcam.stop();
-        },
-        onStart() {
-            this.$refs.webcam.start();
-        },
-        onError(error) {
-            console.log('On Error Event', error);
-        },
-        onCameras(cameras) {
-            this.devices = cameras;
-            console.log('On Cameras Event', cameras);
-        },
-        onCameraChange(deviceId) {
-            this.deviceId = deviceId;
-            this.camera = deviceId;
-            console.log('On Camera Change Event', deviceId);
-        },
     },
 };
 </script>
 <style scoped>
-@import '../assets/css/cam.css';
 @import '../assets/css/camPayment.css';
 </style>

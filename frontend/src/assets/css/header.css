@@ -1,21 +1,33 @@
 @charset "utf-8";
-
+header {
+    height: 100px;
+    background-color: #1d1c22;
+    border-bottom: 1px solid #fff;
+    margin-bottom: 80px;
+}
+.row {
+    height: 100% !important;
+}
 .logoBox {
     width: 300px;
-    height: 100px;
+    height: calc(100% - 10px);
+    margin-top: 10px;
+    cursor: pointer;
 }
 .logoImg {
     display: block;
     width: 100%;
-    height: calc(100% - 10px);
-    margin-top: 10px;
-    padding-left: 10px;
-}
-.menu {
-    color: white;
+    height: 100%;
 }
 .menu li {
-    line-height: 100px;
+    width: 20%;
+    height: 100%;
+    cursor: pointer;
+    line-height: 75px;
     text-align: center;
     color: white;
+    transition: all 0.4s ease-out;
+}
+.menu li:hover {
+    color: #9b8d77;
 }

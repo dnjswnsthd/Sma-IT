@@ -1,33 +1,34 @@
 @charset "utf-8";
-* {
-    background: rgba(0, 0, 0, 0);
-}
-.customerTable {
-    background: rgba(0, 0, 0, 0);
-}
 .modifyTitle {
     text-align: center;
     display: block;
     font-size: 24px;
 }
 
-tr:hover {
-    background-color: transparent !important;
-}
-
 .imgBox {
     background-image: url('../images/frame.png');
     background-position: center center;
     width: 420px;
-    /* height: 500px; */
-    text-align: center;
-}
-.customInfoBox {
-    float: left;
-    height: 100%;
     padding: 30px;
     padding-top: 40px;
-    width: 400px;
-    text-align: left;
     /* height: 500px; */
+    text-align: left;
+}
+.imgOutBox {
+    padding: 10px;
+}
+.imgOutBox img {
+    width: 100%;
+    margin: 0 auto;
+    height: 350px;
+    border-radius: 20px;
+}
+.btnBox {
+    text-align: center;
+}
+.btnBox .v-icon {
+    color: #fff !important;
+}
+.divider {
+    margin: 10px auto;
 }

@@ -7,7 +7,7 @@
     color: #fff;
 }
 img {
-    display: block;
+    display: block !important;
 }
 ul,
 li {
@@ -18,34 +18,23 @@ a {
     text-decoration: none;
 }
 p {
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 i {
     color: #fff;
 }
-/* @font-face {
-    font-family: 'SDSamliphopangche_Outline';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff')
-        format('woff');
-    font-weight: normal;
-    font-style: normal;
-} */
+.row {
+    margin: 0 !important;
+}
 @font-face {
     font-family: '양진체';
     src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
-/* @font-face {
-    font-family: 'MapoFlowerIsland';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff')
-        format('woff');
-    font-weight: normal;
-    font-style: normal;
-} */
+
 #app {
-    /* background-color: #192537; */
     background-image: url('../images/background.png');
 }
 .width-30 {
@@ -364,9 +353,4 @@ i {
     -ms-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.v-application p {
-    margin: 0;
-    padding: 0;
 }
