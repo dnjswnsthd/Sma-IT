@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
+from sqlalchemy.exc import SQLAlchemyError
 
 from models.member import MemberTable, Member
 from models.emotion import EmotionTable, Emotion
@@ -30,7 +31,7 @@ def create_visited(db: Session, uuid: int, start_visit: str):
         db.refresh(db_visited)
     except:
         db.rollback()
-        raise
+        raise SQLAlchemyError
 
     return None
 
@@ -43,7 +44,7 @@ def update_visited(db: Session, db_visited: VisitedTable, end_visited: str):
         db.refresh(db_visited)
     except:
         db.rollback()
-        raise
+        raise SQLAlchemyError
 
     return db_visited
 
@@ -58,6 +59,6 @@ def delete_visited_by_uuid(db: Session, uuid: int):
         db.refresh(db_member)
     except:
         db.rollback()
-        raise
+        raise SQLAlchemyError
 
     return db_member
