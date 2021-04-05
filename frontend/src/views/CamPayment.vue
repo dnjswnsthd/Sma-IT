@@ -23,6 +23,13 @@
             <div class="col-6 cambox">
                 <div class="camInBox">
                     <div class="camTopBox">
+                        <canvas
+                            ref="canvas"
+                            id="emo_canvas"
+                            width="650px"
+                            height="650px"
+                            class="canvasBox"
+                        ></canvas>
                         <video
                             ref="video"
                             id="video"
@@ -66,13 +73,15 @@
 
 <script>
 import swal from 'sweetalert';
-
+import http from '../api/axios';
 export default {
     name: 'App',
 
     data() {
         return {
-            img: null,
+            video: {},
+            canvas: {},
+            captures: [],
             camera: null,
             total: '',
             won_c: false,
@@ -115,12 +124,53 @@ export default {
         },
         checkPayment() {
             this.pay_c = !this.pay_c;
+
+            let context = this.canvas.getContext('2d').drawImage(this.video, 0, 0, 728, 650);
+            console.log('context : ' + context);
+            // console.log(this.canvas.toDataURL('image/png'));
+            this.captures.push(this.canvas.toDataURL('image/png')); //Store the captured image in the "captures" array
+
+            //   //Convert the format of the image added at the end of the array and assign it to the imgURL format
+            const file = this.makeFile(this.captures[this.captures.length - 1]);
+            console.log('imgURL : ' + file);
+
+            //   const fileName = 'canvas_img_'+new Date().getMilliseconds()+'.png';
+            let formData = new FormData();
+            formData.append('file', file);
+            console.log(file);
+
             if (this.pay_c == false) {
-                swal('결제를 진행합니다', {
-                    icon: 'success',
-                });
+                http.post(`/pay/`, formData)
+                    .then((response) => {
+                        console.log(response.data);
+                    })
+                    .catch((response) => {
+                        console.log(response);
+                        swal('에러발생!!', {
+                            icon: 'error',
+                        });
+                    });
             }
             this.total = '';
+        },
+        makeFile: function(dataURL) {
+            let BASE64_MARKER = ';base64,';
+            if (dataURL.indexOf(BASE64_MARKER) == -1) {
+                let parts = dataURL.split(',');
+                let contentType = parts[0].split(':')[1];
+                let raw = decodeURIComponent(parts[1]);
+                return new File([raw], { type: contentType });
+            }
+            let parts = dataURL.split(BASE64_MARKER);
+            let fileName = 'captureImage.jpg';
+            let contentType = parts[0].split(':')[1];
+            let raw = window.atob(parts[1]);
+            let rawLength = raw.length;
+            let uInt8Array = new Uint8Array(rawLength);
+            for (let i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+            return new File([uInt8Array], fileName, { type: contentType });
         },
     },
 };
