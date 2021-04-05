@@ -1,22 +1,23 @@
 <template>
-    <v-container class="col-8 centerContent">
+    <v-container style="padding-bottom:80px;">
         <p class="modifyTitle">고객 정보 수정</p>
         <v-divider class="mx-4" inset vertical></v-divider>
 
         <v-spacer></v-spacer>
         <v-row>
-            <div v-for="(customer, index) in customers" :key="index">
+            <div v-for="(customer, index) in customers" :key="index" class="col-4">
                 <div class="imgBox">
                     <div class="imgOutBox">
                         <img :src="`data:image/jpg;base64,${customer.customer_image}`" />
                     </div>
 
                     <div class="divider"></div>
-
-                    <p>이름 : {{ customer.name }}</p>
-                    <p>나이 : {{ customer.age }}</p>
-                    <p>관심분야 : {{ customer.interests }}</p>
-                    <p>요구사항 : {{ customer.requirements }}</p>
+                    <div class="infoBox">
+                        <p>이름 : {{ customer.name }}</p>
+                        <p>나이 : {{ customer.age }}</p>
+                        <p>관심분야 : {{ customer.interests }}</p>
+                        <p>요구사항 : {{ customer.requirements }}</p>
+                    </div>
                     <div class="divider"></div>
                     <div class="btnBox">
                         <v-spacer></v-spacer>
@@ -81,14 +82,12 @@ export default {
         },
     },
     created() {
+        console.log(this.isLoading);
         this.append_list();
         window.addEventListener('scroll', this.scroll);
     },
     destroyed() {
         window.removeEventListener('scroll', this.scroll);
-    },
-    mounted() {
-        this.isLoading = false;
     },
 
     methods: {
@@ -102,6 +101,10 @@ export default {
             let scrolledToBottom =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
+            console.log('scrollTop : ' + document.documentElement.scrollTop);
+            console.log('innerHeight : ' + window.innerHeight);
+            console.log('offsetHeight : ' + document.documentElement.offsetHeight);
+            console.log('scrolledToBottom : ' + scrolledToBottom);
             console.log(this.isLoading);
 
             if (this.isLoading && scrolledToBottom) {
@@ -143,11 +146,10 @@ export default {
                 },
             })
                 .then((response) => {
-                    if (response.data.length >= this.limit) {
+                    if (response.data.members.length >= this.limit) {
+                        console.log('data : ' + response.data.members);
                         this.isLoading = true;
                         for (var i = 0; i < this.limit; i++) {
-                            if (response.data.members[i].requirements == 'null')
-                                response.data.members[i].requirements = '없음';
                             this.customers.push({
                                 uuid: response.data.members[i].uuid,
                                 name: response.data.members[i].name,
@@ -162,8 +164,6 @@ export default {
                         console.log(this.start);
                     } else {
                         for (i = 0; i < response.data.members.length; i++) {
-                            if (response.data.members[i].requirements == 'null')
-                                response.data.members[i].requirements = '없음';
                             this.customers.push({
                                 uuid: response.data.members[i].uuid,
                                 name: response.data.members[i].name,
