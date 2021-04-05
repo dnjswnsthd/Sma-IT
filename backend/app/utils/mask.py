@@ -1,23 +1,54 @@
-import os
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from tensorflow.keras.models import load_model
+import numpy as np
 import cv2
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import paddlehub as hub
+import winsound
 
+facenet = cv2.dnn.readNet('utils/models/deploy.prototxt', 'utils/models/res10_300x300_ssd_iter_140000.caffemodel')
+model = load_model('utils/8LBMI2.h5')
+
+# 실시간 웹캠 읽기
 def mask_check(img_path: str):
-    # 사진 경로
-    test_img_path = [img_path]
-    img = mpimg.imread(test_img_path[0])
+    img = cv2.imread(img_path, cv2.IMREAD_COLOR)
 
-    hub.server_check()
+    h, w = img.shape[:2]
 
-    # 얼굴인식 및 마스크인식 모듈
-    module = hub.Module(name="pyramidbox_lite_mobile_mask")
+    blob = cv2.dnn.blobFromImage(img, scalefactor=1., size=(405, 405), mean=(104., 177., 123.))
+    facenet.setInput(blob)
+    dets = facenet.forward()
+    label = None
 
-    imgs = [cv2.imread(test_img_path[0])]
+    for i in range(dets.shape[2]):
+        confidence = dets[0, 0, i, 2]
+        if confidence < 0.5:
+            continue
 
-    # 얼굴인식 및 마스크 인식
-    results = module.face_detection(images=imgs, use_multi_scale=True, shrink=0.6, visualization=False)
+        x1 = int(dets[0, 0, i, 3] * w)
+        y1 = int(dets[0, 0, i, 4] * h)
+        x2 = int(dets[0, 0, i, 5] * w)
+        y2 = int(dets[0, 0, i, 6] * h)
 
-    return results[0]['data'][0]['label']
-    
+        face = img[y1:y2, x1:x2]
+        face = face/256
+
+        if (x2 >= w or y2 >= h):
+            continue
+        if (x1<=0 or y1<=0):
+            continue
+
+        face_input = cv2.resize(face,(200, 200))
+        face_input = np.expand_dims(face_input, axis=0)
+        face_input = np.array(face_input)
+
+        modelpredict = model.predict(face_input)
+        mask=modelpredict[0][0]
+        nomask=modelpredict[0][1]
+
+        if mask > nomask:
+            color = (0, 255, 0)
+            label = 'MAKS'
+        else:
+            color = (0, 0, 255)
+            label = 'NO MASK'
+
+    return label
