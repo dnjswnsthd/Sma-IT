@@ -6,7 +6,7 @@ from models.emotion import EmotionTable, Emotion
 
 
 def get_members(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(MemberTable).offset(skip).limit(limit).all()
+    return db.query(MemberTable).order_by(MemberTable.uuid).offset(skip).limit(limit).all()
 
 
 def get_member_by_name(db: Session, member_name: str):
@@ -52,9 +52,7 @@ def delete_member_by_uuid(db: Session, member_uuid: int):
     try:
         db_member = db.query(MemberTable).filter(
             MemberTable.uuid == member_uuid).delete()
-        db.commit()
     except:
-        db.rollback()
         raise SQLAlchemyError
     return db_member
 
