@@ -54,10 +54,7 @@ async def create_members(member: Member):
         # image 등록
         db_member = crud.update_image_member(
             session, db_member, db_member.uuid)
-        session.commit()
-        session.refresh(db_member)
     except SQLAlchemyError:
-        session.rollback()
         raise HTTPException(status_code=400, detail="Creation failure")
 
     db_member = crud.get_member_by_name(session, member.name)
@@ -78,7 +75,7 @@ async def update_members(member: UpdateMember):
     if db_member is None:
         raise HTTPException(status_code=400, detail="No members")
     db_member = crud.update_member(session, db_member, member)
-    print(db_member)
+
     return db_member
 
 
