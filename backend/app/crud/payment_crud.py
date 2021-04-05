@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 
 from models.payment import Payment, PaymentTable
 
@@ -18,6 +19,6 @@ def insert_cardInfo(db: Session, payment: Payment):
         db.refresh(db_payment)
     except:
         db.rollback()
-        raise
+        raise SQLAlchemyError
 
     return db_payment
