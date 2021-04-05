@@ -13,5 +13,6 @@ RUN pip install paddlehub==2.0.0rc0
 
 RUN pip install pymysql sqlalchemy python-multipart
 RUN pip install async-exit-stack async-generator
+RUN pip install tensorflow
 
 EXPOSE 8000
