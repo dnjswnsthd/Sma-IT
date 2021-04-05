@@ -8,20 +8,23 @@
 .imgBox {
     background-image: url('../images/frame.png');
     background-position: center center;
-    width: 420px;
+    width: 100%;
     padding: 30px;
     padding-top: 40px;
-    /* height: 500px; */
+
     text-align: left;
 }
 .imgOutBox {
-    padding: 10px;
+    padding: 20px;
 }
 .imgOutBox img {
     width: 100%;
     margin: 0 auto;
     height: 350px;
     border-radius: 20px;
+}
+.infoBox {
+    padding: 20px;
 }
 .btnBox {
     text-align: center;
