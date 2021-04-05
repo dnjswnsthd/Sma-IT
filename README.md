@@ -1,10 +1,10 @@
 <div style="width:100%; height:100px "><img src="images/logo.png" style="width:200px;height:100px;float:left; display : block;"></div>
 
- ![Generic badge](https://img.shields.io/badge/Vue.js-2.6.1-orange.svg) ![Generic badge](https://img.shields.io/badge/python-3.8.0-{color}.svg) ![Generic badge](https://img.shields.io/badge/Axios-0.21.1-blue.svg)![Generic badge](https://img.shields.io/badge/Uvicorn-0.13.4-fe0094.svg)![Generic badge](https://img.shields.io/badge/FastAPI-0.63.0-red.svg)![Generic badge](https://img.shields.io/badge/Mysql-8.0.22-yellowgreen.svg)![Generic badge](https://img.shields.io/badge/Nginx-lightgrey.svg)
+ ![Generic badge](https://img.shields.io/badge/Vue.js-2.6.1-orange.svg) ![Generic badge](https://img.shields.io/badge/python-3.8.0-{color}.svg) ![Generic badge](https://img.shields.io/badge/Axios-0.21.1-blue.svg)![Generic badge](https://img.shields.io/badge/Uvicorn-0.11.3-fe0094.svg)![Generic badge](https://img.shields.io/badge/FastAPI-0.63.0-red.svg)![Generic badge](https://img.shields.io/badge/Mysql-8.0.17-yellowgreen.svg)![Generic badge](https://img.shields.io/badge/Nginx-lightgrey.svg)
 
 # Sma-IT
 
-## '얼굴 인식을 통한 효율적 마케팅 실현 서비스'
+### '얼굴 인식을 통한 효율적 마케팅 실현 서비스'
 
 프로젝트 명은 'Sma-IT'로 'Smart Marketing With IT' 라는 뜻을 갖고 있으며,
 
@@ -66,7 +66,7 @@
 
 # Installation
 
-## Frontend
+### Frontend
 
 ```bash
 cd frontend
@@ -76,7 +76,7 @@ npm run serve
 
 Microsoft Azure FaceAPI Key & EndPoint 생성 필요
 
-## Backend
+### Backend
 
 ```bash
 cd backend
@@ -88,16 +88,14 @@ uvicorn main:app --reload
 
 ### Anaconda
 
-------
-
-### 가상 환경 생성 및 활성화
+#### 가상 환경 생성 및 활성화
 
 ```bash
 conda create -n <project-name> python=<version>
 conda activate <project-name>
 ```
 
-### 필요 라이브러리 설치
+#### 필요 라이브러리 설치
 
 ```bash
 conda install <librarys>
@@ -144,57 +142,41 @@ conda remove -n <가상환경 이름> <패키지 이름>
 
 ## Backend modules 패키지
 
-### face_recognition 에서 사용하는 패키지
-
 ```bash
-conda create -n <가상환경 이름> python=3.8
-conda activate <가상환경 이름>
+pip install fastapi uvicorn[standard]
 
-conda install pip cmake numpy
-conda install opencv
+RUN pip install pip cmake numpy opencv-python-headless pillow
 
-conda install pillow
-conda install -c conda-forge dlib
-conda install -c akode face_recognition_models
-pip install --no-dependencies face_recognition
-```
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 
-### face_test 에서 사용하는 패키지
+RUN pip install dlib
+RUN pip install face_recognition
 
-```bash
-conda create -n <가상환경 이름> python=3.8  #3.6이상
-conda activate <가상환경 이름>
-
-python -m pip install paddlepaddle==2.0.1 -i <https://mirror.baidu.com/pypi/simple>
-pip install paddlehub==2.0.0rc0
-
-python face_test.py # <-- 실행
-
-# <https://github.com/paddlepaddle/paddlehub> 
-pip install pymysql
-pip install sqlalchemy
-pip install async-exit-stack async-generator
+RUN pip install pymysql sqlalchemy python-multipart
+RUN pip install async-exit-stack async-generator
+RUN pip install tensorflow
 ```
 
 # 배포
 
-## Docker & Jenkins
+### Docker & Jenkins
 
-- Docker에 Jenkins image를 만들고 Jenkinxs와 git commit 시 자동으로 업데이트 반영 되도록 배포
-- Frontend와 Backend에 각각 Dockerfile을 생성해 배포 설저을 저장
+- Docker에 Jenkins image를 만들고 git commit 시 자동으로 업데이트 반영 되도록 배포
+- Frontend와 Backend에 각각 Dockerfile을 생성해 배포 설정을 저장
 
 ### Nginx & SSL
 
 - HA와 Load Balancing을 위하여 Nginx 적용
 - SSL 키를 적용하여 https 준수
 
+### DB
 
+- Docker에 Mysql 컨테이너를 생성하여 docker network를 연결하여 사용
 
 # Tech Stacks
 
 <img src="images/tech.png"/>
-
-
 
 # 프로젝트 상세 소개
 
