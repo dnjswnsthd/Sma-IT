@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 
 from models.member import MemberTable, Member, UpdateMember
 from models.emotion import EmotionTable, Emotion
@@ -34,20 +35,16 @@ def create_member(db: Session, member: Member, time: str):
         db.commit()
         db.refresh(db_member)
     except:
-        db.rollback()
-        raise
+        raise SQLAlchemyError
 
     return db_member
 
 
 def update_image_member(db: Session, db_member: MemberTable, image: int):
-    db_member.image = str(image) + ".jpg"
     try:
-        db.commit()
-        db.refresh(db_member)
+        db_member.image = str(image) + ".jpg"
     except:
-        db.rollback()
-        raise
+        raise SQLAlchemyError
     return db_member
 
 
@@ -58,18 +55,18 @@ def delete_member_by_uuid(db: Session, member_uuid: int):
         db.commit()
     except:
         db.rollback()
-        raise
+        raise SQLAlchemyError
     return db_member
 
 
 def update_member(db: Session, db_member: MemberTable, member: UpdateMember):
-    db_member.uuid = member.uuid
-    db_member.name = member.name
-    db_member.age = member.age
-    db_member.interests = member.interests
-    db_member.requirements = member.requirements
-    db_member.image = member.image
     try:
+        db_member.uuid = member.uuid
+        db_member.name = member.name
+        db_member.age = member.age
+        db_member.interests = member.interests
+        db_member.requirements = member.requirements
+        db_member.image = member.image
         db.commit()
         db.refresh(db_member)
     except:
@@ -77,15 +74,13 @@ def update_member(db: Session, db_member: MemberTable, member: UpdateMember):
         raise
     return db_member
 
+
 # parameter : uuid 의 emotion 값 list로 return
-
-
 def get_emotion(db: Session, member_uuid: int):
     return db.query(EmotionTable).filter(member_uuid == EmotionTable.uuid).all()
 
+
 # Insert Emotion
-
-
 def create_emotion(db: Session, emotion: Emotion):
     db_emotion = EmotionTable()
     db_emotion.uuid = emotion.uuid
@@ -104,5 +99,5 @@ def create_emotion(db: Session, emotion: Emotion):
         db.refresh(db_emotion)
     except:
         db.rollback()
-        raise
+        raise SQLAlchemyError
     return db_emotion

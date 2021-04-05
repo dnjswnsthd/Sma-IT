@@ -8,6 +8,8 @@ from database.db import session
 from utils.mask import mask_check
 from utils.face import face_check
 
+from sqlalchemy.exc import SQLAlchemyError
+
 import base64
 
 router = APIRouter()
@@ -43,8 +45,10 @@ async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
 
     memberInfo = member_crud.get_member_by_image(session, member_img)
     # 입장 시간 저장
-    visited_crud.create_visited(
-        session, memberInfo.uuid, start_visted)
+    try:
+        visited_crud.create_visited(session, memberInfo.uuid, start_visted)
+    except SQLAlchemyError:
+        raise HTTPException(status_code=400, detail="?? already registered")
     # 아니 위에 visited 테이블 건드니깐 왜 이것도 바뀌냐고 망할 파이썬
     memberInfo = member_crud.get_member_by_image(session, member_img)
 
