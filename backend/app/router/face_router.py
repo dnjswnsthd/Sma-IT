@@ -49,7 +49,7 @@ async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
         visited_crud.create_visited(session, memberInfo.uuid, start_visted)
     except SQLAlchemyError:
         raise HTTPException(status_code=400, detail="?? already registered")
-    # 아니 위에 visited 테이블 건드니깐 왜 이것도 바뀌냐고 망할 파이썬
+
     memberInfo = member_crud.get_member_by_image(session, member_img)
 
     # image 업로딩
@@ -75,7 +75,7 @@ async def face_checking(file: UploadFile = File(...)):
     if member_img == '얼굴인식 실패':
         raise HTTPException(status_code=400, detail="얼굴인식 실패")
     elif member_img == '등록된 회원이 아닙니다':
-        raise HTTPException(status_code=400, detail='등록된 회원이 아닙니다')
+        raise HTTPException(status_code=400, detail='Not Regist')
 
     member = member_crud.get_member_by_image(session, member_img)
     print(member.__dict__)
