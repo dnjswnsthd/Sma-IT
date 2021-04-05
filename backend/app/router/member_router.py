@@ -1,10 +1,13 @@
 from fastapi import APIRouter, File, Form, UploadFile, Depends, HTTPException
+from sqlalchemy import exc
 from models.member import Member, UpdateMember
 from models.emotion import Emotion
 
 from crud import member_crud as crud
 from crud import visited_crud
 from database.db import session
+
+from sqlalchemy.exc import SQLAlchemyError
 
 import base64
 
@@ -19,12 +22,13 @@ async def read_members_limit(start: int = 0, limit: int = 10):
     members = crud.get_members(session, start, limit)
     images = []
     for member in members:
-        print(member.image)     
-        path = '../img/member_img/'+ member.image
+        print(member.image)
+        path = '../img/member_img/' + member.image
         with open(path, 'rb') as img:
             base64_string = base64.b64encode(img.read())
             images.append(base64_string)
     data = dict(members=members, images=images)
+
     return data
 
 
@@ -44,13 +48,16 @@ async def create_members(member: Member):
 
     # 시간생성
     now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    # 등록
-    db_member = crud.create_member(session, member, now)
-    # image 등록
-    db_member = crud.update_image_member(session, db_member, db_member.uuid)
-
-    # 가입 실패
-    if db_member is None:
+    try:
+        # 등록
+        db_member = crud.create_member(session, member, now)
+        # image 등록
+        db_member = crud.update_image_member(
+            session, db_member, db_member.uuid)
+        session.commit()
+        session.refresh(db_member)
+    except SQLAlchemyError:
+        session.rollback()
         raise HTTPException(status_code=400, detail="Creation failure")
 
     db_member = crud.get_member_by_name(session, member.name)
@@ -78,7 +85,8 @@ async def update_members(member: UpdateMember):
 @router.delete("/{member_uuid}")
 async def delete_members(member_uuid: int):
     db_member = crud.delete_member_by_uuid(session, member_uuid)
-    if db_member is None:
+
+    if db_member == 0:
         raise HTTPException(status_code=400, detail="Delete failure")
     path = "../img/member_img/"+str(member_uuid)+".jpg"
     if os.path.isfile(path):
@@ -105,11 +113,3 @@ async def create_emotion(emotion: Emotion):
     visited_crud.update_visited(session, db_visited, emotion.end_visit)
 
     return db_emotion
-
-# ///////////////////////
-# @router.post("/test/{member_uuid}")
-# async def create_emotion(member_uuid: int):
-
-#     db_visited = visited_crud.get_visited_by_uuid(session, member_uuid)
-#     visited_crud.update_visited(session,db_visited,"2021-03-31 12:30:32")
-#     return db_visited
