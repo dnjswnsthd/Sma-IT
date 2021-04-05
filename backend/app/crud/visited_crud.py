@@ -1,10 +1,8 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
 from sqlalchemy.exc import SQLAlchemyError
 
-from models.member import MemberTable, Member
-from models.emotion import EmotionTable, Emotion
-from models.visited import VisitedTable, Visited
+from models.member import MemberTable
+from models.visited import VisitedTable
 
 
 def get_visiteds(db: Session, skip: int = 0, limit: int = 100):

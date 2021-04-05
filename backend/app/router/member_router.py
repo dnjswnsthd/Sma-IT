@@ -1,5 +1,5 @@
-from fastapi import APIRouter, File, Form, UploadFile, Depends, HTTPException
-from sqlalchemy import exc
+from fastapi import APIRouter, File, UploadFile, HTTPException
+
 from models.member import Member, UpdateMember
 from models.emotion import Emotion
 
@@ -84,24 +84,28 @@ async def update_members(member: UpdateMember):
 
 @router.delete("/{member_uuid}")
 async def delete_members(member_uuid: int):
-    db_member = crud.delete_member_by_uuid(session, member_uuid)
-
-    if db_member == 0:
+    try:
+        db_member = crud.delete_member_by_uuid(session, member_uuid)
+        if db_member == 0:
+            raise HTTPException(status_code=400, detail="Delete failure")
+        path = "../img/member_img/"+str(member_uuid)+".jpg"
+        if os.path.isfile(path):
+            os.remove(path)
+        session.commit()
+    except:
+        session.rollback()
         raise HTTPException(status_code=400, detail="Delete failure")
-    path = "../img/member_img/"+str(member_uuid)+".jpg"
-    if os.path.isfile(path):
-        os.remove(path)
 
     return db_member
 
 
-@router.get("/emotion/{member_uuid}")
+@ router.get("/emotion/{member_uuid}")
 async def read_emotion(member_uuid: int):
     db_emotion = crud.get_emotion(session, member_uuid)
     return db_emotion
 
 
-@router.post("/emotion")
+@ router.post("/emotion")
 async def create_emotion(emotion: Emotion):
     # 감정 데이터 생성
     db_emotion = crud.create_emotion(session, emotion)
