@@ -25,9 +25,21 @@ async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
     member_img = face_check(file.filename)
 
     if member_img == '얼굴인식 실패':
-        raise HTTPException(status_code=400, detail="얼굴인식 실패")
+        if isMask == 'NO MASK':
+            raise HTTPException(status_code=401, detail="얼굴인식 실패")
+        elif isMask == 'MASK':
+            raise HTTPException(status_code=400, detail="얼굴인식 실패")
     elif member_img == '등록된 회원이 아닙니다':
-        raise HTTPException(status_code=400, detail=isMask)
+        if isMask == 'NO MASK':
+            raise HTTPException(status_code=401, detail="Not Regist")
+        elif isMask == 'MASK':
+            raise HTTPException(status_code=400, detail="Not Regist")
+
+    # if member_img == '얼굴인식 실패':
+    #     raise HTTPException(status_code=400, detail="얼굴인식 실패", isMask=isMask)
+    # elif member_img == '등록된 회원이 아닙니다':
+    #     raise HTTPException(
+    #         status_code=400, detail="Not Regist", isMask=isMask)
 
     memberInfo = member_crud.get_member_by_image(session, member_img)
     # 입장 시간 저장
@@ -36,12 +48,12 @@ async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
     # 아니 위에 visited 테이블 건드니깐 왜 이것도 바뀌냐고 망할 파이썬
     memberInfo = member_crud.get_member_by_image(session, member_img)
 
-    #image 업로딩
+    # image 업로딩
     path = '../img/member_img/' + memberInfo.image
     base64_string = None
     with open(path, 'rb') as img:
         base64_string = base64.b64encode(img.read())
-    
+
     face_data = dict(member=memberInfo, isMask=isMask, image=base64_string)
 
     return face_data
