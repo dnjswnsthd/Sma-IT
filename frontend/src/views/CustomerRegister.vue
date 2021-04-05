@@ -71,7 +71,7 @@ export default {
                 age: '',
                 interests: '',
                 requirements: '',
-                image: 'test.jpg',
+                image: '',
             },
         };
     },
@@ -88,36 +88,56 @@ export default {
         },
         resetInformation() {
             console.log('resetInformation');
-            this.name = '';
-            this.age = '';
-            this.interests = '';
-            this.requirements = '';
+            this.member.name = '';
+            this.member.age = '';
+            this.member.interests = '';
+            this.member.requirements = '';
         },
         registInformation() {
-            let formData = new FormData();
-            formData.append('file', this.imageFile);
-            http.post('/member/', this.member)
-                .then((response) => {
-                    this.imageName = response.data.image;
-                    http.post(`/member/image/${this.imageName}`, formData)
-                        .then(() => {
-                            swal('등록 성공!', {
-                                icon: 'success',
-                            });
-                            this.$router.push({ name: 'Cam' });
-                        })
-                        .catch(() => {
-                            swal('등록 실패!', {
-                                icon: 'error',
-                            });
-                        });
-                })
-                .catch((response) => {
-                    swal('등록 실패!', {
-                        icon: 'error',
-                    });
-                    console.log(response);
+            if (this.imageFile == '' || this.imageName == '') {
+                swal('이미지를 넣어 주세요!', {
+                    icon: 'error',
                 });
+            } else if (this.member.name == '') {
+                swal('이름을 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (this.member.age == '') {
+                swal('나이를 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (this.member.age < 0 || this.member.age > 150) {
+                swal('잘못된 정보 입니다!', {
+                    icon: 'error',
+                });
+            } else {
+                if (this.member.interests == '') this.member.interests = '없음';
+                if (this.member.requirements == '') this.member.requirements = '없음';
+                let formData = new FormData();
+                formData.append('file', this.imageFile);
+                http.post('/member/', this.member)
+                    .then((response) => {
+                        this.imageName = response.data.image;
+                        http.post(`/member/image/${this.imageName}`, formData)
+                            .then(() => {
+                                swal('등록 성공!', {
+                                    icon: 'success',
+                                });
+                                this.$router.push({ name: 'Cam' });
+                            })
+                            .catch(() => {
+                                swal('등록 실패!', {
+                                    icon: 'error',
+                                });
+                            });
+                    })
+                    .catch((response) => {
+                        swal('등록 실패!', {
+                            icon: 'error',
+                        });
+                        console.log(response);
+                    });
+            }
         },
     },
 };
