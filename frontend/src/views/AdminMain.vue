@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <div class="mx-auto" max-width="1920" style="margin-top:50px;">
+        <div class="mx-auto" max-width="1920">
             <h2 class="col-11 centerContent">
                 현재 방문 고객 현황
                 <span>현재 고객 수 : {{ getCustomerInfo.length }}</span>
@@ -19,36 +19,33 @@
                         @click="toggle"
                         style="margin:0 auto;"
                     >
-                        <div class="fill-height">
+                        <div>
                             <div class="firstBox">
-                                <div
-                                    class=" customInfoBox"
-                                    style="width:50%; padding:40px 0 0 30px;"
-                                >
-                                    <img
-                                        :src="`data:image/jpg;base64,${customer.image}`"
-                                        style="width:100%;  height:100%;"
-                                    />
-                                </div>
-                                <div
-                                    class=" customInfoBox"
-                                    style="width:50%;  padding:90px 30px 0 20px;"
-                                >
-                                    <p>이름 : {{ customer.name }}</p>
-                                    <br />
-                                    <p>나이 : {{ customer.age }}세</p>
-                                </div>
+                                <v-row>
+                                    <div class="profileBox">
+                                        <img :src="`data:image/jpg;base64,${customer.image}`" />
+                                    </div>
+
+                                    <div class="customerInfoBox">
+                                        <div class="customerInfoInBox">
+                                            <p>이름 : {{ customer.name }}</p>
+                                            <br />
+                                            <p>나이 : {{ customer.age }}세</p>
+                                        </div>
+                                    </div>
+                                </v-row>
                             </div>
-
+                            <div class="divider"></div>
                             <div class="secondBox">
-                                <p>관심상품 : {{ customer.interests }}</p>
-                                <p>
-                                    요구사항 :
+                                <div class="secondTopBox">
+                                    <p>관심상품 : {{ customer.interests }}</p>
+                                    <p>
+                                        요구사항 :
+                                        {{ customer.requirements }}
+                                    </p>
+                                </div>
+                                <div class="divider"></div>
 
-                                    {{ customer.requirements }}
-                                </p>
-                                <hr />
-                                <br />
                                 <v-dialog v-model="satisfyDialog" width="500">
                                     <template v-slot:activator="{ on, attrs }">
                                         <button
@@ -56,7 +53,6 @@
                                             v-bind="attrs"
                                             v-on="on"
                                             @click="goCamSatisfied(customer.uuid)"
-                                            style="background-color:#1D1C22; border:1px solid white; border-radius:5px; font-size:14px; "
                                         >
                                             => 최근 만족도 확인 &lt;=
                                         </button>
@@ -83,6 +79,7 @@
                                     </v-card>
                                 </v-dialog>
                             </div>
+                            <div class="divider"></div>
                             <div class="thirdBox">
                                 <p>입장시간 : {{ customer.visit_start }}</p>
                                 <p>퇴장시간 : 퇴장전</p>
@@ -150,10 +147,4 @@ export default {
 </script>
 <style scoped>
 @import '../assets/css/adminMain.css';
-.v-application p {
-    margin: 0;
-}
-.secondBox p {
-    margin-bottom: 16px;
-}
 </style>

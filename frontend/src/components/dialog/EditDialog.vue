@@ -7,18 +7,18 @@
                         :src="`data:image/jpg;base64,${item.customer_image}`"
                         style="width:100%;  height:100%;"
                     />
-                    <v-row style="padding-top: 10px">
-                        <v-col cols="12" sm="6" md="4">
+                    <v-row>
+                        <v-col cols="12" sm="6" md="6">
                             <v-text-field v-model="item.name" label="name"></v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
-                        <v-col cols="12" sm="6" md="4">
+                        <v-col cols="12" sm="6" md="6">
                             <v-text-field v-model="item.age" label="나이"></v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" sm="6" md="4">
+                        <v-col cols="12" sm="6" md="12">
                             <v-text-field v-model="item.interests" label="관심품목"></v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
