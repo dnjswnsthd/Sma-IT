@@ -25,7 +25,7 @@ ENGINE = create_engine(
 session = scoped_session(
     sessionmaker(
         autocommit=False,
-        autoflush=False,
+        autoflush=True,
         bind=ENGINE
     )
 )
