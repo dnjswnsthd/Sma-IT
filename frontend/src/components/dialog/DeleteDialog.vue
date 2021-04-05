@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialogDelete" max-width="500px">
         <v-card>
-            <p class="headTitle" style="color: black; text-align:center; padding-top: 10px; ">
+            <p style="color: black; text-align:center; padding-top: 20px !important; ">
                 {{ item.name }}님의 고객정보를 삭제하시겠습니까?
             </p>
             <v-card-actions>

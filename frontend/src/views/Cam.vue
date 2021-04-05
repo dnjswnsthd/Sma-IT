@@ -2,14 +2,7 @@
     <v-container>
         <v-row class="wrapBox">
             <div class="welcomeBox col-2">
-                <!-- <p class="introduceMessage" style="padding-top:300px; padding-left:100px">
-                    print <br />(Welcome to Visit);
-                </p> -->
-                <img
-                    src="../assets/images/welcome.png"
-                    alt="welcome"
-                    style="width:300px; margin-left:50px; margin-top : 100px;"
-                />
+                <img src="../assets/images/welcome.png" alt="welcome" />
             </div>
             <v-spacer></v-spacer>
             <div class="col-6 cambox">
@@ -52,20 +45,14 @@
                             />
                             <img v-else src="../assets/images/click_color.png" alt="클릭버튼" />
                         </div>
-
-                        <!-- <button @click="goCapture" style="color: gold; font-size:40px; ">
-                            Click
-                        </button> -->
                     </v-row>
                 </div>
             </div>
             <v-spacer></v-spacer>
-            <div class="productBox col-2" style="padding-top: 80px;">
-                <img src="../assets/images/banner.png" alt="배너이미지" style="height:700px;" />
+            <div class="bannerBox col-2">
+                <img src="../assets/images/banner.png" alt="배너이미지" />
             </div>
         </v-row>
-        <v-btn @click="goCamSatisfied">만족도화면보기</v-btn>
-        <v-btn @click="goCamPayment">결제화면보기</v-btn>
     </v-container>
 </template>
 
@@ -81,10 +68,7 @@ export default {
             video: {},
             canvas: {},
             captures: [],
-            testTimer: '',
-            decodeUrl: '',
             imgUrl: '',
-            formValues: {},
             current: '',
             clickDialog: false,
             member: {
@@ -100,14 +84,12 @@ export default {
         };
     },
     computed: {
-        device: function() {
-            return this.devices.find((n) => n.deviceId === this.deviceId);
-        },
         ...mapState(['customerInfo', 'emotionAnalysis']),
     },
     mounted() {
         //Start the PC front camera and display real-time video on the video tag
         this.video = this.$refs.video;
+        // navigator.mediaDevices는 현재 연결된 미디어 입력 장치
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then((stream) => {
                 this.video.srcObject = stream;
@@ -137,7 +119,7 @@ export default {
             };
             console.log(params);
             //   //Convert the format of the image added at the end of the array and assign it to the imgURL format
-            const file = this.makeblob(this.captures[this.captures.length - 1]);
+            const file = this.makeFile(this.captures[this.captures.length - 1]);
             console.log('imgURL : ' + file);
 
             //   const fileName = 'canvas_img_'+new Date().getMilliseconds()+'.png';
@@ -153,12 +135,14 @@ export default {
             var min = curDate.getMinutes();
             var sec = curDate.getSeconds();
 
+            // 현재 시간을 저장.
             this.current = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
             console.log(this.current);
+
             http.post(`/face/mask/${this.current}`, formData)
                 .then((response) => {
                     console.log(response.data.member);
-
+                    // member에 가져온 값을 대입
                     this.member.age = response.data.member.age;
                     this.member.image = response.data.image;
                     this.member.interests = response.data.member.interests;
@@ -168,10 +152,12 @@ export default {
                     this.member.uuid = response.data.member.uuid;
                     this.member.visit_start = this.current;
 
+                    // vuex에 정보를 저장.
                     this.$store.commit('setCustomerInfo', this.member);
                     console.log('------------------------');
                     console.log(this.customerInfo);
                     console.log(response.data.isMask);
+                    // 마스크를 끼지 않았다면
                     if (response.data.isMask == 'NO MASK') {
                         swal(
                             response.data.member.name + '님 마스크를 착용해야 입장이 가능합니다.',
@@ -201,7 +187,8 @@ export default {
                     }
                     console.log(error.response.data.detail);
                 });
-            //Send imgURL image to Face API
+            // Send imgURL image to Face API
+            // 감정분석.
             Axios.post(
                 uriBase +
                     '?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion',
@@ -226,7 +213,7 @@ export default {
                 });
             this.clickDialog = false;
         },
-        makeblob: function(dataURL) {
+        makeFile: function(dataURL) {
             let BASE64_MARKER = ';base64,';
             if (dataURL.indexOf(BASE64_MARKER) == -1) {
                 let parts = dataURL.split(',');
@@ -251,66 +238,9 @@ export default {
         outClickBtn() {
             this.clickDialog = false;
         },
-        goCamPayment() {
-            this.$router.push({ name: 'CamSatisfied' });
-        },
-        goCamSatisfied() {
-            this.$router.push({ name: 'CamPayment' });
-        },
     },
 };
 </script>
 <style scoped>
 @import '../assets/css/cam.css';
-.camInBox {
-    width: calc(100% - 100px);
-    margin: 60px auto;
-}
-.camTopBox {
-    height: 75%;
-    position: relative;
-}
-.camBottomBox {
-    height: 25%;
-    padding: 0 100px;
-}
-.canvasBox {
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: 0;
-    margin-top: 100px;
-    margin-left: -200px;
-    z-index: -1;
-}
-
-.videoBox {
-    display: block;
-    margin: 0 auto;
-    width: 750px;
-    height: 565px;
-    border-radius: 20px;
-    border: 4px solid #fff;
-}
-.productBox {
-    margin-right: 50px;
-}
-.productBox img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    border: 3px solid #6e0b40;
-    /* box-shadow: 0px 0px 3px 7px rgb(255, 255, 255); */
-}
-
-.clickBtn {
-    width: 80px;
-}
-.clickBtn img {
-    display: block;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-}
 </style>

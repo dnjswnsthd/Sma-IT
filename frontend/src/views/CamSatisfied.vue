@@ -3,7 +3,7 @@
         <v-row class="wrapBox">
             <div class="col-6">
                 <div class="satisfiedOutBox">
-                    <p class="introduceMessage" style="padding-top:20px;">
+                    <p class="satisfiedMessage">
                         만족도 평가가
                         <br />
                         저장됩니다.
@@ -52,10 +52,6 @@
                             />
                             <img v-else src="../assets/images/click_color.png" alt="클릭버튼" />
                         </div>
-
-                        <!-- <button @click="goCapture" style="color: gold; font-size:40px; ">
-                            Click
-                        </button> -->
                     </v-row>
                 </div>
             </div>
@@ -80,7 +76,6 @@ export default {
             canvas: {},
             captures: [],
             imgUrl: '',
-            formValues: {},
             current: '',
             member: {
                 uuid: 0,
@@ -258,61 +253,5 @@ export default {
 };
 </script>
 <style scoped>
-@import '../assets/css/cam.css';
 @import '../assets/css/camSatisfied.css';
-.camInBox {
-    width: calc(100% - 100px);
-    margin: 60px auto;
-}
-.camTopBox {
-    height: 75%;
-    position: relative;
-}
-.camBottomBox {
-    height: 25%;
-    padding: 0 100px;
-}
-.canvasBox {
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: 0;
-    margin-top: 100px;
-    margin-left: -200px;
-    z-index: -1;
-}
-
-.videoBox {
-    display: block;
-    margin: 0 auto;
-    width: 750px;
-    height: 565px;
-    border-radius: 20px;
-    border: 4px solid #fff;
-}
-.productBox {
-    margin-right: 50px;
-}
-.productBox img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    border: 3px solid #6e0b40;
-    /* box-shadow: 0px 0px 3px 7px rgb(255, 255, 255); */
-}
-
-.clickBtn {
-    width: 80px;
-}
-.clickBtn img {
-    display: block;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-}
-
-.satisfiedOutBox {
-    margin-top: 100px;
-}
 </style>

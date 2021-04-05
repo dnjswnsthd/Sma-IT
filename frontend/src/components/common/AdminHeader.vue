@@ -5,10 +5,12 @@
                 <img src="@/assets/images/logo.png" alt="Logo" class="logoImg" />
             </div>
             <v-spacer></v-spacer>
-            <v-row class="menu col-3">
-                <li class="col-4" @click="goAdminMain">관리자 페이지</li>
-                <li class="col-4" @click="goCustomerRegister">고객 등록</li>
-                <li class="col-4" @click="goCustomerModify">고객 정보 수정</li>
+            <v-row class="menu col-6">
+                <li @click="goAdminMain">관리자 페이지</li>
+                <li @click="goCustomerRegister">고객 등록</li>
+                <li @click="goCustomerModify">고객 정보 수정</li>
+                <li @click="goCamPayment">결제 화면 보기</li>
+                <li @click="goCamSatisfied">만족도화면보기</li>
             </v-row>
         </v-row>
     </header>
@@ -21,6 +23,12 @@ export default {
     methods: {
         goMain() {
             this.$router.push({ name: 'Cam' });
+        },
+        goCamSatisfied() {
+            this.$router.push({ name: 'CamSatisfied' });
+        },
+        goCamPayment() {
+            this.$router.push({ name: 'CamPayment' });
         },
         goAdminMain() {
             this.$router.push({ name: 'AdminMain' });
@@ -36,8 +44,4 @@ export default {
 </script>
 <style scoped>
 @import '../../assets/css/header.css';
-header {
-    border-bottom: 1px solid #fff;
-    margin-bottom: 20px;
-}
 </style>
