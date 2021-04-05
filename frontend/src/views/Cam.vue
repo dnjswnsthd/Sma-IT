@@ -172,30 +172,20 @@ export default {
                     }
                 })
                 .catch((error) => {
-                    // 마스크를 쓰지 않은 경우
-                    if (error.response.status == 401) {
-                        if (error.response.data.detail == 'Not Regist') {
-                            // 등록 되지 않은 고객의 경우
-                            swal('마스크를 착용해야 입장이 가능합니다', { icon: 'error' });
-                        } else {
-                            // 얼굴 인식에 실패한 경우
-                            swal('얼굴 인식에 실패하였습니다. 다시 시도해 주세요!', {
+                    if (error.response.data.detail == 'NO MASK') {
+                        swal(
+                            error.response.data.member.name +
+                                '님 마스크를 착용해야 입장이 가능합니다.',
+                            {
                                 icon: 'error',
-                            });
-                        }
+                            }
+                        );
                     } else {
-                        if (error.response.data.detail == 'Not Regist') {
-                            // 등록 되지 않은 고객의 경우
-                            swal('환영합니다! 등록을 원하실 경우 문의해 주세요!', {
-                                icon: 'error',
-                            });
-                        } else {
-                            // 얼굴 인식에 실패한 경우
-                            swal('얼굴 인식에 실패하였습니다. 다시 시도해 주세요!', {
-                                icon: 'error',
-                            });
-                        }
+                        swal(error.response.data.member.name + '님 반가워요!', {
+                            icon: 'success',
+                        });
                     }
+                    console.log(error.response.data.detail);
                 });
             // Send imgURL image to Face API
             // 감정분석.
