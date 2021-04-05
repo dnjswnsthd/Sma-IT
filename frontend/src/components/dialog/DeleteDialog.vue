@@ -24,9 +24,9 @@ export default {
         item: Object,
     },
     methods: {
-        closeDelete() {
+        closeDelete(item) {
             this.dialogDelete = false;
-            this.$emit('closeDelete', this.item);
+            this.$emit('closeDelete', item);
         },
         deleteItemConfirm() {
             console.log('here');
@@ -36,7 +36,7 @@ export default {
                     swal('삭제 되었습니다.', {
                         icon: 'success',
                     });
-                    this.closeDelete();
+                    this.closeDelete(this.item);
                 })
                 .catch(() => {
                     swal('삭제 실패', {
