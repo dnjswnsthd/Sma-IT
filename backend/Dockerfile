@@ -8,8 +8,6 @@ RUN apt-get update ##[edited]
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN pip install dlib
 RUN pip install face_recognition
-RUN python -m pip install paddlepaddle==2.0.1 -i https://mirror.baidu.com/pypi/simple
-RUN pip install paddlehub==2.0.0rc0
 
 RUN pip install pymysql sqlalchemy python-multipart
 RUN pip install async-exit-stack async-generator
