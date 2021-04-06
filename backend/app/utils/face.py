@@ -36,7 +36,7 @@ def face_check(img_path: str):
         print('---------------------')
 
         # 얼굴이 같으면 바로 리턴 하고 맴버정보 제공
-        if (1 - faceDist) > 0.5 and result[0]:
+        if result[0]:
             if max < 1 - faceDist:
                 uuid_img = member
                 max = 1 - faceDist
