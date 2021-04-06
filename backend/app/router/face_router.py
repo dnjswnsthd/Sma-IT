@@ -73,7 +73,14 @@ async def face_checking(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail='Not Regist')
 
     member = member_crud.get_member_by_image(session, member_img)
-    face_data = dict(member=member)
+
+    # image 업로딩
+    path = '../img/member_img/' + member.image
+    base64_string = None
+    with open(path, 'rb') as img:
+        base64_string = base64.b64encode(img.read())
+
+    face_data = dict(member=member, image=base64_string)
 
     return face_data
 
