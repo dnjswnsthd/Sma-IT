@@ -35,7 +35,7 @@ def create_member(db: Session, member: Member, time: str):
         db.commit()
         db.refresh(db_member)
     except:
-        session.rollback()
+        db.rollback()
         raise SQLAlchemyError
 
     return db_member
@@ -47,7 +47,7 @@ def update_image_member(db: Session, db_member: MemberTable, image: int):
         db.commit()
         db.refresh(db_member)
     except:
-        session.rollback()
+        db.rollback()
         raise SQLAlchemyError
     return db_member
 
