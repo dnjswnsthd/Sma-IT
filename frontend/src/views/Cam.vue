@@ -26,7 +26,7 @@
                     </div>
                     <div class="divider"></div>
                     <v-row class="camBottomBox">
-                        <p class="guideMessage col-8">
+                        <p class="guideMessage col-9">
                             {{ guideMessage }}
                         </p>
                         <v-spacer></v-spacer>
@@ -143,7 +143,7 @@ export default {
                                 icon: 'success',
                             });
                             this.guideMessage =
-                                '얼굴인식을 위해 마스크를 잠시 벗고 화면을 보고 버튼을 클릭해 주세요';
+                                '얼굴인식을 위해 마스크를 잠시만 벗고 화면을 보고 버튼을 클릭해 주세요';
                             this.maskDialog = true;
                         }
                     })
