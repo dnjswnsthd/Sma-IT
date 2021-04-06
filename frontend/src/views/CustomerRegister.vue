@@ -25,6 +25,7 @@
                     type="string"
                     dark
                     class="nameField"
+                    style="font-size:12px;"
                 ></v-text-field>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -33,19 +34,32 @@
                     type="number"
                     dark
                     class="ageField"
+                    style="font-size:12px;"
                 ></v-text-field>
             </v-row>
+            <v-text-field
+                v-model="member.cardNumber"
+                label="카드번호"
+                placeholder=" '-'를 빼고, 숫자만 16글자 입력해주세요."
+                type="string"
+                dark
+                style="font-size:12px;"
+            ></v-text-field>
             <v-text-field
                 v-model="member.interests"
                 label="관심분야"
                 type="string"
                 dark
-            ></v-text-field>
+                style="font-size:12px;"
+            >
+                ></v-text-field
+            >
             <v-text-field
                 v-model="member.requirements"
                 label="요구사항"
                 type="string"
                 dark
+                style="font-size:12px;"
             ></v-text-field>
             <v-row>
                 <v-spacer></v-spacer>
@@ -66,9 +80,11 @@ export default {
             imageName: this.imageName,
             imageFile: '',
             imageUrl: '',
+            res: '',
             member: {
                 name: '',
                 age: '',
+                cardNumber: '',
                 interests: '',
                 requirements: '',
                 image: '',
@@ -76,6 +92,29 @@ export default {
         };
     },
     methods: {
+        getCardMask(val) {
+            let res = this.getMask(val);
+            this.member.cardNumber = res;
+            //서버 전송 값에는 '-' 를 제외하고 숫자만 저장
+            // this.model.member.cardNumber = this.member.cardNumber.replace(/[^0-9]/g, '');
+        },
+        getMask(card) {
+            // card = card.replace(/[^0-9]/g, '');
+
+            this.res =
+                card.substr(0, 4) +
+                '-' +
+                card.substr(4, 4) +
+                '-' +
+                card.substr(8, 4) +
+                '-' +
+                card.substr(12, 4);
+            if (this.res < 16) {
+                swal('카드번호 16글자를 입력해주세요.', {
+                    icon: 'error',
+                });
+            }
+        },
         onClickImageUpload() {
             this.$refs.imageInput.click();
         },
@@ -94,6 +133,7 @@ export default {
             this.member.requirements = '';
         },
         registInformation() {
+            console.log('카드길이 : ' + this.member.cardNumber.length);
             if (this.imageFile == '' || this.imageName == '') {
                 swal('이미지를 넣어 주세요!', {
                     icon: 'error',
@@ -110,9 +150,27 @@ export default {
                 swal('잘못된 정보 입니다!', {
                     icon: 'error',
                 });
+            } else if (this.member.cardNumber == '') {
+                swal('카드 정보를 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (this.member.cardNumber.length < 16) {
+                swal('잘못된 카드 정보 입니다!', {
+                    icon: 'error',
+                });
             } else {
                 if (this.member.interests == '') this.member.interests = '없음';
                 if (this.member.requirements == '') this.member.requirements = '없음';
+                this.member.cardNumber =
+                    this.member.cardNumber.substr(0, 4) +
+                    ' - ' +
+                    this.member.cardNumber.substr(4, 4) +
+                    ' - ' +
+                    this.member.cardNumber.substr(8, 4) +
+                    ' - ' +
+                    this.member.cardNumber.substr(12, 4);
+                console.log('수정된 카드넘버 : ' + this.member.cardNumber);
+
                 let formData = new FormData();
                 formData.append('file', this.imageFile);
                 http.post('/member/', this.member)
