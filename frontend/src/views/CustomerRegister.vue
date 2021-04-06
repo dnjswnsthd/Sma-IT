@@ -25,6 +25,7 @@
                     type="string"
                     dark
                     class="nameField"
+                    style="font-size:12px;"
                 ></v-text-field>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -33,19 +34,32 @@
                     type="number"
                     dark
                     class="ageField"
+                    style="font-size:12px;"
                 ></v-text-field>
             </v-row>
+            <v-text-field
+                v-model="getMember.card_num"
+                label="카드번호"
+                placeholder=" '-'를 빼고, 숫자만 16글자 입력해주세요."
+                type="string"
+                dark
+                style="font-size:12px;"
+            ></v-text-field>
             <v-text-field
                 v-model="member.interests"
                 label="관심분야"
                 type="string"
                 dark
-            ></v-text-field>
+                style="font-size:12px;"
+            >
+                ></v-text-field
+            >
             <v-text-field
                 v-model="member.requirements"
                 label="요구사항"
                 type="string"
                 dark
+                style="font-size:12px;"
             ></v-text-field>
             <v-row>
                 <v-spacer></v-spacer>
@@ -66,12 +80,19 @@ export default {
             imageName: this.imageName,
             imageFile: '',
             imageUrl: '',
+            res: '',
             member: {
                 name: '',
                 age: '',
                 interests: '',
                 requirements: '',
                 image: '',
+            },
+
+            getMember: {
+                uuid: '',
+                card_num: 0,
+                card_name: '',
             },
         };
     },
@@ -90,6 +111,7 @@ export default {
             console.log('resetInformation');
             this.member.name = '';
             this.member.age = '';
+            this.getMember.card_num = '';
             this.member.interests = '';
             this.member.requirements = '';
         },
@@ -110,20 +132,39 @@ export default {
                 swal('잘못된 정보 입니다!', {
                     icon: 'error',
                 });
+            } else if (this.member.cardNumber == '') {
+                swal('카드 정보를 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (this.getMember.card_num.length < 16) {
+                swal('잘못된 카드 정보 입니다!', {
+                    icon: 'error',
+                });
             } else {
                 if (this.member.interests == '') this.member.interests = '없음';
                 if (this.member.requirements == '') this.member.requirements = '없음';
+
                 let formData = new FormData();
                 formData.append('file', this.imageFile);
                 http.post('/member/', this.member)
                     .then((response) => {
                         this.imageName = response.data.image;
+                        this.getMember.uuid = response.data.uuid;
+                        this.getMember.card_name = response.data.name;
+
+                        http.post('/pay/register', this.getMember)
+                            .then(() => {
+                                console.log('카드등록성공');
+                            })
+                            .catch(() => {
+                                console.log('카드등록실패');
+                            });
                         http.post(`/member/image/${this.imageName}`, formData)
                             .then(() => {
                                 swal('등록 성공!', {
                                     icon: 'success',
                                 });
-                                this.$router.push({ name: 'Cam' });
+                                // this.$router.push({ name: 'Cam' });
                             })
                             .catch(() => {
                                 swal('등록 실패!', {
