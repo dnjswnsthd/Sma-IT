@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 from pydantic import BaseModel
 from database import db
+
 
 # Response Member Database
 class MemberTable(db.Base):
@@ -13,6 +14,7 @@ class MemberTable(db.Base):
     join_date = Column(String(30), nullable=False)
     image = Column(String(300), nullable=False)
 
+
 # Request Member Database
 class Member(BaseModel):
     name: str
@@ -21,9 +23,10 @@ class Member(BaseModel):
     requirements: str
     image: str
 
+
 # Request UpdateMember Database
 class UpdateMember(BaseModel):
-    uuid : int
+    uuid: int
     name: str
     age: int
     interests: str

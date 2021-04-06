@@ -20,8 +20,8 @@ async def read_members_limit(start: int = 0, limit: int = 10):
     members = crud.get_members(session, start, limit)
     images = []
     for member in members:
-        print(member.image)
-        path = '../img/member_img/' + member.image
+        print(member)
+        path = '../img/member_img/' + member['image']
         with open(path, 'rb') as img:
             base64_string = base64.b64encode(img.read())
             images.append(base64_string)
