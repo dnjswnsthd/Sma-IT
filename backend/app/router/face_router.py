@@ -26,6 +26,8 @@ async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
     # 얼굴인식 및 마스크 인식
     member_img = face_check(file.filename)
 
+    print(isMask)
+    print(member_img)
     if member_img == '얼굴인식 실패':
         if isMask == 'NO MASK':
             raise HTTPException(status_code=401, detail="얼굴인식 실패")
@@ -36,13 +38,6 @@ async def face_mask_checking(start_visted: str, file: UploadFile = File(...)):
             raise HTTPException(status_code=401, detail="Not Regist")
         elif isMask == 'MASK':
             raise HTTPException(status_code=400, detail="Not Regist")
-
-    # if member_img == '얼굴인식 실패':
-    #     raise HTTPException(status_code=400, detail="얼굴인식 실패", isMask=isMask)
-    # elif member_img == '등록된 회원이 아닙니다':
-    #     raise HTTPException(
-    #         status_code=400, detail="Not Regist", isMask=isMask)
-
     memberInfo = member_crud.get_member_by_image(session, member_img)
     # 입장 시간 저장
     try:
@@ -78,7 +73,6 @@ async def face_checking(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail='Not Regist')
 
     member = member_crud.get_member_by_image(session, member_img)
-    print(member.__dict__)
     face_data = dict(member=member)
 
     return face_data

@@ -48,10 +48,8 @@ def mask_check(img_path: str):
         nomask = modelpredict[0][1]
 
         if mask > nomask:
-            color = (0, 255, 0)
-            label = 'MAKS'
+            label = 'MASK'
         else:
-            color = (0, 0, 255)
             label = 'NO MASK'
 
     return label
