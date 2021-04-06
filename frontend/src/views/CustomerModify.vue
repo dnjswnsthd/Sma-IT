@@ -101,10 +101,10 @@ export default {
             let scrolledToBottom =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
-            console.log('scrollTop : ' + document.documentElement.scrollTop);
-            console.log('innerHeight : ' + window.innerHeight);
-            console.log('offsetHeight : ' + document.documentElement.offsetHeight);
-            console.log('scrolledToBottom : ' + scrolledToBottom);
+            // console.log('scrollTop : ' + document.documentElement.scrollTop);
+            // console.log('innerHeight : ' + window.innerHeight);
+            // console.log('offsetHeight : ' + document.documentElement.offsetHeight);
+            // console.log('scrolledToBottom : ' + scrolledToBottom);
             console.log(this.isLoading);
 
             if (this.isLoading && scrolledToBottom) {
