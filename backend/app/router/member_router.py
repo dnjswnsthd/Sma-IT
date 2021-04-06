@@ -10,8 +10,6 @@ from database.db import session
 from sqlalchemy.exc import SQLAlchemyError
 
 import base64
-
-import os
 import datetime
 
 router = APIRouter()
@@ -85,12 +83,7 @@ async def delete_members(member_uuid: int):
         db_member = crud.delete_member_by_uuid(session, member_uuid)
         if db_member == 0:
             raise HTTPException(status_code=400, detail="Delete failure")
-        path = "../img/member_img/"+str(member_uuid)+".jpg"
-        if os.path.isfile(path):
-            os.remove(path)
-        session.commit()
     except:
-        session.rollback()
         raise HTTPException(status_code=400, detail="Delete failure")
 
     return db_member
