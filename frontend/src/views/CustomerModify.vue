@@ -17,6 +17,8 @@
                         <p>나이 : {{ customer.age }}</p>
                         <p>관심분야 : {{ customer.interests }}</p>
                         <p>요구사항 : {{ customer.requirements }}</p>
+                        <p>입장시간 : {{ customer.start_visit }}</p>
+                        <p>퇴장시간 : {{ customer.end_visit }}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="btnBox">
@@ -156,7 +158,9 @@ export default {
                                 age: response.data.members[i].age,
                                 interests: response.data.members[i].interests,
                                 requirements: response.data.members[i].requirements,
-                                image: response.data.members[i].uuid.image,
+                                image: response.data.members[i].image,
+                                start_visit: response.data.members[i].start_visit,
+                                end_visit: response.data.members[i].end_visit,
                                 customer_image: response.data.images[i],
                             });
                         }
@@ -171,6 +175,8 @@ export default {
                                 interests: response.data.members[i].interests,
                                 requirements: response.data.members[i].requirements,
                                 image: response.data.members[i].image,
+                                start_visit: response.data.members[i].start_visit,
+                                end_visit: response.data.members[i].end_visit,
                                 customer_image: response.data.images[i],
                             });
                         }

@@ -1,14 +1,37 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.sql import func
 
 from models.member import MemberTable, Member, UpdateMember
 from models.emotion import EmotionTable, Emotion
+from models.visited import VisitedTable
 
 import os
 
 
 def get_members(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(MemberTable).order_by(MemberTable.uuid).offset(skip).limit(limit).all()
+    stmt = db.query(VisitedTable.uuid, func.max(VisitedTable.start_visit).label(
+        'start_visit'), func.max(VisitedTable.end_visit).label('end_visit')).group_by(VisitedTable.uuid).subquery()
+    # temp, start_visit, end_visit = db.query(MemberTable, stmt.c.start_visit, stmt.c.end_visit.label('end_visit')).join(
+    #     stmt, MemberTable.uuid == stmt.c.uuid).order_by(MemberTable.uuid).offset(skip).limit(limit).all()
+    members = []
+    for member, start_visit, end_visit in db.query(MemberTable, stmt.c.start_visit, stmt.c.end_visit).join(
+            stmt, MemberTable.uuid == stmt.c.uuid).order_by(MemberTable.uuid).offset(skip).limit(limit):
+        mem = {
+            'uuid': member.uuid,
+            'name': member.name,
+            'age': member.age,
+            'interests': member.interests,
+            'requirements': member.requirements,
+            'join_date': member.join_date,
+            'image': member.image,
+            'start_visit': str(start_visit),
+            'end_visit': str(end_visit),
+        }
+        members.append(mem)
+
+    # return db.query(MemberTable).order_by(MemberTable.uuid).offset(skip).limit(limit).all()
+    return members
 
 
 def get_member_by_name(db: Session, member_name: str):
