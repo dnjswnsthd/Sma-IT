@@ -4,6 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from models.member import MemberTable, Member, UpdateMember
 from models.emotion import EmotionTable, Emotion
 
+import os
+
 
 def get_members(db: Session, skip: int = 0, limit: int = 100):
     return db.query(MemberTable).order_by(MemberTable.uuid).offset(skip).limit(limit).all()
@@ -56,7 +58,13 @@ def delete_member_by_uuid(db: Session, member_uuid: int):
     try:
         db_member = db.query(MemberTable).filter(
             MemberTable.uuid == member_uuid).delete()
+
+        path = "../img/member_img/"+str(member_uuid)+".jpg"
+        if os.path.isfile(path):
+            os.remove(path)
+        db.commit()
     except:
+        db.rollback()
         raise SQLAlchemyError
     return db_member
 
