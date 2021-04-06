@@ -9,7 +9,7 @@
                         저장됩니다.
                     </p>
                     <div class="satisfiedBox">
-                        <chart :id="'satisfy'" :labels="labels" :data="data"></chart>
+                        <chart :id="'satisfy'" :labels="labels" :data="emo"></chart>
                     </div>
                 </div>
             </div>
@@ -99,14 +99,13 @@ export default {
                 'sadness',
                 'surprise',
             ],
-            data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            emo: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
             clickDialog: false,
         };
     },
     computed: {
         ...mapState(['customerInfo', 'emotionAnalysis']),
     },
-
     mounted() {
         //Start the PC front camera and display real-time video on the video tag
         this.video = this.$refs.video;
@@ -190,21 +189,27 @@ export default {
                 }
             )
                 .then((response) => {
-                    console.log(response.data[0].faceAttributes.emotion);
-
                     var temp = response.data[0].faceAttributes.emotion;
-                    console.log(temp[this.labels[6]]);
-                    for (var i = 0; i < 8; i++) {
-                        this.data[i] = temp[this.labels[i]];
-                    }
-                    this.member.anger = this.data[0];
-                    this.member.contempt = this.data[1];
-                    this.member.disgust = this.data[2];
-                    this.member.fear = this.data[3];
-                    this.member.happiness = this.data[4];
-                    this.member.neutral = this.data[5];
-                    this.member.sadness = this.data[6];
-                    this.member.surprise = this.data[7];
+                    let emo = [
+                        temp[this.labels[0]],
+                        temp[this.labels[1]],
+                        temp[this.labels[2]],
+                        temp[this.labels[3]],
+                        temp[this.labels[4]],
+                        temp[this.labels[5]],
+                        temp[this.labels[6]],
+                        temp[this.labels[7]],
+                    ];
+                    this.emo = emo;
+
+                    this.member.anger = emo[0];
+                    this.member.contempt = emo[1];
+                    this.member.disgust = emo[2];
+                    this.member.fear = emo[3];
+                    this.member.happiness = emo[4];
+                    this.member.neutral = emo[5];
+                    this.member.sadness = emo[6];
+                    this.member.surprise = emo[7];
                     this.member.end_visit = this.current;
                 })
                 .catch((error) => {
