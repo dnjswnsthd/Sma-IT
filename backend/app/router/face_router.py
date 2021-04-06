@@ -78,8 +78,12 @@ async def face_checking(file: UploadFile = File(...)):
     return face_data
 
 
-@router.get("/onlymask/{img_path:path}", summary="마스크 인식")
-async def mask_checking(img_path: str):
-    print(img_path)
-    mask_data = mask_check("../img/cam_img/"+img_path)
+@router.post("/onlymask", summary="마스크 인식")
+async def mask_checking(file: UploadFile = File(...)):
+    # 이미지 저장
+    content = await file.read()
+    with open(f'../img/cam_img/{file.filename}', 'wb') as fh:
+        fh.write(content)
+
+    mask_data = mask_check("../img/cam_img/" + file.filename)
     return mask_data
