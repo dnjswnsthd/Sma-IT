@@ -1,8 +1,5 @@
 import cv2
-import numpy as np
 import face_recognition
-from models.member import MemberTable as Member
-from .mask import mask_check
 
 import os
 
@@ -19,6 +16,9 @@ def face_check(img_path: str):
     user = face_recognition.face_encodings(img)[0]
     members = os.listdir('../img/member_img')
 
+    uuid_img = None
+    max = 0
+
     for member in members:
         # 디비에 데이터를 가져와야함(임시 데이터 준형이 마스크얼굴)
         memberimg_path = "../img/member_img/" + member
@@ -30,10 +30,18 @@ def face_check(img_path: str):
 
         # 얼굴 비교
         result = face_recognition.compare_faces([memberface], user)
+        faceDist = face_recognition.face_distance([memberface], user)
+        print(f'{member} + {img_path} test : {1 - faceDist}')
+        print(result[0])
+        print('---------------------')
 
         # 얼굴이 같으면 바로 리턴 하고 맴버정보 제공
-        if result[0]:
-            uuid_img = member
-            return uuid_img
+        if (1 - faceDist) > 0.5 and result[0]:
+            if max < 1 - faceDist:
+                uuid_img = member
+                max = 1 - faceDist
 
-    return "등록된 회원이 아닙니다"
+    if uuid_img == None:
+        return "등록된 회원이 아닙니다"
+
+    return uuid_img
