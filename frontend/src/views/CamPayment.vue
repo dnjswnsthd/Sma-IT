@@ -46,9 +46,9 @@
                     <div class="divider"></div>
                     <v-row class="camBottomBox">
                         <p class="guideMessage">
-                            카메라를 정면으로 봐주시고
+                            얼굴인식을 위해 마스크를 잠시 벗고
                             <br />
-                            버튼을 클릭해주세요
+                            화면을 보고 결제 버튼을 클릭해 주세요
                         </p>
                     </v-row>
                 </div>
@@ -95,7 +95,7 @@
                             <v-btn color="green darken-1" text @click="payDialog = false">
                                 취소하기
                             </v-btn>
-                            <v-btn color="green darken-1" text @click="payDialog = false">
+                            <v-btn color="green darken-1" text @click="completePayment">
                                 결제하기
                             </v-btn>
                         </v-card-actions>
@@ -183,9 +183,10 @@ export default {
                 http.post(`/pay/`, formData)
                     .then((response) => {
                         this.card = response.data;
-                        this.card_num = response.data.card_num;
+                        this.card_num = String(response.data.card_num);
+                        console.log(response.data.card_num);
                         this.card_name = response.data.card_name;
-                        console.log(this.card_num.card_num);
+                        this.changeCardNum(this.card_num);
                         this.payDialog = true;
                     })
                     .catch((response) => {
@@ -217,7 +218,7 @@ export default {
             return new File([uInt8Array], fileName, { type: contentType });
         },
         changeCardNum(card_num) {
-            this.card_num =
+            let cardnumtemp =
                 card_num.substr(0, 4) +
                 '-' +
                 card_num.substr(4, 4) +
@@ -225,6 +226,13 @@ export default {
                 card_num.substr(8, 4) +
                 '-' +
                 card_num.substr(12, 4);
+            this.card_num = cardnumtemp;
+        },
+        completePayment() {
+            swal('결제가 완료되었습니다.!', {
+                icon: 'success',
+            });
+            this.payDialog = false;
         },
     },
 };
