@@ -164,7 +164,7 @@ export default {
                                 swal('등록 성공!', {
                                     icon: 'success',
                                 });
-                                // this.$router.push({ name: 'Cam' });
+                                this.$router.push({ name: 'Cam' });
                             })
                             .catch(() => {
                                 swal('등록 실패!', {
