@@ -32,7 +32,7 @@ export default {
                 legend: {
                     display: false,
                 },
-                reponsive: false,
+                reponsive: true,
                 scale: {
                     angleLines: {
                         display: false,
@@ -64,17 +64,19 @@ export default {
     watch: {
         data() {
             // 데이터가 변경 될 때마다 차트를 새로 그린다
-            // this.chratObject.update();
             this.createCharts();
         },
     },
     mounted() {
-        this.memberData.labels = this.labels;
-        this.memberData.datasets[0].data = this.data;
         this.createCharts();
     },
     methods: {
         createCharts() {
+            this.memberData.labels = this.labels;
+            this.memberData.datasets[0].data = this.data;
+            console.log('chart!!!!!!!!!!!!!!!!');
+            console.log(this.data);
+
             const ctx = document.getElementById(this.id);
             console.log(ctx);
             this.chratObject = new Chart(ctx, {
