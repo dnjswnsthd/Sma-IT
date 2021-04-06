@@ -38,7 +38,7 @@
                 ></v-text-field>
             </v-row>
             <v-text-field
-                v-model="member.cardNumber"
+                v-model="getMember.card_num"
                 label="카드번호"
                 placeholder=" '-'를 빼고, 숫자만 16글자 입력해주세요."
                 type="string"
@@ -84,37 +84,19 @@ export default {
             member: {
                 name: '',
                 age: '',
-                cardNumber: '',
                 interests: '',
                 requirements: '',
                 image: '',
             },
+
+            getMember: {
+                uuid: '',
+                card_num: 0,
+                card_name: '',
+            },
         };
     },
     methods: {
-        getCardMask(val) {
-            let res = this.getMask(val);
-            this.member.cardNumber = res;
-            //서버 전송 값에는 '-' 를 제외하고 숫자만 저장
-            // this.model.member.cardNumber = this.member.cardNumber.replace(/[^0-9]/g, '');
-        },
-        getMask(card) {
-            // card = card.replace(/[^0-9]/g, '');
-
-            this.res =
-                card.substr(0, 4) +
-                '-' +
-                card.substr(4, 4) +
-                '-' +
-                card.substr(8, 4) +
-                '-' +
-                card.substr(12, 4);
-            if (this.res < 16) {
-                swal('카드번호 16글자를 입력해주세요.', {
-                    icon: 'error',
-                });
-            }
-        },
         onClickImageUpload() {
             this.$refs.imageInput.click();
         },
@@ -129,11 +111,11 @@ export default {
             console.log('resetInformation');
             this.member.name = '';
             this.member.age = '';
+            this.getMember.card_num = '';
             this.member.interests = '';
             this.member.requirements = '';
         },
         registInformation() {
-            console.log('카드길이 : ' + this.member.cardNumber.length);
             if (this.imageFile == '' || this.imageName == '') {
                 swal('이미지를 넣어 주세요!', {
                     icon: 'error',
@@ -154,34 +136,35 @@ export default {
                 swal('카드 정보를 입력해주세요!', {
                     icon: 'error',
                 });
-            } else if (this.member.cardNumber.length < 16) {
+            } else if (this.getMember.card_num.length < 16) {
                 swal('잘못된 카드 정보 입니다!', {
                     icon: 'error',
                 });
             } else {
                 if (this.member.interests == '') this.member.interests = '없음';
                 if (this.member.requirements == '') this.member.requirements = '없음';
-                this.member.cardNumber =
-                    this.member.cardNumber.substr(0, 4) +
-                    ' - ' +
-                    this.member.cardNumber.substr(4, 4) +
-                    ' - ' +
-                    this.member.cardNumber.substr(8, 4) +
-                    ' - ' +
-                    this.member.cardNumber.substr(12, 4);
-                console.log('수정된 카드넘버 : ' + this.member.cardNumber);
 
                 let formData = new FormData();
                 formData.append('file', this.imageFile);
                 http.post('/member/', this.member)
                     .then((response) => {
                         this.imageName = response.data.image;
+                        this.getMember.uuid = response.data.uuid;
+                        this.getMember.card_name = response.data.name;
+
+                        http.post('/pay/register', this.getMember)
+                            .then(() => {
+                                console.log('카드등록성공');
+                            })
+                            .catch(() => {
+                                console.log('카드등록실패');
+                            });
                         http.post(`/member/image/${this.imageName}`, formData)
                             .then(() => {
                                 swal('등록 성공!', {
                                     icon: 'success',
                                 });
-                                this.$router.push({ name: 'Cam' });
+                                // this.$router.push({ name: 'Cam' });
                             })
                             .catch(() => {
                                 swal('등록 실패!', {
