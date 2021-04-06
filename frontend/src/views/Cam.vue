@@ -27,8 +27,7 @@
                     <div class="divider"></div>
                     <v-row class="camBottomBox">
                         <p class="guideMessage">
-                            카메라를 정면으로 봐주시고
-                            <br />
+                            마스크를 코 밑까지 내리고,<br />
                             버튼을 클릭해주세요
                         </p>
                         <v-spacer></v-spacer>
@@ -141,22 +140,11 @@ export default {
 
             http.post(`/face/mask/${this.current}`, formData)
                 .then((response) => {
-                    console.log(response.data.member);
-                    // member에 가져온 값을 대입
-                    this.member.age = response.data.member.age;
-                    this.member.image = response.data.image;
-                    this.member.interests = response.data.member.interests;
-                    this.member.join_date = response.data.member.join_date;
-                    this.member.name = response.data.member.name;
-                    this.member.requirements = response.data.member.requirements;
-                    this.member.uuid = response.data.member.uuid;
-                    this.member.visit_start = this.current;
+                    // console.log(response.data.member);
 
-                    // vuex에 정보를 저장.
-                    this.$store.commit('setCustomerInfo', this.member);
-                    console.log('------------------------');
-                    console.log(this.customerInfo);
-                    console.log(response.data.isMask);
+                    // console.log('------------------------');
+                    // console.log(this.customerInfo);
+                    // console.log(response.data.isMask);
                     // 마스크를 끼지 않았다면
                     if (response.data.isMask == 'NO MASK') {
                         swal(
@@ -166,25 +154,48 @@ export default {
                             }
                         );
                     } else {
+                        // member에 가져온 값을 대입
+                        this.member.age = response.data.member.age;
+                        this.member.image = response.data.image;
+                        this.member.interests = response.data.member.interests;
+                        this.member.join_date = response.data.member.join_date;
+                        this.member.name = response.data.member.name;
+                        this.member.requirements = response.data.member.requirements;
+                        this.member.uuid = response.data.member.uuid;
+                        this.member.visit_start = this.current;
+
+                        // vuex에 정보를 저장.
+                        this.$store.commit('setCustomerInfo', this.member);
                         swal(response.data.member.name + '님 반가워요!', {
                             icon: 'success',
                         });
                     }
                 })
                 .catch((error) => {
-                    if (error.response.data.detail == 'NO MASK') {
-                        swal(
-                            error.response.data.member.name +
-                                '님 마스크를 착용해야 입장이 가능합니다.',
-                            {
+                    if (error.response.status == 401) {
+                        if (error.response.data.detail == 'Not Regist') {
+                            // 등록 되지 않은 고객의 경우
+                            swal('마스크를 착용해야 입장가능합니다', { icon: 'error' });
+                        } else {
+                            // 얼굴 인식에 실패한 경우
+                            swal('얼굴 인식에 실패하였습니다. 다시 시도해 주세요!', {
                                 icon: 'error',
-                            }
-                        );
+                            });
+                        }
                     } else {
-                        swal(error.response.data.member.name + '님 반가워요!', {
-                            icon: 'success',
-                        });
+                        if (error.response.data.detail == 'Not Regist') {
+                            // 등록 되지 않은 고객의 경우
+                            swal('환영합니다! 등록을 원하실 경우 문의해 주세요!', {
+                                icon: 'success',
+                            });
+                        } else {
+                            // 얼굴 인식에 실패한 경우
+                            swal('얼굴 인식에 실패하였습니다. 다시 시도해 주세요!', {
+                                icon: 'error',
+                            });
+                        }
                     }
+
                     console.log(error.response.data.detail);
                 });
             // Send imgURL image to Face API
