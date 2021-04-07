@@ -6,6 +6,7 @@
                     <img
                         :src="`data:image/jpg;base64,${item.customer_image}`"
                         style="width:100%;  height:100%;"
+                        alt="customoer_image"
                     />
                     <v-row>
                         <v-col cols="12" sm="6" md="6">
