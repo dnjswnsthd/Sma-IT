@@ -3,6 +3,10 @@ import face_recognition
 
 import os
 
+from models.images import Images
+
+from crud import member_crud as crud
+from database.db import session
 
 def face_check(img_path: str):
     # 비교할 이미지 로드
@@ -16,7 +20,7 @@ def face_check(img_path: str):
     user = face_recognition.face_encodings(img)[0]
     # 저장 되어 있는 모든 이미지 정보 로딩
     members = os.listdir('../img/member_img')
-
+    #members = crud.get_images(session)
     uuid_img = None
     max = 0
     # 등록된 모든 이미지와 받아온 얼굴을 비교하여 얼굴 인식 진행
@@ -28,6 +32,12 @@ def face_check(img_path: str):
         memberimg = cv2.cvtColor(memberimg, cv2.COLOR_BGR2RGB)
         # 기존 이용자 얼굴 분석
         memberface = face_recognition.face_encodings(memberimg)[0]
+
+        # 데이터 추가용
+        member_uuid = int(member.split('.')[0])
+        image_bytes = memberface.tostring()
+        crud.create_images(session,member_uuid,image_bytes)
+
         # 얼굴 비교
         result = face_recognition.compare_faces([memberface], user)
         # 얼굴의 유사도 판별을 위한 dist 생성
@@ -42,3 +52,15 @@ def face_check(img_path: str):
         return "등록된 회원이 아닙니다"
 
     return uuid_img
+
+def face_image(image: str):
+    memberimg_path = "../img/member_img/" + image
+    memberimg = face_recognition.load_image_file(memberimg_path)
+    memberimg = cv2.cvtColor(memberimg, cv2.COLOR_BGR2RGB)
+
+    member_uuid = int(image.split('.')[0])
+    image_bytes = memberface.tostring()
+    result = crud.create_images(session, member_uuid, image_bytes)
+
+    return "OK"
+    
