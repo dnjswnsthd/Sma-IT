@@ -5,8 +5,8 @@
             <div>
                 <v-spacer></v-spacer>
                 <div class="pb-5">
-                    <img v-if="imageUrl == ''" :src="imageUrl" />
-                    <img v-else :src="imageUrl" class="profileImg" />
+                    <img v-if="imageUrl == ''" :src="imageUrl" alt="" />
+                    <img v-else :src="imageUrl" class="profileImg" alt="profileImg" />
                 </div>
                 <v-row>
                     <v-spacer></v-spacer>
