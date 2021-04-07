@@ -15,17 +15,18 @@ def face_check(img_path: str):
     img_path = "../img/cam_img/" + img_path
     img = face_recognition.load_image_file(img_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
+    # 이미지에서 얼굴을 인식하지 못한 경우
     if len(face_recognition.face_locations(img)) == 0:
         return "얼굴인식 실패"
-
+    # 고객 이미지 encoding
     user = face_recognition.face_encodings(img)[0]
     
     members = crud.get_images(session)
 
+
     uuid_img = None
     max = 0
-
+    # 등록된 모든 이미지와 받아온 얼굴을 비교하여 얼굴 인식 진행
     for member in members:
         # 얼굴 비교
         result = face_recognition.compare_faces([np.fromstring(member.image)], user)
@@ -36,7 +37,7 @@ def face_check(img_path: str):
             if max < 1 - faceDist:           
                 uuid_img = str(member.member_uuid) + ".jpg"
                 max = 1 - faceDist
-
+    # 선택된 이미지가 없다면 등록된 회원이 아님
     if uuid_img == None:
         return "등록된 회원이 아닙니다"
 

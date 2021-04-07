@@ -8,7 +8,10 @@
             <div v-for="(customer, index) in customers" :key="index" class="col-4">
                 <div class="imgBox">
                     <div class="imgOutBox">
-                        <img :src="`data:image/jpg;base64,${customer.customer_image}`" />
+                        <img
+                            :src="`data:image/jpg;base64,${customer.customer_image}`"
+                            alt="Customer_image"
+                        />
                     </div>
 
                     <div class="divider"></div>
