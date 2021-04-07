@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 from models.member import MemberTable, Member, UpdateMember
 from models.emotion import EmotionTable, Emotion
 from models.visited import VisitedTable
+from models.images import ImagesTable, Images
 
 import os
 
@@ -134,3 +135,21 @@ def create_emotion(db: Session, emotion: Emotion):
         db.rollback()
         raise SQLAlchemyError
     return db_emotion
+
+def get_images(db: Session):
+    return db.query(Images).all()
+
+def create_images(db: Session, member_uuid: int, image_bytes: str):
+    db_images = ImagesTable()
+    db_images.member_uuid = member_uuid
+    db_images.image = image_bytes
+
+    try:
+        db.add(db_images)
+        db.commit()
+        db.refresh(db_images)
+    except:
+        db.rollback()
+        raise SQLAlchemyError
+    return db_images
+   

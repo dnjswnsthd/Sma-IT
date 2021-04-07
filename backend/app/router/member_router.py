@@ -7,6 +7,7 @@ from crud import member_crud as crud
 from crud import visited_crud
 from database.db import session
 
+from utils.face import face_image
 from sqlalchemy.exc import SQLAlchemyError
 
 import base64
@@ -64,6 +65,11 @@ async def create_members_img(image: str, file: UploadFile = File(...)):
     content = await file.read()
     with open(f'../img/member_img/{image}', 'wb') as fh:
         fh.write(content)
+    try:
+        face_image(session, image)
+    except SQLAlchemyError:
+        raise HTTPException(status_code=400, detail="image Creation failure")
+        
     return "OK"
 
 
