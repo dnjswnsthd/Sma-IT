@@ -6,6 +6,7 @@
                     <img
                         :src="`data:image/jpg;base64,${item.customer_image}`"
                         style="width:100%;  height:100%;"
+                        alt="customoer_image"
                     />
                     <v-row>
                         <v-col cols="12" sm="6" md="6">
@@ -61,11 +62,13 @@ export default {
         ...mapState(['customerInfo']),
     },
     methods: {
+        // close 버튼 클릭 시 고객 정보 수정 다이얼로그 닫고 부모에 수정된 값 전달
         close() {
             this.dialogEdit = false;
             this.$emit('close', this.item);
         },
         save() {
+            // 고객 정보 수정 사항 서버에 반영
             http.put('/member/', this.item)
                 .then((response) => {
                     console.log(response);
