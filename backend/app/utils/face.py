@@ -3,10 +3,12 @@ import face_recognition
 
 import os
 
-from models.images import Images
+from models.images import Images, ImagesTable
 
 from crud import member_crud as crud
 from database.db import session
+
+import numpy as np
 
 def face_check(img_path: str):
     # 비교할 이미지 로드
@@ -18,36 +20,21 @@ def face_check(img_path: str):
         return "얼굴인식 실패"
 
     user = face_recognition.face_encodings(img)[0]
-    members = os.listdir('../img/member_img')
-    #members = crud.get_images(session)
+    
+    members = crud.get_images(session)
+
     uuid_img = None
     max = 0
 
     for member in members:
-        # 디비에 데이터를 가져와야함(임시 데이터 준형이 마스크얼굴)
-        memberimg_path = "../img/member_img/" + member
-        memberimg = face_recognition.load_image_file(memberimg_path)
-        memberimg = cv2.cvtColor(memberimg, cv2.COLOR_BGR2RGB)
-
-        # 기존 이용자 얼굴 분석
-        memberface = face_recognition.face_encodings(memberimg)[0]
-
-        # 데이터 추가용
-        member_uuid = int(member.split('.')[0])
-        image_bytes = memberface.tostring()
-        crud.create_images(session,member_uuid,image_bytes)
-
         # 얼굴 비교
-        result = face_recognition.compare_faces([memberface], user)
-        faceDist = face_recognition.face_distance([memberface], user)
-        print(f'{member} + {img_path} test : {1 - faceDist}')
-        print(result[0])
-        print('---------------------')
+        result = face_recognition.compare_faces([np.fromstring(member.image)], user)
+        faceDist = face_recognition.face_distance([np.fromstring(member.image)], user)
 
         # 얼굴이 같으면 바로 리턴 하고 맴버정보 제공
         if result[0]:
-            if max < 1 - faceDist:
-                uuid_img = member
+            if max < 1 - faceDist:           
+                uuid_img = str(member.member_uuid) + ".jpg"
                 max = 1 - faceDist
 
     if uuid_img == None:
@@ -59,6 +46,8 @@ def face_image(image: str):
     memberimg_path = "../img/member_img/" + image
     memberimg = face_recognition.load_image_file(memberimg_path)
     memberimg = cv2.cvtColor(memberimg, cv2.COLOR_BGR2RGB)
+
+    memberface = face_recognition.face_encodings(memberimg)[0]
 
     member_uuid = int(image.split('.')[0])
     image_bytes = memberface.tostring()
