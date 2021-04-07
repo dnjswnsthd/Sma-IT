@@ -3,6 +3,7 @@ from tensorflow.keras.models import load_model
 import numpy as np
 import cv2
 
+# 학습된 모델 가져오기
 facenet = cv2.dnn.readNet('utils/models/deploy.prototxt',
                           'utils/models/res10_300x300_ssd_iter_140000.caffemodel')
 model = load_model('utils/8LBMI2.h5')
@@ -11,6 +12,7 @@ model = load_model('utils/8LBMI2.h5')
 
 
 def mask_check(img_path: str):
+    # 이미지 파일 로드
     img = cv2.imread(img_path, cv2.IMREAD_COLOR)
 
     h, w = img.shape[:2]
@@ -20,7 +22,7 @@ def mask_check(img_path: str):
     facenet.setInput(blob)
     dets = facenet.forward()
     label = None
-
+    # 마스크 인식 진행
     for i in range(dets.shape[2]):
         confidence = dets[0, 0, i, 2]
         if confidence < 0.5:
@@ -46,7 +48,7 @@ def mask_check(img_path: str):
         modelpredict = model.predict(face_input)
         mask = modelpredict[0][0]
         nomask = modelpredict[0][1]
-
+        # 마스크 인식 결과 저장
         if mask > nomask:
             label = 'MASK'
         else:
