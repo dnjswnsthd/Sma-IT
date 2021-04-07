@@ -9,6 +9,7 @@
                         저장됩니다.
                     </p>
                     <div class="satisfiedBox">
+                        <!-- 만족도 그래프 -->
                         <chart :id="'satisfy'" :labels="labels" :data="emo"></chart>
                     </div>
                 </div>
@@ -16,6 +17,7 @@
             <div class="col-6 cambox">
                 <div class="camInBox">
                     <div class="camTopBox">
+                        <!-- 캡쳐한 이미지를 그려줄 canvas -->
                         <canvas
                             ref="canvas"
                             id="emo_canvas"
@@ -23,6 +25,7 @@
                             height="650px"
                             class="canvasBox"
                         ></canvas>
+                        <!-- cam video -->
                         <video
                             ref="video"
                             id="video"
@@ -66,7 +69,7 @@ import Axios from 'axios';
 import { mapState } from 'vuex';
 import swal from 'sweetalert';
 export default {
-    name: 'App',
+    name: 'CamSatisfied',
     components: {
         chart: Chart,
     },
@@ -126,24 +129,19 @@ export default {
             console.log('context : ' + context);
             this.captures.push(this.canvas.toDataURL('image/png')); //Store the captured imag
 
-            let subscriptionKey = 'c2ade783cde74c478a3f5ec193cf6b3f';
-            let uriBase = 'https://koreacentral.api.cognitive.microsoft.com/face/v1.0/detect/';
+            let subscriptionKey = 'c2ade783cde74c478a3f5ec193cf6b3f'; // 감정분석 api키
+            let uriBase = 'https://koreacentral.api.cognitive.microsoft.com/face/v1.0/detect/'; // 감정분석 uri
             //   https://smait.cognitiveservices.azure.com/
-            let params = {
-                returnFaceId: 'false',
-                returnFaceLandmarks: 'true',
-                returnFaceAttributes: 'emotion',
-            };
-            console.log(params);
-            //   //Convert the format of the image added at the end of the array and assign it to the imgURL format
-            const file = this.makeblob(this.captures[this.captures.length - 1]);
-            console.log('imgURL : ' + file);
+
+            //Convert the format of the image added at the end of the array and assign it to the imgURL format
+            const file = this.makeblob(this.captures[this.captures.length - 1]); // 캡쳐한 이미지를 파일로 변경
 
             //   const fileName = 'canvas_img_'+new Date().getMilliseconds()+'.png';
             let formData = new FormData();
             formData.append('file', file);
             console.log(file);
 
+            // 현재 시간 data 얻기.
             var curDate = new Date();
             var year = curDate.getUTCFullYear();
             var month = curDate.getMonth() + 1;
@@ -152,22 +150,16 @@ export default {
             var min = curDate.getMinutes();
             var sec = curDate.getSeconds();
 
+            // 현재시간을 저장
             this.current = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
-            console.log(this.current);
 
-            // Axios
+            // 얼굴인식
             http.post('/face/onlyface', formData)
                 .then((response) => {
-                    console.log(response);
                     this.member.uuid = response.data.member.uuid;
-                    console.log('uuid : ' + this.member.uuid);
 
-                    swal('인식 성공!', {
-                        icon: 'success',
-                    });
-
-                    this.saveEmotion();
-                    setInterval(this.$store.commit('deleteCustomerInfo', this.member.uuid), 1000);
+                    this.saveEmotion(); // 감정분석결과 저장
+                    setInterval(this.$store.commit('deleteCustomerInfo', this.member.uuid), 1000); // vuex에서 제거
                 })
                 .catch(() => {
                     swal('인식 실패!', {
@@ -176,7 +168,8 @@ export default {
                 });
             // console.log('uuid2 : ' + this.member.uuid);
 
-            //Send imgURL image to Face API
+            // Send imgURL image to Face API
+            // 감정분석
             Axios.post(
                 uriBase +
                     '?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion',
@@ -216,6 +209,7 @@ export default {
                     console.log(error.response);
                 });
         },
+        // 감정분석 저장
         saveEmotion() {
             http.post('/member/emotion', this.member)
                 .then(() => {
@@ -229,18 +223,21 @@ export default {
                     });
                 });
         },
+        // 캡쳐한 이미지를 파일로 만드는 메소드
         makeblob: function(dataURL) {
             let BASE64_MARKER = ';base64,';
+            // BASE64_MARKER와 일치하는 것이 없다면
             if (dataURL.indexOf(BASE64_MARKER) == -1) {
                 let parts = dataURL.split(',');
                 let contentType = parts[0].split(':')[1];
                 let raw = decodeURIComponent(parts[1]);
                 return new File([raw], { type: contentType });
             }
+            // BASE64_MARKER와 일치하는 것이 있다면
             let parts = dataURL.split(BASE64_MARKER);
-            let fileName = 'captureImage.jpg';
+            let fileName = 'captureImage.jpg'; // 파일이름 지정
             let contentType = parts[0].split(':')[1];
-            let raw = window.atob(parts[1]);
+            let raw = window.atob(parts[1]); // 인코딩
             let rawLength = raw.length;
             let uInt8Array = new Uint8Array(rawLength);
             for (let i = 0; i < rawLength; ++i) {
@@ -248,6 +245,7 @@ export default {
             }
             return new File([uInt8Array], fileName, { type: contentType });
         },
+        // 호버시 dialog 변경
         hoverClickBtn() {
             this.clickDialog = true;
         },
