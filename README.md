@@ -81,84 +81,42 @@ Microsoft Azure FaceAPI Key & EndPoint 생성 필요
 ```bash
 cd backend
 cd app
+
+pip install fastapi uvicorn[standard]
+pip install pip cmake numpy opencv-python-headless pillow
+
+apt-get update
+apt-get install ffmpeg libsm6 libxext6  -y
+
+pip install dlib
+pip install face_recognition
+
+pip install pymysql sqlalchemy python-multipart
+pip install async-exit-stack async-generator
+pip install tensorflow
+
 uvicorn main:app --reload
 ```
 
-## AI 특화 개발 환경 설정
+## docker-compose.yml
 
-### Anaconda
+- docker-compose 파일을 통해 젠킨스와 mysql 컨테이너를 실행
 
-#### 가상 환경 생성 및 활성화
+- docker-compose 설치 및 실행
 
-```bash
-conda create -n <project-name> python=<version>
-conda activate <project-name>
-```
+  ```bash
+  sudo curl -L https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+  # docker-compose 실행
+  sudo docker-compose up -d
+  ```
 
-#### 필요 라이브러리 설치
+- http://<your-domain>:<jenkins-port> 접속 후 admin password 입력
 
-```bash
-conda install <librarys>
-```
-
-### Anaconda 기본 명령어
-
-```bash
-# 가상환경 리스트 조회
-conda env list
-
-# 가상환경 생성
-conda create -n <가상환경 이름>
-# 특정 버전의 파이썬을 사용하고 싶을 때
-conda create -n <가상환경 이름> python=<version>
-
-# 가상환경 복제
-conda create --clone <복제할 가상환견 이름> -n <새 가상환경 이름>
-
-# 가상환경 활성화/비활성화
-conda activate <가상환경 이름>
-conda deactivate
-
-# 가상환경 삭제
-conda env remove -n <가상환경 이름>
-
-# 설치된 아나콘다 정보 조회
-conda info
-
-# 가상환경에 설치된 패키지 리스트 조회
-conda list
-
-# 패키지 설치
-conda install <패키지 이름>
-# 현재 활성화된 환경이 아닌 다른 환경에 설치할 경우
-conda install -n <가상환경 이름> <패키지 이름>
-
-# 설치된 패키지 업데이트
-conda update <패키지 이름>
-
-# 설치된 패키지 삭제
-conda remove -n <가상환경 이름> <패키지 이름>
-```
-
-## Backend modules 패키지
-
-```bash
-pip install fastapi uvicorn[standard]
-
-RUN pip install pip cmake numpy opencv-python-headless pillow
-
-RUN apt-get update
-RUN apt-get install ffmpeg libsm6 libxext6  -y
-
-RUN pip install dlib
-RUN pip install face_recognition
-
-RUN pip install pymysql sqlalchemy python-multipart
-RUN pip install async-exit-stack async-generator
-RUN pip install tensorflow
-```
-
-# 배포
+  ```bash
+  # admin password 확인(ubuntu 기준)
+  cat /var/jenkins_home/secrets/initialAdminPassword
+  ```
 
 ### Docker & Jenkins
 
@@ -173,6 +131,30 @@ RUN pip install tensorflow
 ### DB
 
 - Docker에 Mysql 컨테이너를 생성하여 docker network를 연결하여 사용
+
+- MySQL 컨테이너 bash 쉘 접속 및 서버 접속
+
+  ```bash
+  docker exec -it <mysql-container-name> bash
+  root@f3af78fa6428:/#mysql -u root -p
+  <enter root password>
+  mysql>
+  ```
+
+- 데이터베이스와 사용자를 생성하고 (컨테이너 내에서) MySQL 권한 부여
+
+  ``` bash
+  mysql> CREATE USER '<user name>'@'%' IDENTIFIED BY '<password>';
+  Query OK, 0 rows affected (0.00 sec)
+  
+  mysql> GRANT ALL PRIVILEGES ON *.* TO '<user name>'@'%';
+  Query OK, 0 rows affected (0.00 sec)
+  
+  mysql> flush privileges;
+  Query OK, 0 rows affected (0.00 sec)
+  
+  mysql> quit
+  ```
 
 # Tech Stacks
 
