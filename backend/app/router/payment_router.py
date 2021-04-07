@@ -13,6 +13,7 @@ router = APIRouter()
 @router.post("/register", summary="결제 정보 등록")
 async def insert_cardInfo(payment: Payment):
     try:
+        # 결제 정보 등록
         db_payment = payment_crud.insert_cardInfo(session, payment)
     except SQLAlchemyError:
         raise HTTPException(status_code=400, detail="Insert fail")
@@ -33,9 +34,9 @@ async def get_cardInfo(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="얼굴인식 실패")
     elif member_img == '등록된 회원이 아닙니다':
         raise HTTPException(status_code=400, detail='Not Regist')
-
+    # 얼굴 인식으로 찾은 이미지를 통해 고객 정보 가져오기
     member = member_crud.get_member_by_image(session, member_img)
-
+    # 등록된 고객의 결제 정보 가져오기
     payment = payment_crud.select_cardInfo_by_UUID(session, member.uuid)
-    print(payment)
+
     return payment
