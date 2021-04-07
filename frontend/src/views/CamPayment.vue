@@ -111,14 +111,13 @@
 import swal from 'sweetalert';
 import http from '../api/axios';
 export default {
-    name: 'App',
+    name: 'CamPayment',
 
     data() {
         return {
             video: {},
             canvas: {},
             captures: [],
-
             camera: null,
             total: '',
             won_c: false,
@@ -143,6 +142,7 @@ export default {
         this.canvas = this.$refs.canvas;
     },
     methods: {
+        // 버튼 dialog변경 메소드
         domouseover_won() {
             this.won_c = true;
         },
@@ -170,21 +170,19 @@ export default {
             // console.log(this.canvas.toDataURL('image/png'));
             this.captures.push(this.canvas.toDataURL('image/png')); //Store the captured image in the "captures" array
 
-            //   //Convert the format of the image added at the end of the array and assign it to the imgURL format
-            const file = this.makeFile(this.captures[this.captures.length - 1]);
-            console.log('imgURL : ' + file);
+            //Convert the format of the image added at the end of the array and assign it to the imgURL format
+            const file = this.makeFile(this.captures[this.captures.length - 1]); // 캡쳐한 이미지를 파일로 변경
 
             //   const fileName = 'canvas_img_'+new Date().getMilliseconds()+'.png';
             let formData = new FormData();
             formData.append('file', file);
-            console.log(file);
 
             if (this.pay_c == false) {
+                // 얼굴인식하여 정보 받아오기.
                 http.post(`/pay/`, formData)
                     .then((response) => {
                         this.card = response.data;
                         this.card_num = String(response.data.card_num);
-                        console.log(response.data.card_num);
                         this.card_name = response.data.card_name;
                         this.changeCardNum(this.card_num);
                         this.payDialog = true;
@@ -198,16 +196,19 @@ export default {
             }
             this.total = '';
         },
+        // 파일 변경 메소드
         makeFile: function(dataURL) {
             let BASE64_MARKER = ';base64,';
+            // base64파일이 없다면
             if (dataURL.indexOf(BASE64_MARKER) == -1) {
                 let parts = dataURL.split(',');
                 let contentType = parts[0].split(':')[1];
                 let raw = decodeURIComponent(parts[1]);
                 return new File([raw], { type: contentType });
             }
+            // base64파일이 있다면
             let parts = dataURL.split(BASE64_MARKER);
-            let fileName = 'captureImage.jpg';
+            let fileName = 'captureImage.jpg'; // 파일 이름 저장
             let contentType = parts[0].split(':')[1];
             let raw = window.atob(parts[1]);
             let rawLength = raw.length;
@@ -217,6 +218,7 @@ export default {
             }
             return new File([uInt8Array], fileName, { type: contentType });
         },
+        // 받아온 숫자 카드번호를 4글자씩 끊기.
         changeCardNum(card_num) {
             let cardnumtemp =
                 card_num.substr(0, 4) +
@@ -228,6 +230,7 @@ export default {
                 card_num.substr(12, 4);
             this.card_num = cardnumtemp;
         },
+        // 결제 완료 알림
         completePayment() {
             swal('결제가 완료되었습니다.!', {
                 icon: 'success',

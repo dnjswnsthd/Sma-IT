@@ -75,6 +75,7 @@
 import http from '../api/axios';
 import swal from 'sweetalert';
 export default {
+    name: 'customerRegister',
     data() {
         return {
             imageName: this.imageName,
@@ -108,7 +109,6 @@ export default {
             this.imageName = file.name;
         },
         resetInformation() {
-            console.log('resetInformation');
             this.member.name = '';
             this.member.age = '';
             this.getMember.card_num = '';
@@ -116,36 +116,50 @@ export default {
             this.member.requirements = '';
         },
         registInformation() {
+            // 이미지를 넣지 않았을 때.
             if (this.imageFile == '' || this.imageName == '') {
                 swal('이미지를 넣어 주세요!', {
                     icon: 'error',
                 });
-            } else if (this.member.name == '') {
+            }
+            // 이름을 넣지 않았을 때.
+            else if (this.member.name == '') {
                 swal('이름을 입력해주세요!', {
                     icon: 'error',
                 });
-            } else if (this.member.age == '') {
+            }
+            // 나이를 넣지 않았을 때
+            else if (this.member.age == '') {
                 swal('나이를 입력해주세요!', {
                     icon: 'error',
                 });
-            } else if (this.member.age < 0 || this.member.age > 150) {
+            }
+            // 나이가 0보다 작거나 150 이상일 때
+            else if (this.member.age < 0 || this.member.age > 150) {
                 swal('잘못된 정보 입니다!', {
                     icon: 'error',
                 });
-            } else if (this.member.cardNumber == '') {
+            }
+            // 카드 정보를 입력하지 않았을 때
+            else if (this.member.cardNumber == '') {
                 swal('카드 정보를 입력해주세요!', {
                     icon: 'error',
                 });
-            } else if (this.getMember.card_num.length < 16) {
+            }
+            // 카드 정보가 16자보다 작을 때
+            else if (this.getMember.card_num.length < 16) {
                 swal('잘못된 카드 정보 입니다!', {
                     icon: 'error',
                 });
-            } else {
+            }
+            // 모두 입력한 경우.
+            else {
                 if (this.member.interests == '') this.member.interests = '없음';
                 if (this.member.requirements == '') this.member.requirements = '없음';
 
                 let formData = new FormData();
                 formData.append('file', this.imageFile);
+                // 멤버 등록
                 http.post('/member/', this.member)
                     .then((response) => {
                         this.imageName = response.data.image;

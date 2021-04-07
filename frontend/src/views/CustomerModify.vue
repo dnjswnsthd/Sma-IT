@@ -51,6 +51,7 @@ import swal from 'sweetalert';
 import http from '../api/axios';
 import { mapState } from 'vuex';
 export default {
+    name: 'CustomerModify',
     components: {
         DeleteDialog,
         EditDialog,
@@ -87,7 +88,7 @@ export default {
         },
     },
     created() {
-        console.log(this.isLoading);
+        // console.log(this.isLoading);
         this.append_list();
         window.addEventListener('scroll', this.scroll);
     },
@@ -106,11 +107,6 @@ export default {
             let scrolledToBottom =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
-            // console.log('scrollTop : ' + document.documentElement.scrollTop);
-            // console.log('innerHeight : ' + window.innerHeight);
-            // console.log('offsetHeight : ' + document.documentElement.offsetHeight);
-            // console.log('scrolledToBottom : ' + scrolledToBottom);
-            console.log(this.isLoading);
 
             if (this.isLoading && scrolledToBottom) {
                 this.isLoading = true;
@@ -118,7 +114,7 @@ export default {
             }
         },
         editItem(item) {
-            console.log('item');
+            // console.log('item');
             this.editedIndex = this.customers.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialogEdit = true;
@@ -128,7 +124,6 @@ export default {
             // console.log(item);
             this.editedIndex = this.customers.indexOf(item);
             this.editedItem = Object.assign({}, item);
-            console.log(this.editedItem);
             this.dialogDelete = true;
         },
         closeDelete(item) {
@@ -144,6 +139,7 @@ export default {
                 if (this.customers[i].uuid == item.uuid) this.customers[i] = item;
         },
         append_list() {
+            // 멤버 리스트 추가
             http.get(`/member/`, {
                 params: {
                     start: this.start,
@@ -151,8 +147,8 @@ export default {
                 },
             })
                 .then((response) => {
+                    // 받아온 data가 limit이상일 때
                     if (response.data.members.length >= this.limit) {
-                        console.log('data : ' + response.data.members);
                         this.isLoading = true;
                         for (var i = 0; i < this.limit; i++) {
                             this.customers.push({
@@ -168,8 +164,8 @@ export default {
                             });
                         }
                         this.start += this.limit;
-                        console.log(this.start);
                     } else {
+                        // 받아온 data가 limit보다 작을 때
                         for (i = 0; i < response.data.members.length; i++) {
                             this.customers.push({
                                 uuid: response.data.members[i].uuid,
@@ -184,7 +180,6 @@ export default {
                             });
                         }
                         this.start += this.limit;
-                        console.log(this.start);
                         this.isLoading = false;
                     }
                 })

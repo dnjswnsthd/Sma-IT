@@ -29,6 +29,7 @@ import { mapGetters } from 'vuex';
 import SatisfyCard from '../components/SatisfyCard';
 
 export default {
+    name: 'AdminMain',
     components: {
         SatisfyCard,
     },

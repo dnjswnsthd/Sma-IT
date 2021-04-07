@@ -8,6 +8,7 @@
             <div class="col-6 cambox">
                 <div class="camInBox">
                     <div class="camTopBox">
+                        <!--캡쳐한 이미지를 그려줄 canvas -->
                         <canvas
                             ref="canvas"
                             id="emo_canvas"
@@ -15,6 +16,7 @@
                             height="650px"
                             class="canvasBox"
                         ></canvas>
+                        <!-- cam video -->
                         <video
                             ref="video"
                             id="video"
@@ -88,8 +90,6 @@ export default {
             });
         }
 
-        console.log(this.$refs.canvas);
-
         this.canvas = this.$refs.canvas;
     },
     methods: {
@@ -97,27 +97,21 @@ export default {
             // console.log(this.$refs.canvas)
 
             let context = this.canvas.getContext('2d').drawImage(this.video, 0, 0, 728, 650);
-            console.log('context : ' + context);
+            console.log(context);
             this.captures.push(this.canvas.toDataURL('image/png')); //Store the captured image in the "captures" array
 
-            let subscriptionKey = 'c2ade783cde74c478a3f5ec193cf6b3f';
-            let uriBase = 'https://koreacentral.api.cognitive.microsoft.com/face/v1.0/detect/';
+            let subscriptionKey = 'c2ade783cde74c478a3f5ec193cf6b3f'; // 감정분석 api키
+            let uriBase = 'https://koreacentral.api.cognitive.microsoft.com/face/v1.0/detect/'; // 감정분석 uri
             //   https://smait.cognitiveservices.azure.com/
-            let params = {
-                returnFaceId: 'false',
-                returnFaceLandmarks: 'true',
-                returnFaceAttributes: 'emotion',
-            };
-            console.log(params);
-            //   //Convert the format of the image added at the end of the array and assign it to the imgURL format
-            const file = this.makeFile(this.captures[this.captures.length - 1]);
-            console.log('imgURL : ' + file);
+
+            //Convert the format of the image added at the end of the array and assign it to the imgURL format
+            const file = this.makeFile(this.captures[this.captures.length - 1]); // 캡쳐한 이미지를 파일로 변경
 
             //   const fileName = 'canvas_img_'+new Date().getMilliseconds()+'.png';
             let formData = new FormData();
             formData.append('file', file);
-            console.log(file);
 
+            // 현재시간을 위한 객체 생성
             var curDate = new Date();
             var year = curDate.getUTCFullYear();
             var month = curDate.getMonth() + 1;
@@ -128,12 +122,12 @@ export default {
 
             // 현재 시간을 저장.
             this.current = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
-            console.log(this.current);
+
+            // 마스크 인증을 아직 하지않았다면,
             if (!this.maskDialog) {
+                // 마스크인식.
                 http.post(`/face/onlymask`, formData)
                     .then((response) => {
-                        console.log(response);
-                        console.log('마스크 : ' + response.data);
                         // 마스크를 끼지 않았다면
                         if (response.data == 'NO MASK') {
                             swal('마스크를 착용해야 입장이 가능합니다.', {
@@ -143,6 +137,7 @@ export default {
                             swal('마스크 확인이 완료되었습니다.', {
                                 icon: 'success',
                             });
+                            // 안내메세지 변경
                             this.guideMessage =
                                 '얼굴인식을 위해 마스크를 잠시만 벗고 화면을 보고 버튼을 클릭해 주세요';
                             this.maskDialog = true;
@@ -188,7 +183,7 @@ export default {
                                 break;
                             }
                         }
-                        console.log('중복여부 : ' + this.duplicateFlag);
+                        // console.log('중복여부 : ' + this.duplicateFlag);
                         // 중복flag가 false인경우만 추가.
                         if (!this.duplicateFlag) {
                             member.age = response.data.member.age;
@@ -234,37 +229,41 @@ export default {
                 }
             )
                 .then((response) => {
-                    console.log(response.data[0].faceAttributes.emotion);
+                    // console.log(response.data[0].faceAttributes.emotion);
                     this.$store.commit(
                         'setEmotionAnalysis',
                         response.data[0].faceAttributes.emotion
                     );
-                    console.log();
                 })
                 .catch((error) => {
                     console.log(error.response);
                 });
             this.clickDialog = false;
         },
+        // 캡쳐한 이미지를 파일로 만드는 메소드
         makeFile: function(dataURL) {
             let BASE64_MARKER = ';base64,';
+            // base64파일이 없다면
             if (dataURL.indexOf(BASE64_MARKER) == -1) {
                 let parts = dataURL.split(',');
                 let contentType = parts[0].split(':')[1];
                 let raw = decodeURIComponent(parts[1]);
                 return new File([raw], { type: contentType });
             }
+            // base64파일이 있다면
             let parts = dataURL.split(BASE64_MARKER);
-            let fileName = 'captureImage.jpg';
+            let fileName = 'captureImage.jpg'; // 파일이름 지정
             let contentType = parts[0].split(':')[1];
             let raw = window.atob(parts[1]);
             let rawLength = raw.length;
-            let uInt8Array = new Uint8Array(rawLength);
+            let uInt8Array = new Uint8Array(rawLength); //  8 비트 부호없는 정수의 배열
             for (let i = 0; i < rawLength; ++i) {
+                // 주어진 인덱스에 대한 UTF-16 코드를 나타내는 0부터 65535 사이의 정수를 반환
                 uInt8Array[i] = raw.charCodeAt(i);
             }
             return new File([uInt8Array], fileName, { type: contentType });
         },
+        // 호버시 dialog변경
         hoverClickBtn() {
             this.clickDialog = true;
         },
