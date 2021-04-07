@@ -136,8 +136,8 @@ def create_emotion(db: Session, emotion: Emotion):
         raise SQLAlchemyError
     return db_emotion
 
-def get_images(db: Session):
-    return db.query(Images).all()
+def get_images(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(ImagesTable).offset(skip).limit(limit).all()
 
 def create_images(db: Session, member_uuid: int, image_bytes: str):
     db_images = ImagesTable()
