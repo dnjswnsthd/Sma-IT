@@ -71,6 +71,7 @@ export default {
             clickDialog: false,
             guideMessage: '화면의 중앙에 얼굴을 맞춰주시고 버튼을 클릭해 주세요.',
             maskDialog: false,
+            duplicateFlag: false,
         };
     },
     computed: {
@@ -153,6 +154,7 @@ export default {
                         });
                     });
             } else {
+                // 얼굴인식.
                 http.post(`/face/onlyface`, formData)
                     .then((response) => {
                         let member = {
@@ -165,23 +167,49 @@ export default {
                             uuid: '',
                             visit_start: '',
                         };
+                        // 중복체크
+                        // state의 customerInfo 크기만큼 반복해서
+                        for (var i = 0; i < this.$store.state.customerInfo.length; i++) {
+                            if (
+                                // uuid가 같은게 있으면
+                                this.$store.state.customerInfo[i].uuid == response.data.member.uuid
+                            ) {
+                                // 중복 flag를 true로 바꾸고.
+                                this.duplicateFlag = true;
 
-                        member.age = response.data.member.age;
-                        member.image = response.data.image;
-                        member.interests = response.data.member.interests;
-                        member.join_date = response.data.member.join_date;
-                        member.name = response.data.member.name;
-                        member.requirements = response.data.member.requirements;
-                        member.uuid = response.data.member.uuid;
-                        member.visit_start = this.current;
+                                // 알림
+                                swal('이미방문하셨습니다.', {
+                                    icon: 'success',
+                                });
+                                // 다시 초기화.
+                                this.guideMessage =
+                                    '화면중앙에 얼굴을 맞춰주시고 버튼을 클릭해 주세요.';
+                                this.maskDialog = false;
+                                break;
+                            }
+                        }
+                        console.log('중복여부 : ' + this.duplicateFlag);
+                        // 중복flag가 false인경우만 추가.
+                        if (!this.duplicateFlag) {
+                            member.age = response.data.member.age;
+                            member.image = response.data.image;
+                            member.interests = response.data.member.interests;
+                            member.join_date = response.data.member.join_date;
+                            member.name = response.data.member.name;
+                            member.requirements = response.data.member.requirements;
+                            member.uuid = response.data.member.uuid;
+                            member.visit_start = this.current;
 
-                        // vuex에 정보를 저장.
-                        this.$store.commit('setCustomerInfo', member);
-                        swal(response.data.member.name + '님 반가워요!', {
-                            icon: 'success',
-                        });
-                        this.guideMessage = '화면중앙에 얼굴을 맞춰주시고 버튼을 클릭해 주세요.';
-                        this.maskDialog = false;
+                            // vuex에 정보를 저장.
+                            this.$store.commit('setCustomerInfo', member);
+                            swal(response.data.member.name + '님 반가워요!', {
+                                icon: 'success',
+                            });
+                            this.guideMessage =
+                                '화면중앙에 얼굴을 맞춰주시고 버튼을 클릭해 주세요.';
+                            this.maskDialog = false;
+                            this.duplicateFlag = false;
+                        }
                     })
                     .catch(() => {
                         swal('Guest님 반가워요!', {
