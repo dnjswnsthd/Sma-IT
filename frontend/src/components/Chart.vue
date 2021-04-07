@@ -74,8 +74,6 @@ export default {
         createCharts() {
             this.memberData.labels = this.labels;
             this.memberData.datasets[0].data = this.data;
-            console.log('chart!!!!!!!!!!!!!!!!');
-            console.log(this.data);
 
             const ctx = document.getElementById(this.id);
             console.log(ctx);
