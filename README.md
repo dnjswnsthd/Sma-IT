@@ -40,7 +40,7 @@
   
 - 마스크 인식 방법
 
-  ![maskProcess](images\maskProcess.png)
+  ![maskProcess](images/maskProcess.png)
 
   - 사진의 얼굴 영역만 먼저 추출
   - 이후 미리 학습이 되있는 CNN모델을 사용하여 마스크 착용 여부를 수치로 리턴
