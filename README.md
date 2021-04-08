@@ -164,42 +164,93 @@ uvicorn main:app --reload
 
 ### 고객 입장 얼굴 인식 페이지
 
-<div>
-    <img src="images/masky.png" style="width: 50%; height : 500px; float:left; display : block;" />
-    <img src="images/maskn.png" style="width: 50%;height : 500px;float: right ; display : block;" />
-</div>
+* 얼굴 인식을 통한 마스크 착용 여부를 판단
+
+<img src="images/readme/01.jpg"/>
 
 
 
+---
+
+* 마스크 착용 확인 후 얼굴 인식을 통한 등록된 고객 여부 판단
+
+- 중복입장 시 이미 입장했다고 알림
+
+<img src="images/readme/02.jpg"/>
 
 
 
+---
+
+### 관리자 페이지
+
+* 얼굴 인식을 통해 현재 방문중인 고객 확인
+* 현재 방문중인 고객의 입장시간 확인 가능
+* 현재 방문중인 고객의 최근 만족도 결과 확인 가능
+
+<img src="images/readme/03.jpg"/>
 
 
 
+---
+
+### 만족도 검사 페이지
+
+* 감정 분석을 통해 만족도를 그래프로 확인
+
+<img src="images/readme/04.jpg"/>
 
 
 
+---
+
+* 감정 분석 완료 후 현재 방문 목록에서 제거
+
+<img src="images/readme/05.jpg"/>
+
+---
+
+### 결제 페이지
+
+* 결제할 금액 확인
+
+* 얼굴 인식을 통해 고객의 정보를 가져와 결제 수단 확인 후 결제
+
+<img src="images/readme/06.jpg"/>
 
 
 
+---
+
+### 고객 등록 페이지
+
+* 고객 등록이 가능한 페이지
+* 프로필 사진, 이름, 나이, 요구사항, 관심분야, 카드정보를 입력
+
+<img src="images/readme/07.jpg"/>
 
 
 
+---
+
+### 고객 정보 수정 페이지
+
+* 현재 등록된 멤버 확인 가능
+* 스크롤을 통해 추가적인 멤버 확인
+
+* 최근 입장시간과 퇴장시간 확인 가능
+
+<img src="images/readme/08.jpg"/>
 
 
 
+---
+
+* 고객의 정보 수정, 삭제 가능
+
+<img src="images/readme/09.jpg"/>
 
 
-
-
-
-
-
-- 얼굴 인식을 통한 마스크 착용 여부를 판단
-- 얼굴 인식을 통한 등록된 고객 여부 판단
-
-—-—-—-—-—-—-—-—-—-—-—-—-—-—개발 진행중—-—-—-—-—-—-—-—-—-—-—————
 
 # ER-Diagram
 
@@ -212,10 +263,6 @@ uvicorn main:app --reload
 # 진행프로세스
 
 <img src="images/ing.png" style="zoom:67%; " />
-
-
-
-
 
 # 팀 구성원 소개 및 역할
 
