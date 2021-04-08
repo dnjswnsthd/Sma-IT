@@ -38,6 +38,16 @@
 
 → 마스크를 미착용했을 경우에는 입장이 불가능하다는 안내를 하게 됩니다.
 
+마스크 인식 방법![performance](C:\Users\multicampus\Desktop\performance.png)
+
+ → 사진의 얼굴 영역만 먼저 추출
+
+ → 이후 미리 학습이 되있는 cnn모델을 사용하여 마스크여부를 수치로 리턴
+
+ → 수치를 비교하여 마스크 여부를 판단
+
+https://github.com/SeongMin2/COVID-19-Face-mask-detector
+
 ### 방문 고객 정보 캡셔닝
 
 - 마스크 착용에 대한 판단이 마친 후, 마스크를 착용한 고객님께서
