@@ -74,7 +74,7 @@ async def create_members_img(image: str, file: UploadFile = File(...)):
     with open(f'../img/member_img/{image}', 'wb') as fh:
         fh.write(content)
     try:
-        face_image(session, image)
+        face_image(image)
     except SQLAlchemyError:
         raise HTTPException(status_code=400, detail="image Creation failure")
         
