@@ -1,0 +1,88 @@
+@charset "utf-8";
+
+.introduceMessage {
+    width: 100%;
+    height: 15%;
+    line-height: 44px;
+    font-size: 35px;
+    text-align: center;
+}
+
+.welcomeBox img {
+    width: 300px;
+    height: 700px;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-left: 50px;
+}
+
+/*캠 영역*/
+.cambox {
+    background-image: url('../images/frame.png');
+    background-position: center center;
+    background-size: 100% 100%;
+}
+.camInBox {
+    width: calc(100% - 100px);
+    margin: 60px auto;
+}
+.camTopBox {
+    height: 75%;
+    position: relative;
+}
+
+.canvasBox {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -325px;
+    z-index: -1;
+}
+
+.videoBox {
+    display: block;
+    margin: 0 auto;
+    width: 750px;
+    height: 565px;
+    border-radius: 20px;
+    border: 4px solid #fff;
+}
+.divider {
+    border: 1px solid white;
+    width: 100%;
+    margin: 30px auto;
+}
+
+.camBottomBox {
+    height: 25%;
+    padding: 0 50px;
+}
+
+.guideMessage {
+    display: block;
+    color: white;
+    font-size: 28px;
+    text-align: center;
+}
+.clickBtn {
+    width: 80px;
+}
+.clickBtn img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+/*배너영역*/
+.bannerBox {
+    margin-right: 50px;
+}
+.bannerBox img {
+    width: 100%;
+    height: 700px;
+    border-radius: 20px;
+    border: 3px solid #6e0b40;
+    margin-top: 80px;
+}

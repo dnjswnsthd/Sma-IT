@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+.registerTitle {
+    font-size: 24px !important;
+}
+/*사진영역*/
+.profileImg {
+    width: 100%;
+    height: 500px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 20px;
+}
+.profileName {
+    margin-right: 20px !important;
+}
+
+/*폼영역*/
+.nameField,
+.ageField {
+    width: 40%;
+}
+.registBtn,
+.resetBtn {
+    font-size: 20px;
+    line-height: 40px;
+    height: 40px;
+    width: 80px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+}
+.registBtn:hover,
+.resetBtn:hover {
+    transition: all 0.4s ease-out;
+    background-color: #fff;
+    color: #000;
+}
+
+.resetBtn {
+    margin: 0 20px;
+}
